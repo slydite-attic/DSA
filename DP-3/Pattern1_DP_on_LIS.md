@@ -20,26 +20,27 @@ Let `solve(index, prev_index)` be the length of the LIS from `nums[index...]` wh
 #### a) Memoization (Top-Down O(n^2))
 ```python
 def length_of_lis_memo(nums: list[int]) -> int:
-    n = len(nums)
+    n = len(nums) # Get the number of elements.
+    # DP table to store results. `prev_index + 1` is used to handle the -1 case.
     dp = [[-1] * (n + 1) for _ in range(n)]
 
-    def solve(index, prev_index):
-        if index == n:
+    def solve(index, prev_index): # Recursive helper function.
+        if index == n: # Base case: If we've considered all elements.
             return 0
-        if dp[index][prev_index + 1] != -1:
+        if dp[index][prev_index + 1] != -1: # If the result is memoized.
             return dp[index][prev_index + 1]
 
-        # Don't pick current element
+        # Case 1: Don't pick the current element.
         length = solve(index + 1, prev_index)
 
-        # Pick current element (if valid)
+        # Case 2: Pick the current element (if it's greater than the previous).
         if prev_index == -1 or nums[index] > nums[prev_index]:
             length = max(length, 1 + solve(index + 1, index))
 
-        dp[index][prev_index + 1] = length
+        dp[index][prev_index + 1] = length # Memoize the result.
         return length
 
-    return solve(0, -1)
+    return solve(0, -1) # Start the recursion from the first element with no previous element.
 ```
 - **Time Complexity:** O(n^2). Each state `dp[i][j]` is computed once.
 - **Space Complexity:** O(n^2) for DP table + O(n) for recursion stack.
@@ -50,16 +51,16 @@ A more intuitive tabulation approach uses `dp[i]` to store the length of the LIS
 
 ```python
 def length_of_lis_tab(nums: list[int]) -> int:
-    n = len(nums)
-    if n == 0: return 0
-    dp = [1] * n # dp[i] = length of LIS ending at index i
+    n = len(nums) # Get the number of elements.
+    if n == 0: return 0 # If the array is empty, the LIS length is 0.
+    dp = [1] * n # Initialize a DP array where dp[i] stores the length of the LIS ending at index i.
 
-    for i in range(n):
-        for prev in range(i):
-            if nums[i] > nums[prev]:
-                dp[i] = max(dp[i], 1 + dp[prev])
+    for i in range(n): # Iterate through each element as a potential end of a subsequence.
+        for prev in range(i): # Iterate through all previous elements.
+            if nums[i] > nums[prev]: # If the current element can extend the subsequence from the previous element,
+                dp[i] = max(dp[i], 1 + dp[prev]) # Update the LIS length for the current element.
 
-    return max(dp)
+    return max(dp) # The result is the maximum value in the DP array.
 ```
 - **Time Complexity:** O(n^2) for the nested loops.
 - **Space Complexity:** O(n) for the DP array.
@@ -71,14 +72,14 @@ This approach maintains an auxiliary array `sub` which stores the smallest tail 
 ```python
 import bisect
 def length_of_lis_optimized(nums: list[int]) -> int:
-    sub = []
-    for num in nums:
-        idx = bisect.bisect_left(sub, num)
-        if idx == len(sub):
-            sub.append(num)
-        else:
-            sub[idx] = num
-    return len(sub)
+    sub = [] # This list stores the smallest tail of all increasing subsequences of a given length.
+    for num in nums: # Iterate through each number in the input array.
+        idx = bisect.bisect_left(sub, num) # Find the insertion point for 'num' to maintain sorted order.
+        if idx == len(sub): # If 'num' is greater than all elements in 'sub',
+            sub.append(num) # It extends the LIS, so we append it.
+        else: # Otherwise, 'num' can replace an existing element
+            sub[idx] = num # to form a new subsequence of the same length but with a smaller tail.
+    return len(sub) # The length of 'sub' is the length of the LIS.
 ```
 - **Time Complexity:** O(n log n). The loop runs n times, and each binary search (`bisect_left`) takes O(log n).
 - **Space Complexity:** O(n) for the `sub` array.
@@ -101,28 +102,28 @@ This requires the O(n^2) tabulation approach, augmented with a `parent` array to
 #### Python Code Snippet
 ```python
 def print_lis(nums: list[int]) -> list[int]:
-    n = len(nums)
-    if n == 0: return []
+    n = len(nums) # Get the number of elements.
+    if n == 0: return [] # Return empty list for empty input.
 
-    dp = [1] * n
-    parent = [-1] * n
-    max_len, last_idx = 0, 0
+    dp = [1] * n # dp[i] will store the length of the LIS ending at index i.
+    parent = [-1] * n # parent[i] will store the index of the previous element in the LIS ending at i.
+    max_len, last_idx = 0, 0 # To track the length and the last index of the overall LIS.
 
-    for i in range(n):
-        for j in range(i):
-            if nums[i] > nums[j] and dp[i] < 1 + dp[j]:
-                dp[i] = 1 + dp[j]
-                parent[i] = j
-        if dp[i] > max_len:
-            max_len = dp[i]
-            last_idx = i
+    for i in range(n): # Iterate through each element.
+        for j in range(i): # Iterate through previous elements.
+            if nums[i] > nums[j] and dp[i] < 1 + dp[j]: # If we can extend a subsequence,
+                dp[i] = 1 + dp[j] # Update the length.
+                parent[i] = j # And set the parent to reconstruct the path later.
+        if dp[i] > max_len: # If we've found a new longest subsequence,
+            max_len = dp[i] # Update the max length.
+            last_idx = i # And store its last index.
 
-    lis = []
-    while last_idx != -1:
-        lis.append(nums[last_idx])
-        last_idx = parent[last_idx]
+    lis = [] # The list to store the reconstructed LIS.
+    while last_idx != -1: # Backtrack from the last index of the LIS.
+        lis.append(nums[last_idx]) # Add the element to our list.
+        last_idx = parent[last_idx] # Move to the parent element.
 
-    return lis[::-1]
+    return lis[::-1] # Reverse the list to get the correct order.
 ```
 - **Time Complexity:** O(n^2).
 - **Space Complexity:** O(n).
@@ -144,29 +145,30 @@ This is an LIS variation. The "increasing" property is replaced by a "divisibili
 #### Python Code Snippet
 ```python
 def largest_divisible_subset(nums: list[int]) -> list[int]:
-    n = len(nums)
-    if n == 0: return []
-    nums.sort()
+    n = len(nums) # Get the number of elements.
+    if n == 0: return [] # Return empty list for empty input.
+    nums.sort() # Sort the array to ensure that if `nums[i]` is divisible by `nums[j]`, then `j < i`.
 
-    dp = [1] * n
-    parent = [-1] * n
-    max_len, last_idx = 1, 0
+    dp = [1] * n # dp[i] stores the size of the largest divisible subset ending with nums[i].
+    parent = [-1] * n # To reconstruct the subset.
+    max_len, last_idx = 1, 0 # To track the size and end of the largest subset.
 
-    for i in range(n):
-        for j in range(i):
+    for i in range(n): # For each element,
+        for j in range(i): # Check all previous elements.
+            # If nums[i] is divisible by nums[j] and we can form a larger subset,
             if nums[i] % nums[j] == 0 and dp[i] < 1 + dp[j]:
-                dp[i] = 1 + dp[j]
-                parent[i] = j
-        if dp[i] > max_len:
-            max_len = dp[i]
-            last_idx = i
+                dp[i] = 1 + dp[j] # Update the size.
+                parent[i] = j # Set the parent.
+        if dp[i] > max_len: # If we found a new largest subset,
+            max_len = dp[i] # Update the max length.
+            last_idx = i # And its last index.
 
-    lds = []
-    while last_idx != -1:
-        lds.append(nums[last_idx])
-        last_idx = parent[last_idx]
+    lds = [] # List to store the result.
+    while last_idx != -1: # Backtrack from the end of the largest subset.
+        lds.append(nums[last_idx]) # Add the element.
+        last_idx = parent[last_idx] # Move to the parent.
 
-    return lds[::-1]
+    return lds[::-1] # Reverse to get the correct order.
 ```
 - **Time Complexity:** O(n^2).
 - **Space Complexity:** O(n).
@@ -187,21 +189,22 @@ Given `words`, find the length of the longest "word chain," where `word_i` is a 
 #### Python Code Snippet
 ```python
 def longest_str_chain(words: list[str]) -> int:
-    words.sort(key=len)
-    dp = {} # {word: max_chain_len}
-    max_chain = 0
+    words.sort(key=len) # Sort words by length to ensure we process predecessors before their successors.
+    dp = {} # A dictionary to store the length of the longest chain ending with a particular word.
+    max_chain = 0 # To keep track of the overall maximum chain length found.
 
-    for word in words:
-        current_len = 1
-        # Generate all possible predecessors
+    for word in words: # Iterate through each word in the sorted list.
+        current_len = 1 # The minimum chain length for any word is 1 (the word itself).
+        # Generate all possible predecessors by deleting one character at a time.
         for i in range(len(word)):
-            predecessor = word[:i] + word[i+1:]
-            if predecessor in dp:
+            predecessor = word[:i] + word[i+1:] # Create a potential predecessor.
+            if predecessor in dp: # If this predecessor exists in our DP map,
+                # Update the current word's chain length if we found a longer chain through this predecessor.
                 current_len = max(current_len, dp[predecessor] + 1)
-        dp[word] = current_len
-        max_chain = max(max_chain, current_len)
+        dp[word] = current_len # Store the calculated max chain length for the current word.
+        max_chain = max(max_chain, current_len) # Update the overall max chain length.
 
-    return max_chain
+    return max_chain # Return the final result.
 ```
 - **Time Complexity:** O(N * L^2), where N is the number of words and L is the max word length. Sorting is O(N log N).
 - **Space Complexity:** O(N * L) to store the DP map.
@@ -224,30 +227,30 @@ A bitonic subsequence has a "peak". We can find the longest one by considering e
 #### Python Code Snippet
 ```python
 def longest_bitonic_subsequence(nums: list[int]) -> int:
-    n = len(nums)
-    if n == 0: return 0
+    n = len(nums) # Get the number of elements.
+    if n == 0: return 0 # Return 0 for an empty array.
 
-    # dp1[i]: LIS ending at i (left-to-right)
+    # dp1[i] stores the length of the Longest Increasing Subsequence ending at index i.
     dp1 = [1] * n
-    for i in range(n):
+    for i in range(n): # Iterate from left to right.
         for j in range(i):
             if nums[i] > nums[j]:
                 dp1[i] = max(dp1[i], 1 + dp1[j])
 
-    # dp2[i]: LIS ending at i (right-to-left)
+    # dp2[i] stores the length of the Longest Increasing Subsequence starting from index i (or LDS ending at i).
     dp2 = [1] * n
-    for i in range(n - 1, -1, -1):
+    for i in range(n - 1, -1, -1): # Iterate from right to left.
         for j in range(n - 1, i, -1):
             if nums[i] > nums[j]:
                 dp2[i] = max(dp2[i], 1 + dp2[j])
 
-    max_val = 0
-    for i in range(n):
-        # Peak must have elements on both sides, so dp1[i] and dp2[i] should be > 1
-        # but the formula works even if one side is empty.
+    max_val = 0 # To store the maximum length of the bitonic subsequence.
+    for i in range(n): # Iterate through all possible peaks.
+        # The length of the bitonic subsequence with peak at i is the sum of the increasing part
+        # and the decreasing part, with the peak counted once.
         max_val = max(max_val, dp1[i] + dp2[i] - 1)
 
-    return max_val
+    return max_val # Return the overall maximum length found.
 ```
 - **Time Complexity:** O(n^2) due to the two nested loops for calculating `dp1` and `dp2`.
 - **Space Complexity:** O(n) for the two DP arrays.
@@ -274,28 +277,28 @@ We need to track not just the length of LIS ending at `i`, but also the count of
 #### Python Code Snippet
 ```python
 def find_number_of_lis(nums: list[int]) -> int:
-    n = len(nums)
-    if n <= 1: return n
+    n = len(nums) # Get the number of elements.
+    if n <= 1: return n # If there's 0 or 1 element, the number of LIS is n.
 
-    length = [1] * n # length[i] = length of LIS ending at i
-    count = [1] * n  # count[i] = number of LIS ending at i
+    length = [1] * n # `length[i]` stores the length of the LIS ending at index `i`.
+    count = [1] * n  # `count[i]` stores the number of LIS ending at index `i`.
 
-    for i in range(n):
-        for j in range(i):
-            if nums[i] > nums[j]:
-                if length[j] + 1 > length[i]:
-                    length[i] = length[j] + 1
-                    count[i] = count[j]
-                elif length[j] + 1 == length[i]:
-                    count[i] += count[j]
+    for i in range(n): # Iterate through each element as the end of a potential LIS.
+        for j in range(i): # Iterate through all previous elements.
+            if nums[i] > nums[j]: # If the current element can extend the subsequence from the previous one.
+                if length[j] + 1 > length[i]: # If we found a longer LIS.
+                    length[i] = length[j] + 1 # Update the length.
+                    count[i] = count[j] # The count is inherited from the previous subsequence.
+                elif length[j] + 1 == length[i]: # If we found another LIS of the same length.
+                    count[i] += count[j] # Add the number of ways from the previous subsequence.
 
-    max_len = max(length)
-    result = 0
-    for i in range(n):
-        if length[i] == max_len:
-            result += count[i]
+    max_len = max(length) # Find the maximum length of any LIS.
+    result = 0 # To store the total count of all LIS.
+    for i in range(n): # Iterate through the length and count arrays.
+        if length[i] == max_len: # If an LIS ending at index `i` has the maximum length,
+            result += count[i] # Add its count to the total result.
 
-    return result
+    return result # Return the total count.
 ```
 - **Time Complexity:** O(n^2).
 - **Space Complexity:** O(n).

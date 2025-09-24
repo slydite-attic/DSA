@@ -22,22 +22,22 @@ Let `solve(i, j)` be the LCS length for `text1[0...i]` and `text2[0...j]`.
 #### a) Memoization (Top-Down)
 ```python
 def lcs_memo(text1: str, text2: str) -> int:
-    n, m = len(text1), len(text2)
-    dp = [[-1] * m for _ in range(n)]
+    n, m = len(text1), len(text2) # Get the lengths of the two input strings.
+    dp = [[-1] * m for _ in range(n)] # Initialize a memoization table with -1.
 
-    def solve(i, j):
-        if i < 0 or j < 0:
+    def solve(i, j): # Recursive helper function to compute LCS length for text1[0..i] and text2[0..j].
+        if i < 0 or j < 0: # Base case: If either string is empty, the LCS is 0.
             return 0
-        if dp[i][j] != -1:
+        if dp[i][j] != -1: # If the result for this state is already computed, return it.
             return dp[i][j]
 
-        if text1[i] == text2[j]:
-            dp[i][j] = 1 + solve(i - 1, j - 1)
-        else:
-            dp[i][j] = max(solve(i - 1, j), solve(i, j - 1))
-        return dp[i][j]
+        if text1[i] == text2[j]: # If the characters at the current indices match,
+            dp[i][j] = 1 + solve(i - 1, j - 1) # The LCS length is 1 + LCS of the preceding substrings.
+        else: # If the characters do not match,
+            dp[i][j] = max(solve(i - 1, j), solve(i, j - 1)) # Take the maximum LCS from the two possible subproblems.
+        return dp[i][j] # Return the computed value.
 
-    return solve(n - 1, m - 1)
+    return solve(n - 1, m - 1) # Start the recursion from the end of both strings.
 ```
 - **Time Complexity:** O(n * m).
 - **Space Complexity:** O(n * m) for DP table + O(n+m) for recursion stack.
@@ -46,17 +46,17 @@ def lcs_memo(text1: str, text2: str) -> int:
 #### b) Tabulation (Bottom-Up)
 ```python
 def lcs_tab(text1: str, text2: str) -> int:
-    n, m = len(text1), len(text2)
-    dp = [[0] * (m + 1) for _ in range(n + 1)]
+    n, m = len(text1), len(text2) # Get the lengths of the two strings.
+    dp = [[0] * (m + 1) for _ in range(n + 1)] # Initialize a 2D DP table with zeros. The +1 is for the base case of empty strings.
 
-    for i in range(1, n + 1):
-        for j in range(1, m + 1):
-            if text1[i-1] == text2[j-1]:
-                dp[i][j] = 1 + dp[i-1][j-1]
-            else:
-                dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+    for i in range(1, n + 1): # Iterate through text1.
+        for j in range(1, m + 1): # Iterate through text2.
+            if text1[i-1] == text2[j-1]: # If the characters match,
+                dp[i][j] = 1 + dp[i-1][j-1] # The LCS length is 1 + the LCS of the strings without these characters.
+            else: # If they don't match,
+                dp[i][j] = max(dp[i-1][j], dp[i][j-1]) # Take the maximum LCS from the previous states.
 
-    return dp[n][m]
+    return dp[n][m] # The result is in the bottom-right cell of the DP table.
 ```
 - **Time Complexity:** O(n * m).
 - **Space Complexity:** O(n * m).
@@ -65,19 +65,19 @@ def lcs_tab(text1: str, text2: str) -> int:
 #### c) Space Optimization
 ```python
 def lcs_optimized(text1: str, text2: str) -> int:
-    n, m = len(text1), len(text2)
-    prev_row = [0] * (m + 1)
+    n, m = len(text1), len(text2) # Get the lengths of the two strings.
+    prev_row = [0] * (m + 1) # Initialize a DP array for the previous row.
 
-    for i in range(1, n + 1):
-        curr_row = [0] * (m + 1)
-        for j in range(1, m + 1):
-            if text1[i-1] == text2[j-1]:
-                curr_row[j] = 1 + prev_row[j-1]
-            else:
-                curr_row[j] = max(prev_row[j], curr_row[j-1])
-        prev_row = curr_row
+    for i in range(1, n + 1): # Iterate through text1.
+        curr_row = [0] * (m + 1) # Initialize a DP array for the current row.
+        for j in range(1, m + 1): # Iterate through text2.
+            if text1[i-1] == text2[j-1]: # If characters match,
+                curr_row[j] = 1 + prev_row[j-1] # The value is 1 + the diagonal value from the previous row.
+            else: # If they don't match,
+                curr_row[j] = max(prev_row[j], curr_row[j-1]) # Take the max from the value above or the value to the left.
+        prev_row = curr_row # The current row becomes the previous row for the next iteration.
 
-    return prev_row[m]
+    return prev_row[m] # The result is the last element of the final row.
 ```
 - **Time Complexity:** O(n * m).
 - **Space Complexity:** O(m), where m is the length of the shorter string.
@@ -97,8 +97,9 @@ Given a string `s`, find the length of the longest palindromic subsequence.
 #### Python Code Snippet
 ```python
 def longest_palindromic_subsequence(s: str) -> int:
-    # This is just LCS(s, reverse(s))
-    return lcs_optimized(s, s[::-1])
+    # The longest palindromic subsequence is equivalent to the longest common subsequence
+    # between the string and its reverse.
+    return lcs_optimized(s, s[::-1]) # Call the LCS function with the string and its reverse.
 ```
 - **Time/Space Complexity:** Same as the underlying LCS implementation used.
 
@@ -119,7 +120,8 @@ Given a string `s`, find the minimum number of insertions required to make it a 
 #### Python Code Snippet
 ```python
 def min_insertions_to_palindrome(s: str) -> int:
-    len_lps = longest_palindromic_subsequence(s) # Reuse function from above
+    len_lps = longest_palindromic_subsequence(s) # First, find the length of the longest palindromic subsequence.
+    # The number of insertions needed is the total length of the string minus the length of the LPS.
     return len(s) - len_lps
 ```
 - **Time/Space Complexity:** Dominated by the LPS calculation.
@@ -145,7 +147,9 @@ Given `str1` and `str2`, find the minimum number of deletions and insertions to 
 #### Python Code Snippet
 ```python
 def min_ops_to_convert(str1: str, str2: str) -> int:
-    len_lcs = lcs_optimized(str1, str2) # Reuse function from above
+    len_lcs = lcs_optimized(str1, str2) # Calculate the length of the Longest Common Subsequence.
+    # Deletions = len(str1) - len_lcs. Insertions = len(str2) - len_lcs.
+    # Total operations = (len(str1) - len_lcs) + (len(str2) - len_lcs)
     return len(str1) + len(str2) - 2 * len_lcs
 ```
 - **Time/Space Complexity:** Dominated by the LCS calculation.
@@ -171,35 +175,35 @@ Given `str1` and `str2`, return the shortest string that has both as subsequence
 #### Python Code Snippet
 ```python
 def shortest_common_supersequence(str1: str, str2: str) -> str:
-    n, m = len(str1), len(str2)
-    dp = [[0] * (m + 1) for _ in range(n + 1)]
-    # Standard LCS table calculation
-    for i in range(1, n + 1):
-        for j in range(1, m + 1):
-            if str1[i-1] == str2[j-1]:
-                dp[i][j] = 1 + dp[i-1][j-1]
-            else:
-                dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+    n, m = len(str1), len(str2) # Get lengths of the strings.
+    dp = [[0] * (m + 1) for _ in range(n + 1)] # Initialize DP table for LCS calculation.
+    # Standard LCS table calculation to find the lengths of common subsequences.
+    for i in range(1, n + 1): # Iterate through str1.
+        for j in range(1, m + 1): # Iterate through str2.
+            if str1[i-1] == str2[j-1]: # If characters match,
+                dp[i][j] = 1 + dp[i-1][j-1] # Increment LCS length.
+            else: # If they don't match,
+                dp[i][j] = max(dp[i-1][j], dp[i][j-1]) # Take the max from top or left.
 
-    # Backtrack to build the SCS string
-    res = []
-    i, j = n, m
-    while i > 0 and j > 0:
-        if str1[i-1] == str2[j-1]:
-            res.append(str1[i-1])
-            i -= 1; j -= 1
-        elif dp[i-1][j] > dp[i][j-1]:
-            res.append(str1[i-1])
-            i -= 1
-        else:
-            res.append(str2[j-1])
-            j -= 1
+    # Backtrack from the end of the DP table to build the SCS string.
+    res = [] # Result list to build the supersequence.
+    i, j = n, m # Start from the bottom-right corner of the DP table.
+    while i > 0 and j > 0: # Continue until one of the strings is fully processed.
+        if str1[i-1] == str2[j-1]: # If characters are the same, they are part of the LCS.
+            res.append(str1[i-1]) # Add the common character to the result.
+            i -= 1; j -= 1 # Move diagonally up-left.
+        elif dp[i-1][j] > dp[i][j-1]: # If the value from the top is greater,
+            res.append(str1[i-1]) # Add the character from str1.
+            i -= 1 # Move up.
+        else: # Otherwise, the value from the left is greater or equal.
+            res.append(str2[j-1]) # Add the character from str2.
+            j -= 1 # Move left.
 
-    # Append any remaining characters
-    while i > 0: res.append(str1[i-1]); i -= 1
-    while j > 0: res.append(str2[j-1]); j -= 1
+    # Append any remaining characters from str1 or str2.
+    while i > 0: res.append(str1[i-1]); i -= 1 # If str1 has remaining characters.
+    while j > 0: res.append(str2[j-1]); j -= 1 # If str2 has remaining characters.
 
-    return "".join(reversed(res))
+    return "".join(reversed(res)) # Join the characters and reverse to get the final SCS.
 ```
 - **Time Complexity:** O(n * m) to build the table.
 - **Space Complexity:** O(n * m) for the DP table.

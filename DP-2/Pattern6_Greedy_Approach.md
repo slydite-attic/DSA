@@ -21,25 +21,24 @@ The core intuition is to be as efficient as possible with our resources (the coo
 #### Python Code Snippet
 ```python
 def find_content_children(g: list[int], s: list[int]) -> int:
-    # Sort both arrays to enable the greedy approach
-    g.sort()
-    s.sort()
+    # Sort both the greed factors and cookie sizes to enable a greedy approach.
+    g.sort() # Sort children's greed factors in ascending order.
+    s.sort() # Sort cookie sizes in ascending order.
 
-    child_idx = 0  # Pointer for the greed factor array g
-    cookie_idx = 0 # Pointer for the cookie size array s
+    child_idx = 0  # Pointer for the greed factor array g, representing the current child to satisfy.
+    cookie_idx = 0 # Pointer for the cookie size array s, representing the current cookie to use.
 
-    # Iterate while there are still children to satisfy and cookies to give
+    # Iterate as long as there are children to potentially satisfy and cookies available.
     while child_idx < len(g) and cookie_idx < len(s):
-        # If the current cookie can satisfy the current child
+        # If the current cookie's size is sufficient for the current child's greed.
         if s[cookie_idx] >= g[child_idx]:
-            # Give the cookie and move to the next child
+            # Assign the cookie to the child and move to the next child.
             child_idx += 1
 
-        # Always move to the next cookie to see if it can satisfy the
-        # current child (if they weren't satisfied) or the next child.
+        # Always move to the next available cookie, regardless of whether the current one was used.
         cookie_idx += 1
 
-    # The number of satisfied children is the number of times we incremented child_idx
+    # The value of child_idx represents the total number of children who were satisfied.
     return child_idx
 ```
 - **Time Complexity:** O(N log N + M log M), dominated by the two sorting operations.
@@ -68,22 +67,24 @@ Instead of thinking about which jump to take from the start (which can lead to a
 #### Python Code Snippet
 ```python
 def can_jump(nums: list[int]) -> bool:
-    max_reach = 0
-    n = len(nums)
+    max_reach = 0 # This variable tracks the farthest index we can reach at any point.
+    n = len(nums) # The total number of elements in the array.
 
-    for i, num in enumerate(nums):
-        # If the current index is not reachable, we can't proceed
+    for i, num in enumerate(nums): # Iterate through the array with both index and value.
+        # If the current index 'i' is greater than the farthest we could have reached,
+        # it means there's a gap and this index is unreachable.
         if i > max_reach:
-            return False
+            return False # We are stuck and cannot reach the end.
 
-        # Greedily update the farthest point we can reach
+        # Greedily update the farthest point we can reach from the current position.
         max_reach = max(max_reach, i + num)
 
-        # Optimization: if we can already reach the end, no need to check further
+        # An optimization: if our maximum reach is already at or beyond the last index,
+        # we can stop early and confirm that the end is reachable.
         if max_reach >= n - 1:
             return True
 
-    return True
+    return True # If the loop completes, it means every index was reachable, including the last one.
 ```
 - **Time Complexity:** O(n), because we iterate through the array once.
 - **Space Complexity:** O(1).
