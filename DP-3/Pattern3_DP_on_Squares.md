@@ -23,29 +23,32 @@ This approach is less intuitive for this problem. We define `solve(i, j)` which 
 
 ```python
 def count_squares_memo(matrix: list[list[int]]) -> int:
-    m, n = len(matrix), len(matrix[0])
-    dp = [[-1] * n for _ in range(m)]
+    m, n = len(matrix), len(matrix[0]) # Get matrix dimensions.
+    dp = [[-1] * n for _ in range(m)] # Memoization table.
 
-    def solve(r, c):
+    def solve(r, c): # Function to find the size of the largest square ending at (r, c).
+        # Base case: If out of bounds or the cell is 0, no square can end here.
         if r < 0 or c < 0 or matrix[r][c] == 0:
             return 0
-        if dp[r][c] != -1:
+        if dp[r][c] != -1: # Return memoized result.
             return dp[r][c]
 
-        # Recursively find the size of squares ending at neighbors
+        # Recursively find the size of squares ending at the top, left, and diagonal neighbors.
         top = solve(r - 1, c)
         left = solve(r, c - 1)
         diag = solve(r - 1, c - 1)
 
+        # The size of the square ending at (r, c) is 1 + the minimum of its neighbors.
         dp[r][c] = 1 + min(top, left, diag)
         return dp[r][c]
 
-    total_squares = 0
-    for i in range(m):
+    total_squares = 0 # Initialize total count.
+    for i in range(m): # Iterate through each cell.
         for j in range(n):
+            # The value returned by solve(i, j) is the number of squares with (i, j) as the bottom-right corner.
             total_squares += solve(i, j)
 
-    return total_squares
+    return total_squares # Return the accumulated total.
 ```
 - **Time Complexity:** O(m * n). Each state `dp[i][j]` is computed once.
 - **Space Complexity:** O(m * n) for DP table + O(m+n) for recursion stack.
@@ -56,20 +59,22 @@ This is the most natural approach. We build the `dp` table and sum its values.
 
 ```python
 def count_squares_tab(matrix: list[list[int]]) -> int:
-    m, n = len(matrix), len(matrix[0])
-    dp = [[0] * n for _ in range(m)]
-    total_squares = 0
+    m, n = len(matrix), len(matrix[0]) # Get matrix dimensions.
+    dp = [[0] * n for _ in range(m)] # DP table to store the size of the largest square ending at (i, j).
+    total_squares = 0 # Initialize the total count of squares.
 
-    for i in range(m):
-        for j in range(n):
-            if matrix[i][j] == 1:
-                if i == 0 or j == 0:
+    for i in range(m): # Iterate through each row.
+        for j in range(n): # Iterate through each column.
+            if matrix[i][j] == 1: # If the current cell is 1,
+                if i == 0 or j == 0: # For the first row or column, the largest square is of size 1.
                     dp[i][j] = 1
-                else:
+                else: # For other cells,
+                    # The size of the square is 1 + the minimum of its top, left, and diagonal neighbors.
                     dp[i][j] = 1 + min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1])
+                # A dp value of k means a kxk square, a (k-1)x(k-1) square, etc., all end here.
                 total_squares += dp[i][j]
 
-    return total_squares
+    return total_squares # Return the final count.
 ```
 - **Time Complexity:** O(m * n).
 - **Space Complexity:** O(m * n).
@@ -97,40 +102,40 @@ This is a famous problem that is solved by reducing it to a series of "Largest R
 #### Python Code Snippet
 ```python
 def maximal_rectangle(matrix: list[list[str]]) -> int:
-    if not matrix or not matrix[0]:
+    if not matrix or not matrix[0]: # Handle empty matrix case.
         return 0
 
-    m, n = len(matrix), len(matrix[0])
-    # DP state: heights[j] = consecutive 1s above current cell in column j
+    m, n = len(matrix), len(matrix[0]) # Get matrix dimensions.
+    # DP state: heights[j] stores the number of consecutive '1's above the current cell in column j.
     heights = [0] * n
-    max_area = 0
+    max_area = 0 # To store the overall maximum area.
 
-    def largest_rectangle_in_histogram(h: list[int]) -> int:
-        stack = [-1] # Sentinel value
-        max_h_area = 0
-        for i, height in enumerate(h):
-            while stack[-1] != -1 and h[stack[-1]] >= height:
-                h_pop = h[stack.pop()]
-                w = i - stack[-1] - 1
-                max_h_area = max(max_h_area, h_pop * w)
-            stack.append(i)
+    def largest_rectangle_in_histogram(h: list[int]) -> int: # Helper function to solve the histogram problem.
+        stack = [-1] # A monotonic stack to keep track of indices of the bars. Sentinel value -1.
+        max_h_area = 0 # To store the max area for the current histogram.
+        for i, height in enumerate(h): # Iterate through the histogram bars.
+            while stack[-1] != -1 and h[stack[-1]] >= height: # While the stack is not empty and the current bar is smaller than the top of the stack.
+                h_pop = h[stack.pop()] # Pop the stack.
+                w = i - stack[-1] - 1 # Calculate the width of the rectangle.
+                max_h_area = max(max_h_area, h_pop * w) # Update the max area.
+            stack.append(i) # Push the current bar's index onto the stack.
 
-        while stack[-1] != -1:
+        while stack[-1] != -1: # Process any remaining bars in the stack.
             h_pop = h[stack.pop()]
             w = len(h) - stack[-1] - 1
             max_h_area = max(max_h_area, h_pop * w)
         return max_h_area
 
-    # Iterate through each row, treating it as the base of a histogram
+    # Iterate through each row of the matrix.
     for i in range(m):
-        # Build the histogram heights for the current row
+        # Build the histogram heights for the current row based on the previous row's heights.
         for j in range(n):
             heights[j] = heights[j] + 1 if matrix[i][j] == '1' else 0
 
-        # Calculate max area for this histogram and update overall max
+        # Calculate the max area for the histogram formed by the current row and update the overall max.
         max_area = max(max_area, largest_rectangle_in_histogram(heights))
 
-    return max_area
+    return max_area # Return the final maximum area.
 ```
 - **Time Complexity:** O(m * n). We iterate through each cell once to build the histogram, and the histogram calculation for each row is O(n).
 - **Space Complexity:** O(n) to store the `heights` array and the stack for the subproblem.

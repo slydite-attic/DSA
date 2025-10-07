@@ -27,12 +27,12 @@ While a simple greedy approach is most efficient (O(n) time, O(1) space), this p
 ```python
 # Greedy Solution
 def max_profit_one_transaction(prices: list[int]) -> int:
-    min_price = float('inf')
-    max_profit = 0
-    for price in prices:
-        min_price = min(min_price, price)
-        max_profit = max(max_profit, price - min_price)
-    return max_profit
+    min_price = float('inf') # Initialize the minimum price seen so far to infinity.
+    max_profit = 0 # Initialize the maximum profit to 0.
+    for price in prices: # Iterate through each price in the list.
+        min_price = min(min_price, price) # Update the minimum price if the current price is lower.
+        max_profit = max(max_profit, price - min_price) # Calculate the potential profit if selling today and update max_profit.
+    return max_profit # Return the maximum profit found.
 ```
 - **Time Complexity:** O(n).
 - **Space Complexity:** O(1).
@@ -54,25 +54,25 @@ Maximize profit with **infinite transactions**.
 #### a) Memoization (Top-Down)
 ```python
 def max_profit_infinite_memo(prices: list[int]) -> int:
-    n = len(prices)
-    dp = [[-1] * 2 for _ in range(n)]
+    n = len(prices) # Get the number of days.
+    dp = [[-1] * 2 for _ in range(n)] # DP table to store results: dp[day][can_buy_flag].
 
-    def solve(index, can_buy):
-        if index == n: return 0
-        if dp[index][can_buy] != -1: return dp[index][can_buy]
+    def solve(index, can_buy): # Recursive helper function.
+        if index == n: return 0 # Base case: If past the last day, no more profit can be made.
+        if dp[index][can_buy] != -1: return dp[index][can_buy] # Return memoized result.
 
-        if can_buy:
-            buy_profit = -prices[index] + solve(index + 1, 0)
-            skip_profit = solve(index + 1, 1)
-            dp[index][can_buy] = max(buy_profit, skip_profit)
-        else:
-            sell_profit = prices[index] + solve(index + 1, 1)
-            skip_profit = solve(index + 1, 0)
-            dp[index][can_buy] = max(sell_profit, skip_profit)
+        if can_buy: # If we are allowed to buy on this day,
+            buy_profit = -prices[index] + solve(index + 1, 0) # Profit if we buy today.
+            skip_profit = solve(index + 1, 1) # Profit if we skip buying today.
+            dp[index][can_buy] = max(buy_profit, skip_profit) # Store the max of the two choices.
+        else: # If we must sell (or hold),
+            sell_profit = prices[index] + solve(index + 1, 1) # Profit if we sell today.
+            skip_profit = solve(index + 1, 0) # Profit if we skip selling today.
+            dp[index][can_buy] = max(sell_profit, skip_profit) # Store the max of the two choices.
 
-        return dp[index][can_buy]
+        return dp[index][can_buy] # Return the computed profit.
 
-    return solve(0, 1)
+    return solve(0, 1) # Start recursion from day 0 with the ability to buy.
 ```
 - **Time Complexity:** O(n * 2) ~ O(n).
 - **Space Complexity:** O(n * 2) for DP table + O(n) for recursion stack.
@@ -81,18 +81,19 @@ def max_profit_infinite_memo(prices: list[int]) -> int:
 #### b) Space Optimization
 ```python
 def max_profit_infinite_optimized(prices: list[int]) -> int:
-    n = len(prices)
-    ahead_can_buy, ahead_cannot_buy = 0, 0
+    n = len(prices) # Get the number of days.
+    ahead_can_buy, ahead_cannot_buy = 0, 0 # Initialize variables to store the profits for the next day.
 
-    for i in range(n - 1, -1, -1):
-        # Current state depends on 'ahead' state
+    for i in range(n - 1, -1, -1): # Iterate backwards from the second to last day.
+        # Calculate the max profit for the current day if we can buy.
         curr_can_buy = max(-prices[i] + ahead_cannot_buy, ahead_can_buy)
+        # Calculate the max profit for the current day if we cannot buy (must sell or hold).
         curr_cannot_buy = max(prices[i] + ahead_can_buy, ahead_cannot_buy)
 
-        ahead_can_buy = curr_can_buy
+        ahead_can_buy = curr_can_buy # Update the 'ahead' variables for the next iteration.
         ahead_cannot_buy = curr_cannot_buy
 
-    return ahead_can_buy
+    return ahead_can_buy # The final result is the max profit if we can buy on day 0.
 ```
 - **Time Complexity:** O(n).
 - **Space Complexity:** O(1).
@@ -115,25 +116,24 @@ A 3D DP table `dp[index][can_buy][transactions]` can be used. A more common and 
 
 ```python
 def max_profit_two_transactions_tab(prices: list[int]) -> int:
-    n = len(prices)
-    # dp[day][transaction_state]
-    # States: 0:buy1, 1:sell1, 2:buy2, 3:sell2
-    dp = [[0] * 4 for _ in range(n)]
+    n = len(prices) # Get the number of days.
+    # dp[day][transaction_state] where states are 0:buy1, 1:sell1, 2:buy2, 3:sell2.
+    dp = [[0] * 4 for _ in range(n)] # Initialize a 2D DP table.
 
-    dp[0][0] = -prices[0] # buy1
-    dp[0][2] = -prices[0] # buy2
+    dp[0][0] = -prices[0] # Initialize the first buy on day 0.
+    dp[0][2] = -prices[0] # Initialize the second buy on day 0 (after an imaginary first transaction).
 
-    for i in range(1, n):
-        # State 0: First Buy
+    for i in range(1, n): # Iterate through the days starting from the second day.
+        # State 0: Max profit after the first buy.
         dp[i][0] = max(dp[i-1][0], -prices[i])
-        # State 1: First Sell
+        # State 1: Max profit after the first sell.
         dp[i][1] = max(dp[i-1][1], dp[i-1][0] + prices[i])
-        # State 2: Second Buy
+        # State 2: Max profit after the second buy.
         dp[i][2] = max(dp[i-1][2], dp[i-1][1] - prices[i])
-        # State 3: Second Sell
+        # State 3: Max profit after the second sell.
         dp[i][3] = max(dp[i-1][3], dp[i-1][2] + prices[i])
 
-    return dp[n-1][3]
+    return dp[n-1][3] # The result is the max profit after the second sell on the last day.
 ```
 - **Time Complexity:** O(n * 4) ~ O(n).
 - **Space Complexity:** O(n * 4) ~ O(n).
@@ -142,16 +142,16 @@ def max_profit_two_transactions_tab(prices: list[int]) -> int:
 #### b) Space Optimization
 ```python
 def max_profit_two_transactions_optimized(prices: list[int]) -> int:
-    buy1, sell1 = float('-inf'), 0
-    buy2, sell2 = float('-inf'), 0
+    buy1, sell1 = float('-inf'), 0 # Initialize profits for the first transaction.
+    buy2, sell2 = float('-inf'), 0 # Initialize profits for the second transaction.
 
-    for price in prices:
-        buy1 = max(buy1, -price)
-        sell1 = max(sell1, buy1 + price)
-        buy2 = max(buy2, sell1 - price)
-        sell2 = max(sell2, buy2 + price)
+    for price in prices: # Iterate through each day's price.
+        buy1 = max(buy1, -price) # Update the max profit after the first buy.
+        sell1 = max(sell1, buy1 + price) # Update the max profit after the first sell.
+        buy2 = max(buy2, sell1 - price) # Update the max profit after the second buy.
+        sell2 = max(sell2, buy2 + price) # Update the max profit after the second sell.
 
-    return sell2
+    return sell2 # The final result is the max profit after the second sell.
 ```
 - **Time Complexity:** O(n).
 - **Space Complexity:** O(1).
@@ -173,22 +173,24 @@ Maximize profit with infinite transactions, but with a one-day cooldown after se
 #### a) Memoization (Top-Down)
 ```python
 def max_profit_cooldown_memo(prices: list[int]) -> int:
-    n = len(prices)
-    dp = [[-1] * 2 for _ in range(n)]
+    n = len(prices) # Get the number of days.
+    dp = [[-1] * 2 for _ in range(n)] # Initialize a DP table for memoization.
 
-    def solve(index, can_buy):
-        if index >= n: return 0
-        if dp[index][can_buy] != -1: return dp[index][can_buy]
+    def solve(index, can_buy): # Recursive helper function.
+        if index >= n: return 0 # Base case: If past the last day, profit is 0.
+        if dp[index][can_buy] != -1: return dp[index][can_buy] # Return memoized result.
 
-        if can_buy:
+        if can_buy: # If we can buy today,
+            # Choose between buying (and then not being able to buy tomorrow) or skipping.
             profit = max(-prices[index] + solve(index + 1, 0), solve(index + 1, 1))
-        else:
+        else: # If we must sell or hold,
+            # Choose between selling (and then having a cooldown, so jumping to index+2) or skipping.
             profit = max(prices[index] + solve(index + 2, 1), solve(index + 1, 0))
 
-        dp[index][can_buy] = profit
-        return profit
+        dp[index][can_buy] = profit # Memoize the result.
+        return profit # Return the computed profit.
 
-    return solve(0, 1)
+    return solve(0, 1) # Start from day 0 with the ability to buy.
 ```
 - **Time/Space Complexity:** O(n).
 
@@ -201,18 +203,18 @@ The state machine approach is cleanest here.
 
 ```python
 def max_profit_cooldown_optimized(prices: list[int]) -> int:
-    held, sold, rest = float('-inf'), 0, 0
+    held, sold, rest = float('-inf'), 0, 0 # Initialize the three states: holding a stock, just sold, and resting.
 
-    for price in prices:
-        prev_sold = sold
-        # Profit if we sell today
+    for price in prices: # Iterate through each day's price.
+        prev_sold = sold # Store the previous 'sold' state before updating it.
+        # The max profit if we sell today is the profit from holding yesterday plus today's price.
         sold = held + price
-        # Profit if we hold stock today
+        # The max profit if we hold a stock today is either holding from yesterday or buying today (from a resting state).
         held = max(held, rest - price)
-        # Profit if we rest today
+        # The max profit if we are resting today is either resting from yesterday or having sold previously.
         rest = max(rest, prev_sold)
 
-    return max(sold, rest)
+    return max(sold, rest) # The final max profit is the max of the 'sold' and 'rest' states.
 ```
 - **Time Complexity:** O(n).
 - **Space Complexity:** O(1).
@@ -234,22 +236,24 @@ Maximize profit with infinite transactions, but pay a transaction `fee` for each
 #### a) Memoization (Top-Down)
 ```python
 def max_profit_fee_memo(prices: list[int], fee: int) -> int:
-    n = len(prices)
-    dp = [[-1] * 2 for _ in range(n)]
+    n = len(prices) # Get the number of days.
+    dp = [[-1] * 2 for _ in range(n)] # Initialize a DP table for memoization.
 
-    def solve(index, can_buy):
-        if index == n: return 0
-        if dp[index][can_buy] != -1: return dp[index][can_buy]
+    def solve(index, can_buy): # Recursive helper function.
+        if index == n: return 0 # Base case: No more profit to be made after the last day.
+        if dp[index][can_buy] != -1: return dp[index][can_buy] # Return memoized result.
 
-        if can_buy:
+        if can_buy: # If we are allowed to buy today,
+            # Choose between buying (and not being able to buy tomorrow) or skipping.
             profit = max(-prices[index] + solve(index + 1, 0), solve(index + 1, 1))
-        else:
+        else: # If we must sell or hold,
+            # Choose between selling (and paying the fee) or skipping.
             profit = max(prices[index] - fee + solve(index + 1, 1), solve(index + 1, 0))
 
-        dp[index][can_buy] = profit
-        return profit
+        dp[index][can_buy] = profit # Memoize the result.
+        return profit # Return the computed profit.
 
-    return solve(0, 1)
+    return solve(0, 1) # Start from day 0 with the ability to buy.
 ```
 - **Time/Space Complexity:** O(n).
 
@@ -257,19 +261,19 @@ def max_profit_fee_memo(prices: list[int], fee: int) -> int:
 #### b) Space Optimization
 ```python
 def max_profit_fee_optimized(prices: list[int], fee: int) -> int:
-    n = len(prices)
-    ahead_can_buy, ahead_cannot_buy = 0, 0
+    n = len(prices) # Get the number of days.
+    ahead_can_buy, ahead_cannot_buy = 0, 0 # Initialize profits for the day ahead.
 
-    for i in range(n - 1, -1, -1):
-        # Max profit if I can buy today
+    for i in range(n - 1, -1, -1): # Iterate backwards from the second to last day.
+        # Max profit if I can buy today: either buy now or skip.
         curr_can_buy = max(-prices[i] + ahead_cannot_buy, ahead_can_buy)
-        # Max profit if I can sell today
+        # Max profit if I can sell today: either sell now (and pay the fee) or skip.
         curr_cannot_buy = max(prices[i] - fee + ahead_can_buy, ahead_cannot_buy)
 
-        ahead_can_buy = curr_can_buy
+        ahead_can_buy = curr_can_buy # Update the 'ahead' profits for the next iteration.
         ahead_cannot_buy = curr_cannot_buy
 
-    return ahead_can_buy
+    return ahead_can_buy # The final result is the max profit if we can buy on day 0.
 ```
 - **Time Complexity:** O(n).
 - **Space Complexity:** O(1).
