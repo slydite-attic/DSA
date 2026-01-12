@@ -26,6 +26,9 @@ This is a classic interval problem solved with a greedy approach after sorting.
     -   If they do not overlap, the `current_interval` is a new, distinct interval, so we simply append it to the `merged` list.
 4.  The `merged` list is the result.
 
+- **Time Complexity:** `O(N log N)` due to the sorting step. The iteration itself is `O(N)`.
+- **Space Complexity:** `O(N)` to store the merged intervals.
+
 #### Python Code Snippet
 ```python
 def merge_intervals(intervals):
@@ -85,6 +88,9 @@ A brute-force O(N^2) solution is trivial. The optimal O(N log N) solution uses a
     -   If `left[i] <= right[j]`, there is no inversion with `right[j]`. Place `left[i]` in the merged array and move to the next element in `left`.
     -   If `left[i] > right[j]`, then `right[j]` is smaller than `left[i]` and all subsequent elements in the `left` subarray (because `left` is sorted). The number of such inversions is `len(left) - i`. Add this to the split inversion count, place `right[j]` in the merged array, and move to the next element in `right`.
 4.  The total count is `left_inversions + right_inversions + split_inversions`.
+
+- **Time Complexity:** `O(N log N)` because it follows the merge sort algorithm.
+- **Space Complexity:** `O(N)` for the temporary merged arrays during the process.
 
 #### Python Code Snippet
 ```python
@@ -153,6 +159,9 @@ This problem is very similar to Count Inversions and is also solved optimally wi
     -   The number of elements `j` has advanced gives the number of reverse pairs for that specific `left[i]`. Add this to the total count.
     -   This counting loop is optimized: As `i` increments, `j` does not need to be reset to 0, because `left[i+1] >= left[i]`, so any `j` that formed a pair with `left[i]` will also form one with `left[i+1]`.
 4.  **Merge:** After counting is complete, perform a standard merge of the two sorted halves to prepare the array for the next level of recursion.
+
+- **Time Complexity:** `O(N log N)` due to the merge sort structure.
+- **Space Complexity:** `O(N)` for the temporary arrays.
 
 #### Python Code Snippet
 ```python

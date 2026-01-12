@@ -25,6 +25,9 @@ The iterative approach is generally preferred due to its O(1) space complexity. 
     c.  Move the pointers one step forward: `prev = current`, `current = next_node`.
 4.  When the loop ends, `prev` will be pointing to the new head of the reversed list.
 
+- **Time Complexity:** `O(N)`.
+- **Space Complexity:** `O(1)`.
+
 ##### Python Code Snippet
 ```python
 class ListNode:
@@ -60,6 +63,9 @@ The recursive approach provides a more concise but less space-efficient (O(N) st
     c.  To connect `head` to the end of the reversed sub-list, set `head.next.next = head`.
     d.  Break the original forward link: `head.next = None`.
 3.  Return `new_head`.
+
+- **Time Complexity:** `O(N)`.
+- **Space Complexity:** `O(N)` for the recursion stack.
 
 ##### Python Code Snippet
 ```python
@@ -98,6 +104,9 @@ This is a classic recursion problem. The main idea is to reverse the first `k` n
     a. Use the iterative reversal method to reverse the first `k` nodes of the current segment. The `head` of this segment will become the tail, and the `k`-th node will become the new head (`new_head`).
     b. The original `head` of this segment (which is now the tail of the reversed group) needs to point to the result of the recursive call on the rest of the list.
 4.  **Recursive Link**: The `head` of the original list (which is now the tail of the first reversed group) should have its `next` pointer set to the head of the *next* reversed group, which is obtained by `reverse_k_group(next_segment_head, k)`.
+
+- **Time Complexity:** `O(N)`.
+- **Space Complexity:** `O(N/k)` for the recursion stack.
 
 #### Python Code Snippet
 ```python
@@ -148,6 +157,9 @@ A right rotation by `k` means the last `k` nodes become the first `k` nodes.
 5.  **Break the Cycle**: Traverse `L - (k % L) - 1` steps from the head to find the new tail. The next node is the `new_head`. Set `new_tail.next = None` to break the cycle.
 6.  Return `new_head`.
 
+- **Time Complexity:** `O(N)`.
+- **Space Complexity:** `O(1)`.
+
 #### Python Code Snippet
 ```python
 def rotate_right(head: ListNode, k: int) -> ListNode:
@@ -194,6 +206,9 @@ This is a multi-step problem that combines several patterns.
 1.  **Find the Middle**: Use the slow/fast pointer method to find the middle of the list. This will split the list into two halves.
 2.  **Reverse the Second Half**: Reverse the second half of the list starting from `slow.next`. After reversal, set `slow.next = None` to break the link between the two halves.
 3.  **Merge the Two Halves**: Merge the first half (`head`) and the reversed second half (`reversed_head`) by interleaving their nodes. Use two pointers, one for each half, and carefully rewire their `next` pointers.
+
+- **Time Complexity:** `O(N)`.
+- **Space Complexity:** `O(1)`.
 
 #### Python Code Snippet
 ```python
@@ -252,6 +267,9 @@ An efficient O(1) space solution follows a similar pattern to "Reorder List".
 3.  **Compare Halves**: Compare the first half with the reversed second half. Initialize one pointer at the `head` and another at the head of the reversed second half. Traverse both. If any data values don't match, it's not a palindrome.
 4.  **(Optional) Restore List**: If required, reverse the second half again to restore the original list structure.
 
+- **Time Complexity:** `O(N)`.
+- **Space Complexity:** `O(1)`.
+
 #### Python Code Snippet
 ```python
 def is_palindrome(head: ListNode) -> bool:
@@ -304,6 +322,9 @@ The goal is to create two separate lists—one for odd-indexed nodes and one for
     -   Link the next even node: `even.next = odd.next`. Move `even` forward.
 4.  **Connect the Lists**: After the loop, the `odd` pointer is at the tail of the odd list. Connect it to the head of the even list: `odd.next = even_head`.
 
+- **Time Complexity:** `O(N)`.
+- **Space Complexity:** `O(1)`.
+
 #### Python Code Snippet
 ```python
 def odd_even_list(head: ListNode) -> ListNode:
@@ -346,6 +367,9 @@ Since the list is sorted, all duplicate nodes will be adjacent. We can solve thi
     -   If `next_node` is not `None`, update its `prev` pointer to `current`.
 4.  If the data is not the same, no duplicate is found at this position, so just move to the next node: `current = current.next`.
 
+- **Time Complexity:** `O(N)`.
+- **Space Complexity:** `O(1)`.
+
 #### Python Code Snippet
 ```python
 def remove_duplicates_sorted_dll(head: ListNode) -> ListNode:
@@ -386,6 +410,9 @@ Since the digits are already in reverse order (least significant digit first), w
     -   Update `carry = sum // 10`.
     -   Create a new node with `sum % 10` and append it to the result list.
 3.  **Return Result**: The final sum list is `dummy_head.next`.
+
+- **Time Complexity:** `O(max(N, M))` where N and M are the lengths of the two lists.
+- **Space Complexity:** `O(max(N, M))` for the result list.
 
 #### Python Code Snippet
 ```python
@@ -429,6 +456,9 @@ The main challenge is that addition starts from the least significant digit (the
     -   Update the carry: `carry = sum // 10`. If `carry` becomes `0`, you can stop early.
 3.  **Handle Final Carry**: If after the loop there is still a `carry`, create a new node with the carry value and append it to the end of the reversed list.
 4.  **Reverse Back**: Reverse the list again to restore the original order.
+
+- **Time Complexity:** `O(N)`.
+- **Space Complexity:** `O(1)`.
 
 #### Python Code Snippet
 ```python
@@ -477,6 +507,9 @@ This is similar to the Dutch National Flag problem for arrays. The idea is to cr
     -   Connect the `one` list to the `two` list.
 5.  **Terminate the Final List**: Set the `next` of the final tail (`two_tail`) to `None`.
 6.  Return the head of the combined list, which is `zero_head.next`.
+
+- **Time Complexity:** `O(N)`.
+- **Space Complexity:** `O(1)` as we re-use existing nodes.
 
 #### Python Code Snippet
 ```python

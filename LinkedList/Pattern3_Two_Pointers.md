@@ -22,6 +22,9 @@ This is a classic application of the **slow and fast pointer** (or "tortoise and
     -   If the list has an even number of nodes (e.g., 6), `fast` will become `None` (it was at node 5, `fast.next` is node 6, `fast.next.next` is `None`). `slow` will be at node 4, which is the second middle node.
     -   In both cases, `slow` points to the desired middle node.
 
+- **Time Complexity:** `O(N)` because we traverse the list once.
+- **Space Complexity:** `O(1)`.
+
 #### Python Code Snippet
 ```python
 class ListNode:
@@ -67,6 +70,9 @@ This is the canonical problem for **Floyd's Cycle-Finding Algorithm**, which use
 3.  If the list has no cycle, the `fast` pointer (or `fast.next`) will eventually become `None`, and the function can return `False`.
 4.  If the list *does* have a cycle, the `fast` pointer will eventually lap the `slow` pointer. At some point, `slow` and `fast` will point to the same node.
 5.  If a meeting occurs (`slow == fast`), you have detected a loop, and the function should return `True`.
+
+- **Time Complexity:** `O(N)`.
+- **Space Complexity:** `O(1)`.
 
 #### Python Code Snippet
 ```python
@@ -115,6 +121,9 @@ This is an extension of Floyd's Cycle-Finding Algorithm.
 `L = k*C - m`
 This equation tells us that the distance from the head to the cycle start (`L`) is equal to `k` full cycles minus the distance from the start to the meeting point (`m`). This is why, if we place one pointer at the head and another at the meeting point and move them at the same speed, they will meet at the cycle's start.
 
+- **Time Complexity:** `O(N)`.
+- **Space Complexity:** `O(1)`.
+
 #### Python Code Snippet
 ```python
 def detect_cycle_start(head: ListNode) -> ListNode:
@@ -158,6 +167,9 @@ Given a linked list that is guaranteed to have a cycle, find the length of the c
 2.  **Count Nodes in Cycle**: Once you have a node inside the cycle (`meet_node`), keep a pointer fixed at this node.
 3.  Start traversing from the *next* node (`meet_node.next`) with another pointer and count the steps until you get back to the `meet_node`.
 4.  The final count is the length of the loop.
+
+- **Time Complexity:** `O(N)`.
+- **Space Complexity:** `O(1)`.
 
 #### Python Code Snippet
 ```python
@@ -212,6 +224,9 @@ The most efficient way to do this in a single pass is with two pointers, creatin
 6.  To delete the target node, set `slow.next = slow.next.next`.
 7.  Return `dummy.next`, which is the new head of the list.
 
+- **Time Complexity:** `O(N)`.
+- **Space Complexity:** `O(1)`.
+
 #### Python Code Snippet
 ```python
 def remove_nth_from_end(head: ListNode, n: int) -> ListNode:
@@ -261,6 +276,9 @@ This problem combines finding the middle node with deletion. The key is to find 
 4.  In the standard two-pointer loop, update `prev_to_slow` to be `slow` *before* `slow` moves forward.
 5.  When the loop terminates, `slow` is at the middle node, and `prev_to_slow` is at the node just before it.
 6.  Delete the middle node by linking `prev_to_slow.next` to `slow.next`.
+
+- **Time Complexity:** `O(N)`.
+- **Space Complexity:** `O(1)`.
 
 #### Python Code Snippet
 ```python
@@ -312,6 +330,9 @@ A clever two-pointer approach solves this efficiently without needing to calcula
 
 This works because by switching heads, both pointers travel the same total distance (`lenA + lenB`) before the loop terminates. Any difference in path length before a potential intersection is canceled out after the switch.
 
+- **Time Complexity:** `O(N + M)` where N and M are the lengths of the two lists.
+- **Space Complexity:** `O(1)`.
+
 #### Python Code Snippet
 ```python
 def get_intersection_node(headA: ListNode, headB: ListNode) -> ListNode:
@@ -358,6 +379,9 @@ This problem is a classic two-pointer pattern, adapted for a doubly linked list.
     -   **Case 2: `current_sum < x`**: The sum is too small. We need a larger value, so move the `left` pointer forward (`left = left.next`).
     -   **Case 3: `current_sum > x`**: The sum is too large. We need a smaller value, so move the `right` pointer backward (`right = right.prev`).
 3.  The loop terminates when the pointers meet or cross, meaning all possible pairs have been checked.
+
+- **Time Complexity:** `O(N)` to find the tail and traverse the list.
+- **Space Complexity:** `O(1)`.
 
 #### Python Code Snippet
 ```python
