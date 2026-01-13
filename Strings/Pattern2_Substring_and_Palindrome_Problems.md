@@ -25,6 +25,10 @@ We apply the "Expand Around Center" method.
 3.  **Track Longest**: Keep track of the start index and length of the longest palindrome found so far.
 4.  **Return Result**: After checking all centers, slice the string to return the longest one.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N^2)$. Expanding a palindrome around its center could take $O(N)$, and we do this for each of the $2N - 1$ centers.
+- **Space Complexity:** $O(1)$.
+
 #### Python Code Snippet
 ```python
 def longest_palindromic_substring(s: str) -> str:
@@ -64,6 +68,10 @@ This problem is a direct companion to the "Longest Palindromic Substring" proble
 
 1.  **Iterate Through Centers**: Loop through every possible center (`i` and `i, i+1`).
 2.  **Expand and Count**: For each center, expand outwards with two pointers. Every time `s[left] == s[right]`, we have found a new valid palindrome, so we increment our `count`.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N^2)$.
+- **Space Complexity:** $O(1)$.
 
 #### Python Code Snippet
 ```python
@@ -106,6 +114,10 @@ We use a standard two-pointer approach to check for a palindrome. When we find t
 4.  If either of those checks returns `true`, then the original string can become a palindrome. Otherwise, it cannot.
 5.  If the main loop completes without any mismatches, the string was already a palindrome.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$.
+- **Space Complexity:** $O(1)$ (or $O(N)$ if slicing creates a new string).
+
 #### Python Code Snippet
 ```python
 def valid_palindrome_ii(s: str) -> bool:
@@ -147,6 +159,10 @@ A simple and robust method is "Vertical Scanning". We compare characters at the 
     d. If either is true, it means the common prefix ends just before index `i`. Return `strs[0][:i]`.
 3.  If the outer loop completes, it means the entire first string is a common prefix. Return `strs[0]`.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(S)$, where $S$ is the sum of all characters in all strings.
+- **Space Complexity:** $O(1)$ if we don't count the result space.
+
 #### Python Code Snippet
 ```python
 from typing import List
@@ -184,6 +200,10 @@ This can be solved with a straightforward sliding window or nested loop approach
 5.  If they are equal, return `i`.
 6.  If the loop finishes without finding a match, return `-1`.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N \cdot M)$ for the naive approach.
+- **Space Complexity:** $O(1)$.
+
 #### Python Code Snippet
 ```python
 def str_str(haystack: str, needle: str) -> int:
@@ -217,6 +237,10 @@ A brute-force approach that generates every substring and calculates its beauty 
     -   Update the frequency of `s[j]`.
     -   Find the max and min frequency among characters in the current substring.
     -   Add `max_freq - min_freq` to a running total.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N^2 \cdot \Sigma)$, where $\Sigma$ is the alphabet size (26).
+- **Space Complexity:** $O(1)$ (since map size is at most 26).
 
 #### Python Code Snippet
 ```python
@@ -257,6 +281,10 @@ This is a classic sliding window problem. The key insight is that if a window `s
 2.  Expand the window by iterating with a `right` pointer.
 3.  While the number of distinct characters (`len(char_freq)`) is greater than `k`, shrink the window from the left.
 4.  After ensuring the window is valid, add `right - left + 1` to the total `count`.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$.
+- **Space Complexity:** $O(K)$ or $O(26)$.
 
 #### Python Code Snippet
 ```python

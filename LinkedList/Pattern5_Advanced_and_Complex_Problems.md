@@ -26,6 +26,10 @@ This is the most intuitive approach. We use a hash map to store the mapping from
        - `new_node.random = mapping[original_node.random]`
 4.  Return the head of the new list, which is `mapping[head]`.
 
+##### Time and Space Complexity
+- **Time Complexity:** $O(N)$. We traverse the list twice.
+- **Space Complexity:** $O(N)$ for the hash map.
+
 ##### Python Code Snippet
 ```python
 class Node:
@@ -81,6 +85,10 @@ This clever approach avoids using extra space for a hash map by modifying the or
     -   Iterate through the list again to restore the original list and extract the copied list.
     -   Use two pointers, `original_ptr` and `copy_ptr`, to manage the heads of the two lists being separated.
     -   Carefully rewire the `next` pointers to disentangle the lists.
+
+##### Time and Space Complexity
+- **Time Complexity:** $O(N)$. We iterate through the list 3 times.
+- **Space Complexity:** $O(1)$. We don't use auxiliary structures.
 
 ##### Python Code Snippet
 ```python
@@ -149,6 +157,10 @@ We use a `head` and `tail` dummy node to make list manipulation easier.
        b. Create a new `node` with the `key` and `value`.
        c. Add the new `node` to the front of the list.
        d. Add the `(key, new_node)` pair to the hash map.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(1)$ for both `get` and `put`.
+- **Space Complexity:** $O(C)$ where $C$ is the capacity.
 
 #### Python Code Snippet
 ```python
@@ -236,6 +248,10 @@ The goal is to traverse the list and, whenever we encounter a `child` list, spli
        - If `original_next` is not `None`, `original_next.prev = tail`.
 5.  Continue the traversal from `current`.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the total number of nodes.
+- **Space Complexity:** $O(1)$.
+
 #### Python Code Snippet
 ```python
 class Node:
@@ -303,6 +319,10 @@ While you could merge lists one by one, this would be inefficient (O(N*k) where 
 
 This approach is efficient because heap operations (push and pop) take O(log k) time, and we do this for every node. The total time complexity is O(N log k).
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N \log K)$, where $N$ is total nodes and $K$ is the number of lists.
+- **Space Complexity:** $O(K)$ for the heap.
+
 #### Python Code Snippet
 ```python
 import heapq
@@ -360,6 +380,10 @@ The most suitable sorting algorithm for linked lists is **Merge Sort**, due to i
     -   Recursively call `sortList()` on both the left half and the right half.
 4.  **Merge**:
     -   Merge the two now-sorted halves into a single sorted list. This is done with a helper function that iteratively picks the smaller element from the two half-lists.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N \log N)$.
+- **Space Complexity:** $O(\log N)$ for the recursion stack.
 
 #### Python Code Snippet
 ```python

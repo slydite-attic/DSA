@@ -44,6 +44,10 @@ We use a sliding window that maintains the property of having no repeated charac
 4.  **Shrink Logic**: While the window is invalid, remove `s[left]` from the `char_set` and increment `left`.
 5.  **Update Result**: After the shrinking phase (if any), the window is guaranteed to be valid. Add `s[right]` to the set and update `max_len`.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$. Each character is added to and removed from the set at most once.
+- **Space Complexity:** $O(\min(N, A))$, where $A$ is the alphabet size (e.g., 26 for lowercase English letters).
+
 #### Python Code Snippet
 ```python
 def length_of_longest_substring(s: str) -> int:
@@ -82,6 +86,10 @@ This is a template problem for this pattern. The window is valid as long as it c
 3.  **Shrink Condition**: The window is invalid if the number of unique characters (`len(char_counts)`) is greater than `k`.
 4.  **Shrink Logic**: While invalid, decrement the count of `s[left]`. If a character's count drops to 0, remove it from the map. Increment `left`.
 5.  **Update Result**: The window is now valid. Update `max_len`.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$.
+- **Space Complexity:** $O(K)$ to store character frequencies.
 
 #### Python Code Snippet
 ```python
@@ -129,6 +137,10 @@ The key is to define the window's validity condition. A window is valid if the n
 4.  **Shrink Logic**: If invalid, decrement the count of `s[left]` and increment `left`. (Note: We don't need to re-calculate `max_freq` when shrinking, as the window size can only grow if we find a *new* `max_freq`).
 5.  **Update Result**: The window size `right - left + 1` is always the candidate for the maximum length.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$.
+- **Space Complexity:** $O(26)$ or $O(1)$, as the alphabet size is constant.
+
 #### Python Code Snippet
 ```python
 import collections
@@ -165,6 +177,10 @@ This problem can be rephrased as "find the longest subarray containing at most `
 3.  If `nums[right]` is a `0`, increment `zero_count`.
 4.  If `zero_count` becomes greater than `k`, the window is invalid. Shrink it from the left until it becomes valid again.
 5.  After each potential shrink, the window `[left, right]` is valid. Calculate its length and update `max_len`.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$.
+- **Space Complexity:** $O(1)$.
 
 #### Python Code Snippet
 ```python
@@ -205,6 +221,10 @@ This problem asks for the *minimum* length, so the template is slightly differen
     a. **Update Result**: The current window is a candidate for the minimum. Update the result if this window is smaller than the best one found so far.
     b. **Shrink from left**: Increment `left`. As `s[left]` is removed, update `window_counts`. If `s[left]` was a required character and its count now drops below what's needed, decrement `have`. This will eventually break the shrink loop.
 5.  Continue until `right` reaches the end.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N + M)$, where $N$ is the length of `s` and $M$ is the length of `t`.
+- **Space Complexity:** $O(1)$ (constant alphabet size).
 
 #### Python Code Snippet
 ```python
@@ -261,6 +281,10 @@ This problem can be cleverly transformed into a standard sliding window problem.
 2.  Calculate the `total_sum` of `cardPoints`.
 3.  Use a fixed-size sliding window of size `window_size = n - k` to find the `min_window_sum`.
 4.  The final answer is `total_sum - min_window_sum`.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the number of cards.
+- **Space Complexity:** $O(1)$.
 
 #### Python Code Snippet
 ```python

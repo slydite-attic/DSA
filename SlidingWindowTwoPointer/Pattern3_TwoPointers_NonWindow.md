@@ -27,6 +27,10 @@ This is the canonical example of the "opposite ends converging" pattern.
 
 This works because the array is sorted. Moving `left` right always increases the sum, and moving `right` left always decreases it.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$.
+- **Space Complexity:** $O(1)$.
+
 #### Python Code Snippet
 ```python
 def two_sum_sorted(numbers: list[int], target: int) -> list[int]:
@@ -61,6 +65,10 @@ This problem is a great example of building upon the "Two Sum II" pattern.
     - Use the "opposite ends converging" two-pointer logic to find pairs that sum to `target = -nums[i]`.
     - When a valid triplet is found, add it to the results.
     - **Handle Inner Duplicates**: After finding a valid triplet, move the `left` and `right` pointers inward, but also add logic to skip any duplicate elements to avoid duplicate triplets.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N^2)$. Sorting takes $O(N \log N)$ and the nested loops take $O(N^2)$.
+- **Space Complexity:** $O(1)$ (or $O(N)$ for sorting depending on implementation).
 
 #### Python Code Snippet
 ```python
@@ -112,6 +120,10 @@ This is another "opposite ends converging" problem. The area of the container is
     - If `height[left] < height[right]`, move `left += 1`.
     - Otherwise, move `right -= 1`.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$.
+- **Space Complexity:** $O(1)$.
+
 #### Python Code Snippet
 ```python
 def max_area(height: list[int]) -> int:
@@ -147,6 +159,10 @@ This is a complex two-pointer problem because we are matching a subsequence, not
 3.  **Inner Loop (Backward Pass)**: Now, we must find the start of this window. Reset `j` to `len(s2) - 1` and use another pointer, `start_of_window`, initialized to `end_of_window`. Move `start_of_window` to the left. If `s1[start_of_window] == s2[j]`, we've found the previous character of the subsequence, so decrement `j`.
 4.  **Minimal Window**: When the inner loop finishes (`j < 0`), `start_of_window` will be at the index of the first character of the subsequence match. The window is `s1[start_of_window : end_of_window + 1]`. Compare its length to the minimum found so far.
 5.  **Continue Search**: To find other potential windows, reset `j=0` and continue the outer loop by setting `i = start_of_window + 1`.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(S \cdot T)$, where $S$ and $T$ are string lengths. In worst case we might rescan parts of $S$.
+- **Space Complexity:** $O(1)$.
 
 #### Python Code Snippet
 ```python

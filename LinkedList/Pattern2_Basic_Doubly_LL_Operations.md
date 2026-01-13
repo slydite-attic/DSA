@@ -20,6 +20,10 @@ A Doubly Linked List is a variation of a linked list where each node has a point
 
 - **Head and Tail**: A DLL is tracked with a `HEAD` pointer and often a `TAIL` pointer for O(1) appends.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(1)$ for basic Node creation.
+- **Space Complexity:** $O(1)$.
+
 #### Python Code Snippet
 ```python
 class Node:
@@ -44,6 +48,10 @@ Given a doubly linked list, a value, and a position, insert a new node with the 
     -   Set `new_node.next = next_node` and `new_node.prev = next_node.prev`.
     -   Update the `next` pointer of the node *before* `next_node` to point to `new_node`.
     -   Update `next_node.prev` to point to `new_node`.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(1)$ since we are given the specific node or position (head).
+- **Space Complexity:** $O(1)$.
 
 #### Python Code Snippet
 ```python
@@ -83,6 +91,10 @@ The key is to "bypass" `del_node` by linking its previous and next nodes directl
 2.  If `del_node.next` exists, set `del_node.next.prev = del_node.prev`.
 3.  Handle edge cases where `del_node` is the head or tail.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(1)$, as we have a direct pointer to the node to be deleted.
+- **Space Complexity:** $O(1)$.
+
 #### Python Code Snippet
 ```python
 # Method within a hypothetical LinkedList class
@@ -117,6 +129,10 @@ Reversing a DLL is simpler than a SLL. We iterate through the list and swap the 
 2.  Traverse the list. In each iteration, swap `current.prev` and `current.next`.
 3.  After swapping, the pointer to the *original* next node is now in `current.prev`. So, we advance our loop with `current = current.prev`.
 4.  The last node visited becomes the new `head`.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the number of nodes. We visit each node once.
+- **Space Complexity:** $O(1)$.
 
 #### Python Code Snippet
 ```python
@@ -155,6 +171,10 @@ Traverse the list and delete nodes that match the key. Care must be taken becaus
     -   Perform the standard DLL deletion logic on `current`.
     -   Move to the next node to check: `current = next_node`.
 3.  If `current.data` does not match, simply move to the next node: `current = current.next`.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the number of nodes. We traverse the list once.
+- **Space Complexity:** $O(1)$.
 
 #### Python Code Snippet
 ```python

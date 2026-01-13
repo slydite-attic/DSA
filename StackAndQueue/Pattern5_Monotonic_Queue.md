@@ -33,6 +33,10 @@ We use a deque (double-ended queue) to store **indices** of elements in the curr
 5.  **Remove Out-of-Bounds Elements**: If the index at the **front** of the deque is no longer in the current window (i.e., `dq[0] <= i - k`), remove it. This is because it's too old to be part of the current window.
 6.  **Record Result**: Once the window is full (i.e., `i >= k - 1`), the maximum element for the current window is `nums[dq[0]]`. Append this to the result array.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$. Each element is added and removed from the deque at most once.
+- **Space Complexity:** $O(K)$ for the deque, where $K$ is the window size.
+
 #### Python Code Snippet
 ```python
 from collections import deque

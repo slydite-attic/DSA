@@ -29,6 +29,10 @@ This is the most common approach. The idea is to make the newest element the fro
    - The element now at the front is the one we want. Dequeue and return it.
    - This is an O(N) operation.
 
+#### Time and Space Complexity
+- **Time Complexity:** For the cost-heavy push variant: $O(N)$ for push, $O(1)$ for other operations.
+- **Space Complexity:** $O(N)$ to store elements.
+
 #### Python Code Snippet (Method 1: Costly Push)
 ```python
 from collections import deque
@@ -78,6 +82,10 @@ The core idea is to transfer elements from `input` to `output` **only when the `
     - First, check if the `output` stack is empty.
     - If `output` is empty, pop every element from `input` and push it onto `output`. This O(N) transfer operation only happens occasionally.
     - If `output` is not empty (or after the transfer), `pop` or `peek` from the `output` stack. This is an O(1) operation.
+
+#### Time and Space Complexity
+- **Time Complexity:** Amortized $O(1)$ for all operations. Push is always $O(1)$, while pop/peek are amortized $O(1)$.
+- **Space Complexity:** $O(N)$ for the stacks.
 
 #### Python Code Snippet (Amortized)
 ```python

@@ -54,6 +54,10 @@ This is the quintessential problem for the `exactly K = at most K - at most K-1`
     - The window is invalid if `len(counts) > k_val`.
     - When the window is valid, add `right - left + 1` to the total count.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$.
+- **Space Complexity:** $O(N)$ for the hash map in worst case, but typically limited by $K$ distinct elements.
+
 #### Python Code Snippet
 ```python
 import collections
@@ -101,6 +105,10 @@ This is another "exactly K" problem, where `K` is the `goal` sum. We apply the s
     - The window is invalid if `current_sum > k`.
     - When valid, add `right - left + 1` to the count.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$.
+- **Space Complexity:** $O(1)$.
+
 #### Python Code Snippet
 ```python
 def num_subarrays_with_sum(nums: list[int], goal: int) -> int:
@@ -134,6 +142,10 @@ This problem is a great example of **problem reduction**. The actual values don'
 1.  **Reduce**: Transform `nums` into a binary array where odd numbers are `1` and even numbers are `0`.
 2.  The problem is now: "Find the number of subarrays in the binary array with a sum of exactly `k`."
 3.  This is identical to the "Binary Subarray with Sum" problem. Apply the `atMost(k) - atMost(k - 1)` strategy.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$.
+- **Space Complexity:** $O(N)$ for the binary array (can be optimized to $O(1)$ by processing on the fly).
 
 #### Python Code Snippet
 ```python
@@ -177,6 +189,10 @@ The key idea: if the window `[left, right]` is the *first* valid window ending a
     - If the window is valid, it means the minimal valid window starting at `left` ends at `right`. Any substring starting *before* `left` and ending at `right` would also be valid. There are `left + 1` such substrings.
     - A simpler way to count: any substring ending at `right` or later that contains this valid window is also valid. The number of such substrings is `len(s) - right`.
     - After counting, we must shrink the window from the left (`counts[s[left]] -= 1; left += 1`) to find the next possible valid window.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$.
+- **Space Complexity:** $O(1)$.
 
 #### Python Code Snippet
 ```python

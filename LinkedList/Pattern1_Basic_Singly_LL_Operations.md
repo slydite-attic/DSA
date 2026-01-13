@@ -21,6 +21,10 @@ A linked list is a linear data structure where elements are not stored at contig
 
 This structure allows for dynamic memory allocation and efficient insertion and deletion operations at the beginning of the list.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(1)$ for basic Node creation.
+- **Space Complexity:** $O(1)$.
+
 #### Python Code Snippet
 ```python
 class Node:
@@ -47,6 +51,13 @@ Given a singly linked list, a value, and sometimes a position, insert a new node
 1.  **Insertion at Head**: Create a new node, point its `next` to the current `head`, and update `head` to be the new node.
 2.  **Insertion at Tail**: Traverse to the last node (where `next` is `None`) and set its `next` pointer to the new node.
 3.  **Insertion at Position `k`**: Traverse to the `(k-1)th` node. Let's call it `prev_node`. Set the new node's `next` to `prev_node.next`, and then set `prev_node.next` to the new node.
+
+#### Time and Space Complexity
+- **Time Complexity:**
+    - Insertion at Head: $O(1)$.
+    - Insertion at Tail: $O(N)$ (unless a tail pointer is maintained, then $O(1)$).
+    - Insertion at Position `k`: $O(k)$.
+- **Space Complexity:** $O(1)$.
 
 #### Python Code Snippet
 ```python
@@ -96,6 +107,10 @@ Given a singly linked list and a key (value or position), delete the first occur
 1.  **Deletion of Head**: If the head node is the one to be deleted, update `head` to `head.next`.
 2.  **Deletion by Value/Position**: Use two pointers, `prev` and `curr`, to traverse the list. When `curr` is the node to be deleted, "bypass" it by setting `prev.next = curr.next`.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$ in the worst case (searching for the node), or $O(1)$ if the node to be deleted is the head.
+- **Space Complexity:** $O(1)$.
+
 #### Python Code Snippet
 ```python
 # Method within the LinkedList class
@@ -128,6 +143,10 @@ Given the `head` of a singly linked list, find and return its length (the number
 2.  Initialize a `current` pointer to the `head`.
 3.  Traverse the list, incrementing `length` for each node, until `current` is `None`.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the number of nodes.
+- **Space Complexity:** $O(1)$.
+
 #### Python Code Snippet
 ```python
 # Method within the LinkedList class
@@ -153,6 +172,10 @@ Given the `head` of a singly linked list and a target value, determine if a node
 2.  Traverse the list. At each node, compare its `data` with the target.
 3.  If a match is found, return `True`.
 4.  If the end of the list is reached, return `False`.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the number of nodes.
+- **Space Complexity:** $O(1)$.
 
 #### Python Code Snippet
 ```python

@@ -32,6 +32,10 @@ We can enforce this by using two hash maps.
     d. Otherwise, establish the mapping in both directions.
 4.  If the loop completes, the mapping is valid. Return `True`.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the string length.
+- **Space Complexity:** $O(1)$ (limited by the character set size).
+
 #### Python Code Snippet
 ```python
 def is_isomorphic(s: str, t: str) -> bool:
@@ -70,6 +74,10 @@ Given two strings `s` and `t`, return `true` if `t` is an anagram of `s`. An ana
 3. Iterate through `t`, decrementing the count for each character. If a character is not in the map or its count is already zero, they are not anagrams.
 
 **b) Sorting:** If two strings are anagrams, their sorted versions will be identical. This is often simpler to write but less performant (O(N log N)).
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$.
+- **Space Complexity:** $O(1)$ (constant alphabet size).
 
 #### Python Code Snippet (Frequency Counting)
 ```python
@@ -114,6 +122,10 @@ Two common choices for the canonical key:
 1.  **Sorted String**: Sort the characters of the string (e.g., "eat", "tea", "ate" all become "aet").
 2.  **Character Count Tuple**: Create a frequency array (e.g., of size 26) for each string and convert it to a tuple, which is hashable and can be used as a dictionary key.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N \cdot K \log K)$, where $N$ is the number of strings and $K$ is the max length of a string (sorting each string).
+- **Space Complexity:** $O(N \cdot K)$ to store the grouped strings.
+
 #### Python Code Snippet (Sorted String Key)
 ```python
 import collections
@@ -150,6 +162,10 @@ A **Bucket Sort** approach is often more efficient (O(N) time).
 2. Create `n+1` buckets (arrays/lists).
 3. For each character with frequency `f`, add it to `buckets[f]`.
 4. Build the result string by iterating through the buckets from `n` down to `1`.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$ with bucket sort.
+- **Space Complexity:** $O(N)$ to store the buckets and result.
 
 #### Python Code Snippet (Bucket Sort)
 ```python
@@ -190,6 +206,10 @@ This is a perfect blend of the Sliding Window and Frequency Map patterns. We sli
     a. **Expand**: Add the new character `s[right]` to the window by incrementing its count in `s_counts`.
     b. **Shrink**: Remove the character `s[left]` that just left the window by decrementing its count. If its count becomes 0, remove it from the map.
     c. **Compare**: After each slide, compare `s_counts` with `p_counts`. If they are equal, the current `left` index marks the start of an anagram.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$.
+- **Space Complexity:** $O(1)$ (constant alphabet size).
 
 #### Python Code Snippet
 ```python

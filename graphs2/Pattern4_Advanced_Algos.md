@@ -31,6 +31,10 @@ An edge `(u, v)` (where `v` is a child of `u` in the DFS tree) is a bridge if an
             - After the recursive call returns, update `low[u] = min(low[u], low[v])`. This propagates the lowest-reachable ancestor info up the tree.
             - Check the bridge condition: If `low[v] > disc[u]`, add the edge `(u, v)` to the list of bridges.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(V + E)$, where $V$ is vertices and $E$ is edges. We perform a single DFS traversal.
+- **Space Complexity:** $O(V + E)$ to build the adjacency list and $O(V)$ for the recursion stack and auxiliary arrays (`disc`, `low`, `parent`).
+
 #### Python Code Snippet
 ```python
 def find_bridges(n: int, connections: list[list[int]]) -> list[list[int]]:
@@ -84,6 +88,10 @@ A vertex `u` is an articulation point if:
 1.  **`u` is the root of the DFS tree and has at least two children.** The root's children's subtrees are disconnected from each other except through the root itself.
 2.  **`u` is not the root**, and it has a child `v` such that `low[v] >= disc[u]`.
     - **Intuition**: This means the subtree at `v` cannot reach any ancestor of `u` via a back-edge. Its "highest" possible connection is to `u` itself. Therefore, removing `u` disconnects the subtree of `v` from the rest of the graph.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(V + E)$, as it uses a single DFS.
+- **Space Complexity:** $O(V + E)$ for the adjacency list and $O(V)$ for auxiliary structures.
 
 #### Python Code Snippet
 ```python
@@ -150,6 +158,10 @@ Kosaraju's algorithm cleverly uses two DFS passes to find all SCCs.
     - If a popped vertex `u` has not yet been visited (in this second pass), it marks the start of a new SCC.
     - Start a DFS on the **transpose graph `G_T`** from `u`. All vertices reachable from `u` in `G_T` form a single SCC. Collect them and mark them as visited.
     - Repeat until the stack is empty.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(V + E)$, as we perform DFS twice and transpose the graph once.
+- **Space Complexity:** $O(V + E)$ to store the graph and its transpose, plus $O(V)$ for the stack and visited array.
 
 #### Python Code Snippet
 ```python

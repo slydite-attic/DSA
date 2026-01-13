@@ -29,6 +29,10 @@ This is the classic problem for demonstrating the utility of a stack.
         c. Check if the popped element is the corresponding opening bracket for the current closing bracket (using the map). If not, it's invalid.
 4.  **Final Check**: After the loop, if the stack is **empty**, it means every open bracket had a matching closing bracket. If it's not empty, it means there are unclosed opening brackets.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$.
+- **Space Complexity:** $O(N)$ for the stack.
+
 #### Python Code Snippet
 ```python
 def is_valid(s: str) -> bool:
@@ -62,6 +66,10 @@ Because the string is guaranteed to be valid, we don't need a stack to check for
     - If `char == ')`: Decrement `current_depth`.
 3.  Return `max_depth`.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$.
+- **Space Complexity:** $O(1)$.
+
 #### Python Code Snippet
 ```python
 def max_depth(s: str) -> int:
@@ -91,6 +99,10 @@ We can identify the primitive parts by tracking the balance of open/closed paren
     - If `char == '('`: If `balance > 0` (meaning this is not the first `(` of a primitive part), append it to the result. Then, increment `balance`.
     - If `char == ')`: Decrement `balance`. If `balance > 0` (meaning this is not the last `)` of a primitive part), append it to the result.
 3.  Join the result list into a string.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$.
+- **Space Complexity:** $O(N)$ for the result string.
 
 #### Python Code Snippet
 ```python
@@ -131,6 +143,10 @@ A stack is the perfect data structure for this problem. It naturally handles the
     - If the component is `..`, pop from the stack if it's not empty. This handles moving up a directory.
     - Otherwise, the component is a directory name. Push it onto the stack.
 4.  **Build Result**: Join the components remaining in the stack with `/` and prepend a `/` to the front to form the final canonical path.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$.
+- **Space Complexity:** $O(N)$ for the stack and splitting the string.
 
 #### Python Code Snippet
 ```python
@@ -174,6 +190,10 @@ This problem requires a stack to handle the precedence introduced by parentheses
         - Now, "close" the sub-expression. Pop the `prev_sign` and `prev_result` from the stack.
         - The `result` of the sub-expression is multiplied by `prev_sign` and added to `prev_result`.
 3.  Add the very last `number` to the `result` after the loop finishes.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$.
+- **Space Complexity:** $O(N)$ for the stack.
 
 #### Python Code Snippet
 ```python
@@ -233,6 +253,10 @@ This is a complex mapping problem that is best solved by breaking the number dow
     - If `n >= 10`, handle the teens part (e.g., "Fifteen").
     - If `n > 0`, handle the ones part (e.g., "Five").
 4.  **Combine and Clean**: Join the parts and clean up any extra spaces.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(1)$ (number of digits is small).
+- **Space Complexity:** $O(1)$.
 
 #### Python Code Snippet
 ```python

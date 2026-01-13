@@ -23,6 +23,10 @@ A DSU is implemented using an array (`parent`) and two key optimizations: **Path
 #### Python Code (Union by Size)
 This is a standard, reusable DSU class that can be used for all the problems below.
 
+#### Time and Space Complexity
+- **Time Complexity:** The amortized time complexity for `find` and `union` operations is nearly constant, denoted as $O(\alpha(N))$, where $\alpha$ is the inverse Ackermann function. For all practical values of $N$, $\alpha(N) \le 4$.
+- **Space Complexity:** $O(N)$ to store `parent` and `size` arrays.
+
 ```python
 class DSU:
     """A Disjoint Set Union (DSU) data structure with Path Compression and Union by Size."""
@@ -80,6 +84,10 @@ DSU is the ideal tool for any problem that can be modeled as "grouping" or "conn
     4. After processing all connections, the number of remaining sets (`dsu.num_components`) represents the number of separate networks.
     5. To connect `k` networks, you need `k-1` new cables. The answer is `dsu.num_components - 1`.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(E \cdot \alpha(N))$, where $E$ is the number of connections.
+- **Space Complexity:** $O(N)$ for the DSU.
+
 #### Python Code Snippet
 ```python
 def make_network_connected(n: int, connections: list[list[int]]) -> int:
@@ -109,6 +117,10 @@ def make_network_connected(n: int, connections: list[list[int]]) -> int:
     4. **Second Pass (Group)**: Create a new map `merged_emails` where keys are the root parent of each account group (`dsu.find(i)`), and values are lists of emails.
     5. Iterate through the original accounts again, adding each email to the list corresponding to its account's final root parent.
     6. Format the output by sorting the email lists and prepending the user name.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N \cdot K \cdot \log(NK) \cdot \alpha(N))$, where $N$ is the number of accounts and $K$ is the max number of emails per account. The sorting step dominates.
+- **Space Complexity:** $O(N \cdot K)$ to store emails and DSU structures.
 
 #### Python Code Snippet
 ```python
@@ -157,6 +169,10 @@ def accounts_merge(accounts: list[list[str]]) -> list[list[str]]:
             - Calculate the potential new size: `1` (for the flipped `0`) + sum of the sizes of the unique neighboring components.
             - Update `max_size` with this potential new size.
     3. Return `max_size`.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N^2 \cdot \alpha(N^2))$, where $N \times N$ is the grid size. We iterate through the grid twice.
+- **Space Complexity:** $O(N^2)$ for the DSU structure.
 
 #### Python Code Snippet
 ```python
@@ -217,6 +233,10 @@ This is a dynamic version of the classic "Number of Islands" problem, and DSU is
     f. If the `union` operation was successful (i.e., it merged two previously separate components), it means we connected two islands. Decrement `island_count`.
     g. Append the current `island_count` to the results list.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(K \cdot \alpha(M \cdot N))$, where $K$ is the number of positions to add.
+- **Space Complexity:** $O(M \cdot N)$ for the grid and DSU.
+
 #### Python Code Snippet
 ```python
 def num_islands_ii(m: int, n: int, positions: list[list[int]]) -> list[int]:
@@ -267,6 +287,10 @@ On a 2D plane, you have `stones` at `(x, y)` coordinates. You can remove a stone
     4. After processing all stones, count the number of unique components (sets) that contain at least one stone.
     5. The answer is `total_stones - num_components`.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N \cdot \alpha(W))$, where $N$ is the number of stones and $W$ is the coordinate range.
+- **Space Complexity:** $O(W)$ for the DSU structure.
+
 #### Python Code Snippet
 ```python
 def remove_stones(stones: list[list[int]]) -> int:
@@ -291,5 +315,4 @@ def remove_stones(stones: list[list[int]]) -> int:
         components.add(root)
 
     return len(stones) - len(components)
-```
 ```

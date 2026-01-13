@@ -34,6 +34,10 @@ We use a dynamic array (a `list` in Python) to store the stack elements. The "to
 - **Top**: Return the last element of the array (`arr[-1]`) without removing it.
 - **Edge Cases**: Always check for stack underflow (calling `pop` or `top` on an empty stack).
 
+#### Time and Space Complexity
+- **Time Complexity:** Amortized $O(1)$ for push, $O(1)$ for pop, top, size, and isEmpty.
+- **Space Complexity:** $O(N)$ to store the elements.
+
 #### Python Code Snippet
 ```python
 class Stack:
@@ -80,6 +84,10 @@ A naive implementation using a dynamic array for a queue is inefficient for dequ
 
 - **Enqueue (Naive)**: Add element to the end of the list (O(1)).
 - **Dequeue (Naive)**: Remove element from the beginning of the list (O(N)).
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(1)$ for enqueue, $O(N)$ for dequeue (naive array implementation). With `deque`, both are $O(1)$.
+- **Space Complexity:** $O(N)$ to store the elements.
 
 #### Python Code Snippet (Naive)
 ```python
@@ -138,6 +146,10 @@ The LIFO (Last-In, First-Out) property of a stack is efficiently implemented by 
 - **Pop**: The element to pop is the `head`. To remove it, store its data, and then update `head` to point to `head.next`.
 - All core operations (push, pop, top) are O(1).
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(1)$ for all operations.
+- **Space Complexity:** $O(N)$ to store the nodes.
+
 #### Python Code Snippet
 ```python
 class Node:
@@ -189,6 +201,10 @@ The FIFO (First-In, First-Out) property requires adding to one end (rear) and re
 - **Enqueue**: Create a new node. If the queue is empty, set both `head` and `tail` to this new node. Otherwise, set the current `tail.next` to the new node, and then update `tail` to point to the new node.
 - **Dequeue**: The element to dequeue is at the `head`. To remove it, simply advance the `head` pointer to `head.next`. If the queue becomes empty after this operation (i.e., `head` becomes `None`), the `tail` pointer must also be set to `None`.
 - All core operations are O(1).
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(1)$ for all operations.
+- **Space Complexity:** $O(N)$ to store the nodes.
 
 #### Python Code Snippet
 ```python

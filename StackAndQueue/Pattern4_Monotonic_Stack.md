@@ -30,6 +30,10 @@ This is the canonical monotonic stack problem. We iterate from right to left to 
 3.  The element at the top of the stack after popping is the Next Greater Element (NGE). If the stack is empty, there is no NGE.
 4.  Push `arr[i]` onto the stack to be a potential NGE for elements to its left.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the size of the array. Each element is pushed and popped at most once.
+- **Space Complexity:** $O(N)$ for the stack.
+
 #### Python Code Snippet
 ```python
 def next_greater_element(nums):
@@ -68,6 +72,10 @@ Same as "Next Greater Element," but the array is circular. This means the search
 #### Implementation Overview
 To simulate the circular array, we can iterate through the array twice. A simple way is to iterate from `2*n - 1` down to `0`, using the modulo operator (`i % n`) to access the array elements. The rest of the logic is identical to the standard Next Greater Element problem. This effectively gives every element a chance to see all other elements to its "right" (including those that wrap around).
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the size of the array. We iterate through the array twice.
+- **Space Complexity:** $O(N)$ for the stack.
+
 #### Python Code Snippet
 ```python
 def next_greater_element_circular(nums):
@@ -105,6 +113,10 @@ Given an array, find the next smaller element for each element. The next smaller
 #### Implementation Overview
 This is a minor variation of NGE. Instead of a decreasing monotonic stack, we maintain an **increasing** monotonic stack. When processing `arr[i]` from right to left, we pop from the stack while the top is greater than or equal to `arr[i]`.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$.
+- **Space Complexity:** $O(N)$ for the stack.
+
 #### Python Code Snippet
 ```python
 def next_smaller_element(nums):
@@ -138,6 +150,10 @@ Given an array of stock prices, the span of the stock's price today is the maxim
 
 #### Implementation Overview
 This is a "previous greater element" problem. We iterate from left to right. The stack stores indices of days. For each day `i`, we pop from the stack while the price on the day at `stack.top()` is less than or equal to the price on day `i`. The span is the distance from the current day to the previous greater day. If the stack becomes empty, it means all previous days had smaller or equal prices.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the number of days.
+- **Space Complexity:** $O(N)$ for the stack.
 
 #### Python Code Snippet
 ```python
@@ -182,6 +198,10 @@ The key idea is that for each bar, the largest rectangle it can be part of is de
 4. Calculate the area and update the max. Repeat until the stack top is smaller than `heights[i]`. Then push `i`.
 5. After the loop, process any remaining bars in the stack.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the number of bars.
+- **Space Complexity:** $O(N)$ for the stack.
+
 #### Python Code Snippet
 ```python
 def largest_rectangle_area(heights):
@@ -217,6 +237,10 @@ This problem can be reduced to the "Largest Rectangle in a Histogram" problem. W
 2. For each row `i`, create a `heights` array. `heights[j]` is the number of consecutive 1s above `matrix[i][j]` (including itself). If `matrix[i][j]` is 0, `heights[j]` is 0. This is a DP state.
 3. For each generated `heights` array, apply the "Largest Rectangle in a Histogram" algorithm.
 4. The answer is the maximum area found across all rows.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(M \cdot N)$, where $M$ is rows and $N$ is columns. We run the $O(N)$ histogram logic for each of the $M$ rows.
+- **Space Complexity:** $O(N)$ to store the `heights` array and the stack.
 
 #### Python Code Snippet
 ```python
@@ -266,6 +290,10 @@ While a two-pointer approach is common, this can also be solved with a monotonic
 4. The water trapped is `(min(heights[left_boundary], heights[i]) - heights[bottom]) * (i - left_boundary - 1)`.
 5. Accumulate this water and continue.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the number of bars.
+- **Space Complexity:** $O(N)$ for the stack.
+
 #### Python Code Snippet
 ```python
 def trap_rain_water(height):
@@ -300,6 +328,10 @@ A brute-force approach is O(N^2). A monotonic stack can solve this in O(N). For 
 2. The number of such subarrays is `(i - ple) * (nse - i)`.
 3. The contribution of `arr[i]` to the total sum is `arr[i] * (i - ple) * (nse - i)`.
 4. We can find `ple` and `nse` for all elements using two passes with a monotonic stack. Sum up the contributions for the final answer.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$.
+- **Space Complexity:** $O(N)$ for the stacks and auxiliary arrays.
 
 #### Python Code Snippet
 ```python
@@ -350,6 +382,10 @@ This problem can be broken down: `sum(max(subarray) - min(subarray))` = `sum(max
 - The `sum(min(subarray))` part is exactly the "Sum of Subarray Minimums" problem.
 - The `sum(max(subarray))` part is its dual: "Sum of Subarray Maximums." This can be solved with the same monotonic stack approach, but by finding the "previous greater" and "next greater" elements to count the subarrays where `arr[i]` is the maximum.
 - Calculate both sums and return their difference.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$.
+- **Space Complexity:** $O(N)$.
 
 #### Python Code Snippet
 ```python
@@ -403,6 +439,10 @@ This is a direct simulation problem that is perfectly suited for a stack.
    - If the stack top is greater than `abs(a)`, `a` is destroyed, and we do nothing else.
    - If the loop finishes and `a` has survived (i.e., it destroyed all positive asteroids or the stack top was negative), push `a` onto the stack.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$.
+- **Space Complexity:** $O(N)$ for the stack.
+
 #### Python Code Snippet
 ```python
 def asteroid_collision(asteroids):
@@ -438,6 +478,10 @@ This is a greedy problem that can be solved with a monotonic stack. To get the s
 4. Push the current digit onto the stack.
 5. After the loop, if `k > 0`, it means the remaining digits are in increasing order (e.g., "12345"), so remove the last `k` digits from the stack.
 6. Join the digits in the stack to form the result string. Handle leading zeros and empty results.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the number of digits.
+- **Space Complexity:** $O(N)$ for the stack.
 
 #### Python Code Snippet
 ```python

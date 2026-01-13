@@ -18,7 +18,10 @@ The most efficient heap-based solution uses a **Min-Heap** of size K.
 2.  For each element, push it onto the min-heap.
 3.  If the heap's size exceeds K, pop the smallest element. This ensures the heap always maintains the K largest elements seen so far.
 4.  After iterating, the root of the min-heap is the Kth largest element.
-This approach is O(N log K).
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N \log K)$.
+- **Space Complexity:** $O(K)$ for the heap.
 
 #### Python Code Snippet
 ```python
@@ -49,6 +52,10 @@ This is the mirror image of finding the Kth largest. The optimal heap-based solu
 3.  If the heap's size exceeds K, pop.
 4.  The root of the heap is the negation of the Kth smallest element.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N \log K)$.
+- **Space Complexity:** $O(K)$.
+
 #### Python Code Snippet
 ```python
 import heapq
@@ -73,6 +80,10 @@ Design a class to find the Kth largest element in a stream of numbers.
 This is a direct application of the "Kth Largest" pattern. The class maintains a **Min-Heap** of size K internally.
 -   **Constructor:** Initialize the min-heap with the initial numbers, ensuring the heap size is trimmed to K.
 -   **`add(val)` method:** Push the new value `val`. If the heap size is now greater than K, pop. The root is the current Kth largest.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N \log K)$ for constructor, $O(\log K)$ for `add`.
+- **Space Complexity:** $O(K)$.
 
 #### Python Code Snippet
 ```python
@@ -109,6 +120,10 @@ The heaps are balanced such that `len(small_half)` is either equal to or one gre
 **Median Calculation:**
 -   If sizes are equal, median is `(top(small) + top(large)) / 2`.
 -   If `small_half` is larger, median is `top(small)`.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(\log N)$ for `addNum`, $O(1)$ for `findMedian`.
+- **Space Complexity:** $O(N)$ to store elements.
 
 #### Python Code Snippet
 ```python
@@ -152,6 +167,10 @@ Given an array of integers `nums` and an integer `k`, return the `k` most freque
     -   If heap size exceeds K, pop.
     -   After iterating, the heap contains the K most frequent elements.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N \log K)$.
+- **Space Complexity:** $O(N)$ for the hash map + $O(K)$ for the heap.
+
 #### Python Code Snippet
 ```python
 import heapq
@@ -188,6 +207,10 @@ A brute-force O(N^2) approach is too slow. A better way uses a heap.
 4.  Initialize the heap with `(A[0] + B[0], 0, 0)`.
 5.  Use a `visited` set to avoid duplicate `(index_A, index_B)` pairs.
 6.  Loop `k` times: Pop the max sum, add it to the result, and push its neighbors `(i+1, j)` and `(i, j+1)` if not visited.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N \log N)$ for sorting + $O(K \log K)$ for heap operations.
+- **Space Complexity:** $O(K)$ for the heap and visited set.
 
 #### Python Code Snippet
 ```python
@@ -236,6 +259,10 @@ The most direct solution involves sorting.
 2.  Create a hash map (`rank_map`) to store the rank of each unique element.
 3.  Iterate through the sorted unique elements and assign ranks: `rank_map[element] = rank`.
 4.  Iterate through the original array and use the map to build the result.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N \log N)$ for sorting unique elements.
+- **Space Complexity:** $O(N)$ for storing unique elements and rank map.
 
 #### Python Code Snippet
 ```python

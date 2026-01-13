@@ -35,6 +35,10 @@ The challenge is retrieving the minimum element in O(1) time. The solution is to
 - When pushing `x` to the main stack, if `x` is less than or equal to the top of the min stack (or if the min stack is empty), push `x` onto the min stack as well.
 - When popping from the main stack, if the popped value is equal to the top of the min stack, pop from the min stack too.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(1)$ for all operations.
+- **Space Complexity:** $O(N)$ for the stack.
+
 #### Python Code Snippet (Method 1)
 ```python
 class MinStack:
@@ -90,6 +94,10 @@ This can be solved in O(N) time. The key insight is that if `knows(A, B)` is tru
     - Everyone knows the candidate.
     - If both conditions hold, return the candidate's index. Otherwise, return -1.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$ for finding the candidate and $O(N)$ for verification. Total $O(N)$.
+- **Space Complexity:** $O(1)$ if using two pointers, $O(N)$ if using a stack.
+
 #### Python Code Snippet
 ```python
 # The knows API is already defined for you.
@@ -130,6 +138,10 @@ This is a classic design problem that requires O(1) time complexity for both `ge
 **Operations:**
 - **`get(key)`**: Look up the node in the hash map. If found, move this node to the head of the linked list (to mark it as most recently used) and return its value.
 - **`put(key, value)`**: If the key exists, update its value and move the node to the head. If it's a new key, create a new node. If the cache is full, remove the node at the tail of the list and also remove it from the hash map. Finally, add the new node to the head of the list and to the hash map.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(1)$ for both `get` and `put`.
+- **Space Complexity:** $O(C)$ where $C$ is the capacity.
 
 #### Python Code Snippet
 ```python
@@ -200,6 +212,10 @@ This is significantly more complex than LRU. An optimal solution uses two hash m
   - It must be moved from the DLL at `freq` to the head of the DLL at `freq + 1`.
   - Update `min_freq` if the list at the old `min_freq` becomes empty.
 - **Eviction**: When the cache is full, use `min_freq` to find the correct DLL. Remove the node at the tail of that list (as it's the LRU for that frequency).
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(1)$ for both `get` and `put`.
+- **Space Complexity:** $O(C)$ where $C$ is the capacity.
 
 #### Python Code Snippet
 ```python

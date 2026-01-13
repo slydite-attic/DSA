@@ -23,6 +23,10 @@ To minimize total cost, always connect the two shortest available ropes. A **Min
     b. Calculate the cost to connect them and add this to the total cost.
     c. Add the new, combined rope length back into the min-heap.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N \log N)$. Building the heap takes $O(N)$, and we perform $N-1$ extraction and insertion pairs, each taking $O(\log N)$.
+- **Space Complexity:** $O(N)$ for the heap.
+
 #### Python Code Snippet
 ```python
 import heapq
@@ -61,6 +65,10 @@ The greedy strategy is to execute the most frequent task first. A **Max-Heap** k
     b. Decrement their frequencies.
     c. Push tasks with remaining frequency > 0 back onto the max-heap.
     d. Add `n+1` to the total time (or the number of tasks processed if the heap is now empty).
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the number of tasks. The heap operations are constant because there are at most 26 distinct tasks (or a fixed constant).
+- **Space Complexity:** $O(1)$ (since heap size is limited by the alphabet size).
 
 #### Python Code Snippet
 ```python
@@ -109,6 +117,10 @@ A greedy approach works. Always try to form a sequence starting with the smalles
     c. For `groupSize` cards starting from `start_card`, check if each consecutive card exists with a positive count.
     d. If not, return `false`. If yes, decrement their counts.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N \log N)$ or $O(N \log M)$ where $M$ is unique cards.
+- **Space Complexity:** $O(N)$ for the frequency map and heap.
+
 #### Python Code Snippet
 ```python
 import heapq
@@ -155,6 +167,10 @@ This is the canonical **K-way Merge** problem. A Min-Heap efficiently tracks the
     b. Add the node to the result list.
     c. If the popped node has a `next` node, push it onto the heap.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N \log K)$, where $N$ is the total number of elements across all lists and $K$ is the number of lists.
+- **Space Complexity:** $O(K)$ for the heap.
+
 #### Python Code Snippet
 ```python
 import heapq
@@ -199,6 +215,10 @@ The most complex part is `getNewsFeed`. It's a K-way merge of sorted lists (the 
     2.  Use a **Max-Heap** to find the 10 most recent tweets. For each relevant user, get their most recent tweet.
     3.  Push `(timestamp, tweetId, user_id, tweet_index)` for the latest tweet from each user onto the max-heap.
     4.  Loop 10 times: Pop the max, add to result, and push the next tweet from the same user onto the heap.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(F)$, where $F$ is the number of followees, to build the heap. Retrieving the feed takes $O(10 \cdot \log F)$.
+- **Space Complexity:** $O(F)$ for the heap.
 
 #### Python Code Snippet
 ```python
@@ -255,6 +275,10 @@ A naive sort would be O(N log N). We can do better by using a min-heap of size `
     a. Extract the minimum element from the heap and place it at the current `index` in the result array.
     b. Push the current element from the input array (`arr[i]`) into the heap.
 4.  After the loop, the heap will still contain `k+1` elements. Pop them one by one and add them to the result array.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N \log K)$.
+- **Space Complexity:** $O(K)$ for the heap.
 
 #### Python Code Snippet
 ```python

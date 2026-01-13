@@ -20,6 +20,10 @@ A straightforward approach uses built-in functions to deconstruct and reconstruc
 2.  **Reverse**: Reverse the resulting list of words.
 3.  **Join**: Join the words back into a string with a single space as a separator.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the length of the string.
+- **Space Complexity:** $O(N)$ to store the list of words and the result string.
+
 #### Python Code Snippet
 ```python
 def reverse_words(s: str) -> str:
@@ -56,6 +60,10 @@ The most efficient method uses two pointers starting from opposite ends of the s
     c. Compare the lowercase versions of the characters at `left` and `right`. If they don't match, it's not a palindrome.
     d. If they match, move both pointers inward (`left += 1`, `right -= 1`).
 3.  If the loop completes, the string is a palindrome.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the length of the string. We traverse the string once.
+- **Space Complexity:** $O(1)$.
 
 #### Python Code Snippet
 ```python
@@ -101,6 +109,10 @@ Anagrams must have the same frequency of each character.
 3. Iterate through `t`, decrementing the count for each character. If a character is not in the map or its count is already zero, they are not anagrams.
 4. If the loop completes, they are anagrams.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$ for frequency counting, $O(N \log N)$ for sorting.
+- **Space Complexity:** $O(1)$ (constant alphabet size) for frequency counting, $O(N)$ for sorting.
+
 #### Python Code Snippet (Frequency Counting)
 ```python
 import collections
@@ -144,6 +156,10 @@ This is a state-based parsing problem. We must carefully process the string char
     c. If overflow, return `INT_MAX` or `INT_MIN` based on the `sign`.
     d. Update `result = result * 10 + digit`.
 5.  Return `sign * result`.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$.
+- **Space Complexity:** $O(1)$.
 
 #### Python Code Snippet
 ```python
@@ -192,6 +208,10 @@ The key is to handle the subtractive cases (e.g., `IV` is 4, `IX` is 9). A chara
     - If `value(s[i]) < value(s[i+1])`, it's a subtractive case. Subtract `value(s[i])` from the total.
     - Otherwise, it's an additive case. Add `value(s[i])` to the total.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$.
+- **Space Complexity:** $O(1)$.
+
 #### Python Code Snippet
 ```python
 def roman_to_int(s: str) -> int:
@@ -222,6 +242,10 @@ A greedy approach works best here. We process the number from largest values to 
 2.  Iterate through this list. For each `(value, symbol)` pair:
     - While the input `num` is greater than or equal to `value`, append the `symbol` to the result string and subtract `value` from `num`.
 3.  Continue until `num` becomes 0.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(1)$ because the input number is bounded (typically < 4000).
+- **Space Complexity:** $O(1)$.
 
 #### Python Code Snippet
 ```python
@@ -256,6 +280,10 @@ This is a direct application of string manipulation.
 2.  **Reverse Each Word**: Iterate through the list of words. For each word, reverse it.
 3.  **Join the Words**: Join the list of reversed words back into a single string, using a space as the separator.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$.
+- **Space Complexity:** $O(N)$.
+
 #### Python Code Snippet
 ```python
 def reverse_each_word(s: str) -> str:
@@ -277,6 +305,10 @@ This problem has a famously clever and simple solution.
 1.  **Length Check**: If `s1` and `s2` have different lengths, `s2` cannot be a rotation of `s1`.
 2.  **Concatenation**: Create a new string by concatenating `s1` with itself (`s1 + s1`).
 3.  **Substring Check**: If `s2` is a rotation of `s1`, then `s2` must be a substring of the new concatenated string. Check if `s2` exists within `s1 + s1`.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$.
+- **Space Complexity:** $O(N)$ for the concatenated string.
 
 #### Python Code Snippet
 ```python
@@ -302,6 +334,10 @@ A greedy approach is most effective. The largest odd number will be the longest 
 2.  **Find First Odd Digit**: The first digit you encounter that is odd will be the last digit of the largest possible odd number substring.
 3.  **Return the Prefix**: Once you find the first odd digit from the right at index `i`, the substring `num[:i+1]` is the answer.
 4.  **No Odd Digits**: If the loop finishes, no odd digits were found. Return `""`.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$.
+- **Space Complexity:** $O(1)$ (or $O(N)$ if slicing creates a new string).
 
 #### Python Code Snippet
 ```python

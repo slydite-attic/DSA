@@ -29,6 +29,10 @@ This is a direct translation of the mathematical definition into a recursive fun
 - **Base Case**: If `n` is 0 or 1, return `n`.
 - **Recursive Step (Divide & Combine)**: The problem `F(n)` is "divided" into two subproblems, `F(n-1)` and `F(n-2)`. The results are "combined" by adding them together.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(2^n)$ for the naive recursive solution.
+- **Space Complexity:** $O(n)$ for the recursion stack.
+
 #### Python Code Snippet
 ```python
 def fibonacci(n: int) -> int:
@@ -62,6 +66,10 @@ Binary search is a perfect example of Divide and Conquer.
     - If the `target` is smaller, recursively search the *left* half.
     - If the `target` is larger, recursively search the *right* half.
 - **Combine**: There is no "combine" step, as the result from the recursive call is the final answer.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(\log n)$.
+- **Space Complexity:** $O(\log n)$ for the recursion stack.
 
 #### Python Code Snippet
 ```python
@@ -107,6 +115,10 @@ A naive solution would multiply `x` by itself `n` times (O(n)). A much faster ap
     - If `n` was odd, multiply by an extra `x`.
 - **Negative `n`**: If `n` is negative, the result is `1 / pow(x, -n)`.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(\log n)$.
+- **Space Complexity:** $O(\log n)$ for the recursion stack.
+
 #### Python Code Snippet
 ```python
 def my_pow(x: float, n: int) -> float:
@@ -146,6 +158,10 @@ Merge Sort is the canonical example of the Divide and Conquer paradigm.
 1.  **Divide**: Find the middle index of the array and split it into two halves: a left subarray and a right subarray.
 2.  **Conquer**: Recursively call `merge_sort` on both the left and right subarrays. This continues until the subarrays have a size of 1 or 0, which are by definition sorted (the base case).
 3.  **Combine**: Merge the two sorted subarrays back into a single, sorted array. This is done with a helper function, `merge`, which iterates through both subarrays with two pointers, picking the smaller element at each step to build the new sorted array.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N \log N)$.
+- **Space Complexity:** $O(N)$ for the temporary merge arrays and recursion stack.
 
 #### Python Code Snippet
 ```python
@@ -205,6 +221,10 @@ Quick Sort is another famous Divide and Conquer sorting algorithm.
 2.  **Conquer**: Recursively call `quick_sort` on the sub-array of elements to the left of the pivot and on the sub-array of elements to the right of the pivot.
 3.  **Combine**: No "combine" step is needed. Because the partitioning places the pivot in its correct final position, the recursive calls on the subarrays handle the rest. The array is sorted in-place.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N \log N)$ on average, $O(N^2)$ worst case.
+- **Space Complexity:** $O(\log N)$ for recursion stack.
+
 #### Python Code Snippet
 ```python
 def quick_sort(nums: list[int], low: int, high: int):
@@ -258,6 +278,10 @@ This solution is structurally similar to sorting a stack. It uses a main recursi
     - **Base Case:** If the stack is empty, just push the `element`.
     - **Recursive Step:** Pop the top element (`top`), recursively call `insertAtBottom`, and then push `top` back onto the stack. This ensures `element` ends up at the bottom.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N^2)$, where $N$ is the stack size.
+- **Space Complexity:** $O(N)$ for recursion stack.
+
 #### Python Code Snippet
 ```python
 def reverse_stack(stack: list):
@@ -294,6 +318,10 @@ The solution involves two recursive functions, demonstrating a powerful way to u
 2.  **`sortedInsert(stack, element)`:** This helper inserts an element into a sorted stack.
     - **Base Case:** If the stack is empty or the `element` is greater than the top, push `element`.
     - **Recursive Step:** If `element` is smaller than the top, pop the top element (`top`), recursively call `sortedInsert`, and then push `top` back.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N^2)$.
+- **Space Complexity:** $O(N)$ for recursion stack.
 
 #### Python Code Snippet
 ```python
@@ -341,6 +369,10 @@ This is a combinatorial problem that requires modular exponentiation for an effi
 -   Total count = `(5 ^ num_even_indices) * (4 ^ num_odd_indices) % mod`.
 -   We must use a recursive function for modular exponentiation (similar to `Pow(x, n)`) to handle large `n`.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(\log n)$ due to modular exponentiation.
+- **Space Complexity:** $O(\log n)$ for recursion stack.
+
 #### Python Code Snippet
 ```python
 def count_good_numbers(n: int) -> int:
@@ -379,6 +411,10 @@ A recursive solution processes the string one character at a time. The main recu
     - Before adding the digit, check for potential overflow.
     - The digit is added to the accumulated result: `result = result * 10 + digit`.
 3.  **Initial Call:** A non-recursive wrapper handles leading whitespace and the sign.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the string length.
+- **Space Complexity:** $O(N)$ for recursion stack (iterative is better for this reason).
 
 #### Python Code Snippet
 ```python

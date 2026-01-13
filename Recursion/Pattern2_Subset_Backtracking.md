@@ -47,6 +47,10 @@ This is the canonical "pick / don't pick" backtracking problem. For each element
 - **State**: The current subset being built and the current index in `nums` we are considering.
 - **Goal**: We have considered every element. Every state we reach is a valid subset.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(2^N \cdot N)$, where $N$ is the number of elements. There are $2^N$ subsets, and adding a subset to the result takes $O(N)$ time.
+- **Space Complexity:** $O(N)$ for the recursion stack and current subset.
+
 #### Python Code Snippet
 ```python
 def subsets(nums: list[int]) -> list[list[int]]:
@@ -86,6 +90,10 @@ This is a variation of the Subsets problem. To avoid duplicate subsets, we must 
 1.  **Sort the input array**: Sorting `nums` brings all duplicate elements together.
 2.  **Modify the loop**: In the backtracking function, when we iterate through our choices, we add a condition: if the current element is the same as the previous one, and we are not at the beginning of the choices for this level, we **skip** it. This ensures that for a group of identical elements, we only pick the first one to start a new path, preventing duplicate subsets.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(2^N \cdot N)$, similar to the basic subsets problem.
+- **Space Complexity:** $O(N)$ for the recursion stack.
+
 #### Python Code Snippet
 ```python
 def subsets_with_dup(nums: list[int]) -> list[list[int]]:
@@ -124,6 +132,10 @@ This is a classic backtracking problem where we explore combinations that sum to
 - **Choice**: At each step, we can either choose the current candidate again (if the sum doesn't exceed the target) or move to the next candidate.
 - **State**: The current combination, the current sum, and the index of the candidate we are considering.
 - **Goal**: The current sum equals the `target`.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(K \cdot 2^T)$, where $T$ is the target value and $K$ is the average length of a combination. The number of combinations is loosely bounded by $2^T$ in the worst case (e.g., all candidates are 1).
+- **Space Complexity:** $O(T)$ for the recursion stack (depth can go up to `target` if 1 is a candidate).
 
 #### Python Code Snippet
 ```python
@@ -176,6 +188,10 @@ This combination of constraints leads to a solution similar to Subsets II.
 2.  **Use each element once**: In the recursive call, pass `i + 1` as the next starting index, not `i`. This prevents reusing the same element.
 3.  **Skip duplicates**: Just like in Subsets II, in the choice-making loop, if `i > start_index` and `candidates[i] == candidates[i - 1]`, we `continue`. This prevents creating duplicate combinations like `[1, 7]` and `[1, 7]` when the input is `[1, 1, 7]`.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(2^N \cdot N)$, similar to subsets.
+- **Space Complexity:** $O(N)$ for recursion stack.
+
 #### Python Code Snippet
 ```python
 def combination_sum2(candidates: list[int], target: int) -> list[list[int]]:
@@ -226,6 +242,10 @@ We build the string character by character, and at each step, we have two choice
     2. We can add a closed parenthesis `)` if `close_count < open_count`. This is the key constraint that ensures the parentheses are well-formed.
 - **Goal**: The length of the string is `2 * n`.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(\frac{4^n}{\sqrt{n}})$, which is related to the nth Catalan number.
+- **Space Complexity:** $O(n)$ for the recursion stack.
+
 #### Python Code Snippet
 ```python
 def generate_parenthesis(n: int) -> list[str]:
@@ -269,6 +289,10 @@ This is a highly constrained combination sum problem.
     - For each number `i`, add it to the combination and recurse with `find_combinations(i + 1, k, n - i, ...)`. We use `i + 1` as the next start because each number can be used at most once.
     - Backtrack by removing `i`.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(9^K \cdot K)$, effectively constant since the range of numbers (1-9) is small and fixed.
+- **Space Complexity:** $O(K)$ for the recursion stack.
+
 #### Python Code Snippet
 ```python
 def combination_sum_3(k: int, n: int) -> list[list[int]]:
@@ -307,6 +331,10 @@ This is a direct application of the "pick/don't-pick" pattern. We generate all s
     -   **Pick**: Make a recursive call for the next index with an updated sum: `find_sums(index + 1, current_sum + arr[index])`.
     -   **Don't-Pick**: Make a recursive call for the next index with the same sum: `find_sums(index + 1, current_sum)`.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(2^N)$.
+- **Space Complexity:** $O(N)$ for recursion stack.
+
 #### Python Code Snippet
 ```python
 def subset_sums(arr: list[int]) -> list[int]:
@@ -344,6 +372,10 @@ This is a decision-based version of the previous problem. We just need to find o
     -   **Pick**: If `arr[index] <= target`, make a recursive call `check_sum(index + 1, target - arr[index])`. If this call returns `True`, return `True`.
     -   **Don't-Pick**: If the "pick" path didn't return `True`, explore the "don't-pick" path: `check_sum(index + 1, target)`.
     -   The result is `pick_result or dont_pick_result`.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(2^N)$ in the worst case (without memoization).
+- **Space Complexity:** $O(N)$ for recursion stack.
 
 #### Python Code Snippet
 ```python
@@ -388,6 +420,10 @@ This is a "pick/don't-pick" problem where the recursive function returns the cou
     -   **Don't-Pick**: Call `count_subsequences(index + 1, current_sum)`.
     -   The total count is the sum of the results from both calls.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(2^N)$.
+- **Space Complexity:** $O(N)$ for recursion stack.
+
 #### Python Code Snippet
 ```python
 def count_subsequences_with_sum_k(arr: list[int], k: int) -> int:
@@ -421,6 +457,10 @@ For each position in the string, we have two choices: '0' or '1'. We can use rec
 3.  **Recursive Step**:
     -   Call `generate(index + 1, current_string + '0')`.
     -   Call `generate(index + 1, current_string + '1')`.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(2^N)$.
+- **Space Complexity:** $O(N)$ for recursion stack.
 
 #### Python Code Snippet
 ```python

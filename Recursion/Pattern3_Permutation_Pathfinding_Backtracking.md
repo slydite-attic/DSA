@@ -22,6 +22,10 @@ To generate permutations, we need to ensure that each element is used exactly on
 
 A common way to track used elements is with a boolean `visited` array.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N \cdot N!)$, where $N$ is the number of elements. There are $N!$ permutations, and each takes $O(N)$ to build.
+- **Space Complexity:** $O(N)$ for the recursion stack and visited array.
+
 #### Python Code Snippet
 ```python
 def permute(nums: list[int]) -> list[list[int]]:
@@ -69,6 +73,10 @@ This is a variation of a permutation/combination problem where the choices for e
 - **State**: The current index in the input `digits` string and the combination string built so far.
 - **Choice**: For the digit at the current index, which letter should we append to our combination?
 - **Goal**: The length of our combination string equals the length of the input `digits` string.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(4^N \cdot N)$, where $N$ is the length of digits. Each digit maps to at most 4 letters.
+- **Space Complexity:** $O(N)$ for the recursion stack.
 
 #### Python Code Snippet
 ```python
@@ -118,6 +126,10 @@ This is a classic pathfinding problem on a grid. We perform a Depth First Search
 - **Choice**: Which of the four adjacent cells (up, down, left, right) should we move to next?
 - **Constraint**: The move must be within the grid boundaries, the cell must match `word[k]`, and the cell must not have been visited before in the current path.
 - **Goal**: We have successfully matched all characters in the word (`k == len(word)`).
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(M \cdot N \cdot 4^L)$, where $M \times N$ is the board size and $L$ is the word length.
+- **Space Complexity:** $O(L)$ for the recursion stack.
 
 #### Python Code Snippet
 ```python
@@ -171,6 +183,10 @@ We place one queen per column, ensuring each new placement is safe from all prev
 - **Choice**: In which row `r` of the current column `col` should we place a queen?
 - **Constraint**: The chosen cell `(r, col)` must not be under attack by any queen in previous columns.
 - **Goal**: We have successfully placed a queen in every column (`col == n`).
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N!)$, as we place queens row by row.
+- **Space Complexity:** $O(N)$ for the recursion stack and sets.
 
 #### Python Code Snippet (Optimized)
 This version uses sets for an O(1) safety check.
@@ -231,6 +247,10 @@ We find the next empty cell and try placing digits from 1 to 9. If a digit is va
 - **Choice**: For the next empty cell `(r, c)`, which digit from '1' to '9' should we place?
 - **Constraint**: The chosen digit must not already exist in the same row, column, or 3x3 sub-grid.
 - **Goal**: There are no more empty cells on the board.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(9^M)$, where $M$ is the number of empty cells. In the worst case (empty board), this is huge, but constraints make it feasible.
+- **Space Complexity:** $O(1)$ effectively, or $O(M)$ for recursion stack.
 
 #### Python Code Snippet
 ```python
@@ -293,6 +313,10 @@ This is a complex backtracking problem where we build the expression string and 
         - **'-'**: Recurse with `current_val - s` and `prev_operand = -s`.
         - **'*'**: The new value is `(current_val - prev_operand) + (prev_operand * s)`. The new `prev_operand` becomes `prev_operand * s`.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(4^N)$, where $N$ is the length of the string (3 operators + no operator).
+- **Space Complexity:** $O(N)$ for recursion stack.
+
 #### Python Code Snippet
 ```python
 def add_operators(num: str, target: int) -> list[str]:
@@ -349,6 +373,10 @@ We attempt to color the graph's vertices one by one, from vertex 0 to N-1.
     - If not, backtrack by resetting the color and try the next color.
 4. If no color works, return `false`.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(M^V)$, where $V$ is vertices and $M$ is colors.
+- **Space Complexity:** $O(V)$ for colors array and recursion stack.
+
 #### Python Code Snippet
 ```python
 def can_m_color(graph: list[list[int]], m: int, n: int) -> bool:
@@ -396,6 +424,10 @@ This is a partitioning problem where we check if any prefix of the string is a v
 4.  If the loop finishes, no valid segmentation was found. Return `false`.
 5.  **Optimization**: This has overlapping subproblems and can be optimized with memoization (DP).
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N^3)$ (with memoization) due to substring slicing in the loop.
+- **Space Complexity:** $O(N)$ for the recursion stack and memoization.
+
 #### Python Code Snippet
 ```python
 def word_break(s: str, wordDict: list[str]) -> bool:
@@ -437,6 +469,10 @@ This is a DFS on a grid problem. We explore all possible paths, backtracking whe
     - Explore all 4 directions (D, L, R, U).
     - For each valid move (in-bounds, not a wall, not visited), recurse.
     - Backtrack by un-marking the current cell as visited.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(4^{N^2})$, worst case exponential.
+- **Space Complexity:** $O(N^2)$ for visited array and recursion stack.
 
 #### Python Code Snippet
 ```python
@@ -496,6 +532,10 @@ The strategy is to iterate through all possible prefixes of the current string. 
     - The substring `s[start_index...i]` is a potential first piece of the partition.
     - If this substring is a palindrome, add it to `current_partition` and recurse on the rest: `partition_helper(i + 1, ...)`.
     - Backtrack by removing the substring from `current_partition`.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N \cdot 2^N)$, as there are $2^N$ possible partitions and checking palindrome takes $O(N)$.
+- **Space Complexity:** $O(N)$ for recursion stack.
 
 #### Python Code Snippet
 ```python

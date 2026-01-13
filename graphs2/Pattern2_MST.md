@@ -27,6 +27,10 @@ Prim's is very similar to Dijkstra's algorithm. It uses a priority queue to effi
     d. For each neighbor `v` of `u`, if `v` is not yet visited, push the edge `(edge_weight, v)` to the priority queue.
 4.  The loop ends when all reachable vertices have been visited.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(E \log V)$ with a priority queue.
+- **Space Complexity:** $O(V + E)$ for the adjacency list and priority queue.
+
 #### Python Code Snippet
 ```python
 import heapq
@@ -61,7 +65,6 @@ def prims_algorithm(adj: list[list[tuple[int, int]]], V: int) -> int:
 
     return mst_weight
 ```
-**Time Complexity**: O(E log V) with a priority queue.
 
 ---
 
@@ -83,6 +86,10 @@ Kruskal's algorithm relies on an efficient way to check if adding an edge will f
         - Add the edge to the MST by adding its weight `w` to `mst_weight`.
         - **Merge** the two components using `dsu.union(u, v)`.
 3.  Stop when `V-1` edges have been added or all edges have been considered.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(E \log E)$ due to sorting the edges. The DSU operations are nearly constant time on average ($O(\alpha(V))$).
+- **Space Complexity:** $O(V)$ for the DSU data structure.
 
 #### Python Code Snippet (with DSU)
 ```python
@@ -135,4 +142,3 @@ def kruskals_algorithm(edges: list[tuple[int, int, int]], V: int) -> int:
 
     return mst_weight
 ```
-**Time Complexity**: O(E log E) due to sorting the edges. The DSU operations are nearly constant time on average.

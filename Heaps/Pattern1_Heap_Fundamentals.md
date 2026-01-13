@@ -126,6 +126,10 @@ A Min-Heap does not satisfy the Max-Heap property. Converting it requires rebuil
 2.  Iterate from this node backwards up to the root (index 0).
 3.  In each iteration, call a `max_heapify_down` function on the current node. This function ensures the subtree rooted at the given node is a max-heap by "sifting down" the node to its correct position.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, because building a heap from an unordered array takes linear time.
+- **Space Complexity:** $O(1)$ (iterative heapify) or $O(\log N)$ (recursive heapify due to stack).
+
 #### Python Code Snippet
 ```python
 def max_heapify_down(arr, n, i):

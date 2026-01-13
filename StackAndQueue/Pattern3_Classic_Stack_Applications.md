@@ -27,6 +27,10 @@ This is a canonical problem for stack usage. We iterate through the string:
   - If it is the correct opening bracket, we have found a valid pair, so we pop the stack.
 - After iterating through the entire string, if the stack is empty, all brackets were correctly matched and closed. If the stack is not empty, it means there are unclosed opening brackets, so the string is invalid.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the length of the string.
+- **Space Complexity:** $O(N)$ for the stack.
+
 #### Python Code Snippet
 ```python
 def is_valid_parentheses(s: str) -> bool:
@@ -67,6 +71,10 @@ We use a stack to hold operators. We iterate through the infix expression:
     - While the stack is not empty, the top is not `(`, and the precedence of the current operator is less than or equal to the precedence of the operator at the top of the stack, pop operators from the stack and append them to the result.
     - After the loop, push the current operator onto the stack.
 5. After iterating through the expression, pop any remaining operators from the stack and append them to the result.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the length of the string.
+- **Space Complexity:** $O(N)$ for the stack and result.
 
 #### Python Code Snippet
 ```python
@@ -117,6 +125,10 @@ Iterate through the postfix expression:
 - If the character is an operator, pop two operands from the stack (`op2` then `op1`). Form a string `(op1 operator op2)` and push this new string back onto the stack.
 - The final result is the single string remaining on the stack.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$.
+- **Space Complexity:** $O(N)$.
+
 #### Python Code Snippet
 ```python
 def postfix_to_infix(expression):
@@ -148,6 +160,10 @@ This is similar to postfix-to-infix, but we iterate through the prefix expressio
 - If the character is an operand, push it onto a stack.
 - If the character is an operator, pop two operands from the stack (`op1` then `op2`). Form a string `(op1 operator op2)` and push it back.
 - The final result is the single string on the stack.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$.
+- **Space Complexity:** $O(N)$.
 
 #### Python Code Snippet
 ```python
@@ -182,6 +198,10 @@ Iterate through the prefix expression in **reverse**.
 - If the character is an operator, pop two operands (`op1`, `op2`) from the stack. Form a new string `op1 + op2 + operator` and push it back.
 - The final result is the single string on the stack.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$.
+- **Space Complexity:** $O(N)$.
+
 #### Python Code Snippet
 ```python
 def prefix_to_postfix(expression):
@@ -213,6 +233,10 @@ Iterate through the postfix expression.
 - If the character is an operand, push it onto a stack.
 - If the character is an operator, pop two operands (`op2` then `op1`) from the stack. Form a new string `operator + op1 + op2` and push it back.
 - The final result is the single string on the stack.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$.
+- **Space Complexity:** $O(N)$.
 
 #### Python Code Snippet
 ```python
@@ -246,6 +270,10 @@ This is a variation of Infix to Postfix that reuses the same logic with a clever
 2.  While reversing, swap every `(` with `)` and every `)` with `(`.
 3.  Find the **postfix** expression of this new modified string using the standard algorithm.
 4.  **Reverse** the resulting postfix expression. This gives the final prefix expression.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$.
+- **Space Complexity:** $O(N)$.
 
 #### Python Code Snippet
 ```python
