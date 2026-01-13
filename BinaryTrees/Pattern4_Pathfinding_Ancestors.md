@@ -35,6 +35,10 @@ This is a classic backtracking problem that can be solved with a recursive DFS. 
 
 The main function will initialize an empty list and call the helper. The list will contain the correct path after the call.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the number of nodes. We might visit every node in the worst case.
+- **Space Complexity:** $O(H)$, where $H$ is the height of the tree, for the recursion stack and the path list.
+
 #### Python Code Snippet
 ```python
 # Definition for a binary tree node.
@@ -108,6 +112,10 @@ The classic recursive solution is extremely elegant. The function `lca(node, p, 
     b. If only one of them is non-null (e.g., `left_lca`), it means both `p` and `q` were found in the left subtree, and `left_lca` is already their LCA. Propagate this result up by returning `left_lca`. The same logic applies if only `right_lca` is non-null.
     c. If both are `null`, neither `p` nor `q` was found in this subtree. Return `null`.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the number of nodes. We visit each node once.
+- **Space Complexity:** $O(H)$, where $H$ is the height of the tree, due to recursion stack depth.
+
 #### Python Code Snippet
 ```python
 # Definition for a binary tree node.
@@ -173,6 +181,10 @@ The most common approach is to convert the tree into a graph-like structure so w
     b. If `distance == k`, we have found a valid node. Add its value to our result list.
     c. Explore neighbors: For the current node's `left`, `right`, and `parent` (from the map), if the neighbor exists and has not been visited, add it to the queue with `distance + 1` and mark it as visited.
 5.  After the BFS completes, the result list will contain all nodes at distance `k`.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the number of nodes. We traverse the tree once to build the parent map and once more for the BFS.
+- **Space Complexity:** $O(N)$ to store the `parent_map`, `queue`, and `visited` set.
 
 #### Python Code Snippet
 ```python
@@ -257,6 +269,10 @@ This problem is almost identical in structure to "Nodes at Distance K". It asks 
     b. Update `max_time = max(max_time, time)`.
     c. Explore neighbors: For the current node's `left`, `right`, and `parent`, if the neighbor exists and has not been visited, add it to the queue with `time + 1` and mark it as visited.
 6.  After the BFS is complete, `max_time` will hold the time it took for the fire to reach the farthest node, which is the time for the whole tree to burn. Return `max_time`.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the number of nodes.
+- **Space Complexity:** $O(N)$ to store the `parent_map`, `queue`, and `visited` set.
 
 #### Python Code Snippet
 ```python

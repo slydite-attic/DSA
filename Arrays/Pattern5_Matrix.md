@@ -22,6 +22,10 @@ A naive solution using an auxiliary matrix would take O(M*N) space. A better sol
 3.  **Set zeros based on markers:** Iterate through the rest of the matrix again (from `matrix[1][1]`). If the marker for that row or column is set (i.e., `matrix[i][0] == 0` or `matrix[0][j] == 0`), then set `matrix[i][j] = 0`.
 4.  **Set the first row/col:** Finally, use the boolean flags from step 1 to determine whether the first row and first column themselves need to be entirely zeroed out.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(M \cdot N)$, where $M$ is the number of rows and $N$ is the number of columns. We traverse the matrix twice.
+- **Space Complexity:** $O(1)$, as we use the matrix itself for storage and a constant amount of extra space.
+
 #### Python Code Snippet
 ```python
 def set_matrix_zeros(matrix):
@@ -81,6 +85,10 @@ The most intuitive in-place solution involves a two-step process:
     - Reversing the first row `[1,4,7]` gives `[7,4,1]`.
     - This yields the final rotated matrix.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N^2)$, where $N$ is the dimension of the matrix. We iterate through the matrix roughly twice (once for transpose, once for row reversal).
+- **Space Complexity:** $O(1)$, as the rotation is performed in-place.
+
 #### Python Code Snippet
 ```python
 def rotate_matrix(matrix):
@@ -127,6 +135,10 @@ This problem is a simulation of a spiral path. We can solve it by keeping track 
 6.  **Traverse Left:** Before traversing, check if `top <= bottom`. If so, print the bottom row from `right` to `left` (backwards). The bottom boundary moves up: `bottom -= 1`.
 7.  **Traverse Up:** Before traversing, check if `left <= right`. If so, print the leftmost column from `bottom` to `top` (backwards). The left boundary moves out: `left += 1`.
 8.  Repeat until the loop condition is false.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(M \cdot N)$, where $M$ is the number of rows and $N$ is the number of columns. We visit each element exactly once.
+- **Space Complexity:** $O(1)$ (or $O(M \cdot N)$ if the output list is considered extra space).
 
 #### Python Code Snippet
 ```python
@@ -193,6 +205,10 @@ This is a generative, simulation-style problem. We can build the triangle row by
 7.  Append a `1` to the end of the `new_row`.
 8.  Append the completed `new_row` to the `triangle`.
 9.  Return the `triangle`.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N^2)$, where $N$ is the number of rows. We generate roughly $N^2/2$ elements.
+- **Space Complexity:** $O(N^2)$ to store the entire triangle.
 
 #### Python Code Snippet
 ```python

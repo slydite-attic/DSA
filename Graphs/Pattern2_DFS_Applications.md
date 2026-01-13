@@ -42,6 +42,9 @@ def find_circle_num(isConnected: list[list[int]]) -> int:
 
     return provinces
 ```
+#### Time and Space Complexity
+- **Time Complexity:** $O(N^2)$ because we iterate over the entire $N \times N$ matrix.
+- **Space Complexity:** $O(N)$ for the recursion stack and visited array.
 
 ---
 
@@ -82,6 +85,9 @@ def flood_fill(image: list[list[int]], sr: int, sc: int, newColor: int) -> list[
     dfs(sr, sc)
     return image
 ```
+#### Time and Space Complexity
+- **Time Complexity:** $O(M \times N)$, as we might visit every pixel in the worst case.
+- **Space Complexity:** $O(M \times N)$ for the recursion stack in the worst case.
 
 ---
 
@@ -131,6 +137,9 @@ def solve_surrounded_regions(board: list[list[str]]) -> None:
             elif board[r][c] == 'E':
                 board[r][c] = 'O'
 ```
+#### Time and Space Complexity
+- **Time Complexity:** $O(M \times N)$, as each cell is processed a constant number of times.
+- **Space Complexity:** $O(M \times N)$ for the recursion stack in the worst case (all 'O's connected).
 
 ---
 
@@ -180,6 +189,9 @@ def number_of_distinct_islands(grid: list[list[int]]) -> int:
 
     return len(unique_islands)
 ```
+#### Time and Space Complexity
+- **Time Complexity:** $O(M \times N \times \log(\text{unique islands}))$, effectively $O(M \times N)$ on average since set operations depend on island size.
+- **Space Complexity:** $O(M \times N)$ to store visited set and island paths.
 
 ---
 
@@ -217,6 +229,9 @@ def dfs(node, parent, visited, adj):
             return True # Cycle detected
     return False
 ```
+#### Time and Space Complexity
+- **Time Complexity:** $O(V + E)$, as we traverse the graph once.
+- **Space Complexity:** $O(V)$ for the recursion stack and visited array.
 
 ---
 
@@ -255,6 +270,9 @@ def dfs_color(node, c, color, adj):
             return False
     return True
 ```
+#### Time and Space Complexity
+- **Time Complexity:** $O(V + E)$.
+- **Space Complexity:** $O(V)$ for the color map and recursion stack.
 
 ---
 
@@ -299,3 +317,6 @@ def dfs_cycle(node, visited, path_visited, adj):
     path_visited[node] = False # Backtrack
     return False
 ```
+#### Time and Space Complexity
+- **Time Complexity:** $O(V + E)$.
+- **Space Complexity:** $O(V)$ for the recursion stack and visited arrays.

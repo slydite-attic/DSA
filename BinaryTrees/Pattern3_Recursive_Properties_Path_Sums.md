@@ -23,6 +23,10 @@ This is a classic recursion problem that perfectly demonstrates the post-order t
     b. Recursively calculate the height of the right subtree: `right_height = height(node.right)`.
 3.  **Combine Results:** The height of the tree rooted at the current node is `1 + max(left_height, right_height)`. The `+1` accounts for the current node itself.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the number of nodes. We visit each node once.
+- **Space Complexity:** $O(H)$, where $H$ is the height of the tree, due to recursion stack depth.
+
 #### Python Code Snippet
 ```python
 class TreeNode:
@@ -67,6 +71,10 @@ The key insight is to modify the standard height-finding function. Instead of ju
 4.  **Check Current Node:** After getting valid heights, check if `abs(left_height - right_height) > 1`. If so, the current node is unbalanced; return `-1`.
 5.  **Return Height:** If balanced, return its height as usual: `1 + max(left_height, right_height)`.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the number of nodes. We visit each node once.
+- **Space Complexity:** $O(H)$, where $H$ is the height of the tree, due to recursion stack depth.
+
 #### Python Code Snippet
 ```python
 class Solution:
@@ -104,6 +112,10 @@ The longest path might not pass through the root. A recursive function must do t
 3.  **Recursive Step:** For the current node, the longest path passing through it has a length of `left_height + right_height`. We compare this with our global `max_diameter`.
 4.  **Return Value:** The function must still return the height of the current subtree to its parent, which is `1 + max(left_height, right_height)`.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the number of nodes. We visit each node once.
+- **Space Complexity:** $O(H)$, where $H$ is the height of the tree, due to recursion stack depth.
+
 #### Python Code Snippet
 ```python
 class Solution:
@@ -134,6 +146,10 @@ This follows the same pattern as Diameter. The recursive function `max_path_down
 3.  **Update Global Maximum:** The maximum path that "turns" at the current node is `node.val + left_path + right_path`. We update our global `max_sum` with this value.
 4.  **Return Value:** The function must return the maximum path sum going *straight down* from the current node: `node.val + max(left_path, right_path)`.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the number of nodes. We visit each node once.
+- **Space Complexity:** $O(H)$, where $H$ is the height of the tree, due to recursion stack depth.
+
 #### Python Code Snippet
 ```python
 class Solution:
@@ -162,6 +178,10 @@ A straightforward parallel recursion.
 1.  **Base Cases:** If both nodes are `null`, they are identical. If one is `null` but the other isn't, or if their values differ, they are not identical.
 2.  **Recursive Step:** Return `isSameTree(p.left, q.left) AND isSameTree(p.right, q.right)`.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the minimum number of nodes in the two trees.
+- **Space Complexity:** $O(H)$, where $H$ is the height of the shorter tree, due to recursion stack depth.
+
 #### Python Code Snippet
 ```python
 class Solution:
@@ -183,6 +203,10 @@ Given the root of a binary tree, check whether it is a mirror of itself (i.e., s
 A tree is symmetric if the root's left subtree is a mirror image of the root's right subtree. We write a recursive helper `isMirror(node1, node2)`.
 1.  **Base Cases:** Same as `isSameTree`.
 2.  **Recursive Step:** The key difference. We must check if `node1.left` is a mirror of `node2.right` AND `node1.right` is a mirror of `node2.left`.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the number of nodes.
+- **Space Complexity:** $O(H)$, where $H$ is the height of the tree, due to recursion stack depth.
 
 #### Python Code Snippet
 ```python
@@ -221,6 +245,10 @@ This can be solved with a straightforward recursive traversal. For each node, we
 2.  **Calculate Children Sum:** Get the values of the left and right children. If a child is `null`, treat its value as `0`.
 3.  **Check Current Node:** Compare `node.val` with the sum of its children's values.
 4.  **Recurse:** If the current node is valid, recursively call the function on its left and right children. The overall result is true only if the current node is valid AND both recursive calls return true.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the number of nodes.
+- **Space Complexity:** $O(H)$, where $H$ is the height of the tree, due to recursion stack depth.
 
 #### Python Code Snippet
 ```python

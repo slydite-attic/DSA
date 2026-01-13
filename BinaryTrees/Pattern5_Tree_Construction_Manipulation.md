@@ -23,6 +23,10 @@ The brute-force O(N) traversal is trivial. The challenge is to find a sub-linear
 
 This approach is O((log N)^2) because at each level of recursion, we do an O(log N) height calculation.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(\log^2 N)$. In each recursive step, we traverse down the height ($O(\log N)$). We do this at most $O(\log N)$ times (the height of the tree).
+- **Space Complexity:** $O(\log N)$ for the recursion stack.
+
 #### Python Code Snippet
 ```python
 class TreeNode:
@@ -84,6 +88,10 @@ Output: `[3,9,20,null,null,15,7]`
 6.  Recursively build the right subtree: `build(in_root_idx + 1, in_end)`.
 7.  Return the `root`.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the number of nodes. We process each node once.
+- **Space Complexity:** $O(N)$ for the `inorder_map` and the recursion stack.
+
 #### Python Code Snippet
 ```python
 class Solution:
@@ -131,6 +139,10 @@ This is very similar to the preorder/inorder version. The key difference is:
 4.  Find the root's index in `inorder` to find the split point.
 5.  **Crucially, build the right subtree first**, then the left. This is because we are processing the `postorder` array backwards (`Root, Right, Left`).
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the number of nodes.
+- **Space Complexity:** $O(N)$ for the `inorder_map` and the recursion stack.
+
 #### Python Code Snippet
 ```python
 class Solution:
@@ -175,6 +187,10 @@ A common and effective way to solve this is to use a **preorder traversal**.
 2.  Create a recursive `build()` function.
 3.  Inside `build()`, get the next value. If it's the null marker, return `None`.
 4.  Otherwise, create a `TreeNode` and recursively call `build()` to construct its left and right children.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$ for both serialization and deserialization, as we visit each node once.
+- **Space Complexity:** $O(N)$ to store the serialized string/list and for the recursion stack.
 
 #### Python Code Snippet
 ```python
@@ -223,6 +239,10 @@ A very clever solution uses a modified, reversed pre-order traversal (`Right, Le
     a. `node.right = prev`
     b. `node.left = None`
     c. Update `prev = node` for the next call up the stack.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the number of nodes.
+- **Space Complexity:** $O(N)$ for the recursion stack in the worst case (skewed tree).
 
 #### Python Code Snippet
 ```python

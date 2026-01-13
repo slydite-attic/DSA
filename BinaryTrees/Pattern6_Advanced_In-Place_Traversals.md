@@ -27,6 +27,10 @@ Morris Traversal works by creating temporary "threads" (links) from a node's ino
             - Remove the thread: `predecessor.right = None`.
             - Move to the right child: `current = current.right`.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$. While some edges are traversed more than once, amortized time is linear.
+- **Space Complexity:** $O(1)$, as it does not use a stack or recursion.
+
 #### Python Code Snippet
 ```python
 class TreeNode:
@@ -85,6 +89,10 @@ The Morris Inorder Traversal is the canonical version of this algorithm.
             - **Visit the current node**.
             - Remove the thread: `predecessor.right = None`.
             - Move right: `current = current.right`.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$.
+- **Space Complexity:** $O(1)$.
 
 #### Python Code Snippet
 ```python

@@ -57,6 +57,9 @@ def ladder_length(beginWord: str, endWord: str, wordList: list[str]) -> int:
                     q.append((new_word, length + 1))
     return 0
 ```
+#### Time and Space Complexity
+- **Time Complexity:** $O(M^2 \times N)$, where $M$ is the word length and $N$ is the number of words. Generating neighbors takes $M \times 26$, and string operations take $O(M)$.
+- **Space Complexity:** $O(M \times N)$ for the word set and queue.
 
 ---
 
@@ -128,3 +131,6 @@ def find_ladders(beginWord: str, endWord: str, wordList: list[str]) -> list[list
 
     return results
 ```
+#### Time and Space Complexity
+- **Time Complexity:** $O(M^2 \times N)$ for BFS + DFS overhead (can be exponential in worst case due to many paths).
+- **Space Complexity:** $O(M \times N)$ for storing paths and graph structures.

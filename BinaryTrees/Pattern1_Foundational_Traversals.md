@@ -37,6 +37,10 @@ The implementation for all three traversals is elegantly handled with recursion.
     - `process(node.val)`
 The order of these three actions defines the traversal type.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the number of nodes in the tree, since every node is visited exactly once.
+- **Space Complexity:** $O(N)$ in the worst case (skewed tree) due to recursion stack depth. $O(\log N)$ in the best case (balanced tree).
+
 #### Python Code Snippet
 ```python
 class TreeNode:
@@ -81,6 +85,10 @@ Level order traversal is implemented using a queue, which is a hallmark of Bread
 5.  Loop `level_size` times: dequeue a node, add its value to `current_level`, and enqueue its children (if they exist).
 6.  Add `current_level` to the `result`.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the number of nodes, as each node is enqueued and dequeued once.
+- **Space Complexity:** $O(W)$, where $W$ is the maximum width of the tree. In the worst case (perfect binary tree), $W = N/2$, so $O(N)$.
+
 #### Python Code Snippet
 ```python
 from collections import deque
@@ -115,6 +123,10 @@ An iterative preorder traversal directly simulates recursion using a stack.
 3.  Pop a node. Add its value to `result`.
 4.  **Crucially, push the right child onto the stack first, then the left child.** A stack is LIFO, so pushing left last ensures it's processed first, maintaining the "Root, Left, Right" order.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the number of nodes.
+- **Space Complexity:** $O(H)$, where $H$ is the height of the tree, for the stack.
+
 #### Python Code Snippet
 ```python
 def preorder_traversal_iterative(root: TreeNode) -> list[int]:
@@ -145,6 +157,10 @@ Iterative inorder is more complex. We can't process a node just by popping it; w
 4.  **Visit Node:** `current` is now null. Pop a node from the stack, add its value to `result`.
 5.  **Go Right:** Set `current = popped_node.right` to explore the right subtree. The loop will then handle this new `current`.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the number of nodes.
+- **Space Complexity:** $O(H)$, where $H$ is the height of the tree, for the stack.
+
 #### Python Code Snippet
 ```python
 def inorder_traversal_iterative(root: TreeNode) -> list[int]:
@@ -174,6 +190,10 @@ This method uses a clever trick: `Postorder (L, R, Root)` is the reverse of `(Ro
 2.  While `stack1` is not empty, pop a node. Push this node onto `stack2`.
 3.  Push the popped node's left child, then its right child, to `stack1`.
 4.  After the loop, `stack2` holds the `(Root, R, L)` sequence. Pop everything from `stack2` into the final `result` list to get the correct postorder sequence.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the number of nodes.
+- **Space Complexity:** $O(N)$ for `stack2` which stores all nodes.
 
 #### Python Code Snippet
 ```python
@@ -206,6 +226,10 @@ This is the trickiest of the iterative traversals. We need to ensure we only pro
 2. Go as far left as possible, pushing nodes to the stack.
 3. Once `current` is null, `peek` at the stack top. If it has a right child that has **not** been visited yet, move `current` to that right child and continue.
 4. Otherwise, we can visit the node at the top of the stack. Pop it, add its value to the result, and update `last_visited`.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the number of nodes.
+- **Space Complexity:** $O(H)$, where $H$ is the height of the tree, for the stack.
 
 #### Python Code Snippet
 ```python

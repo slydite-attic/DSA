@@ -44,6 +44,7 @@ def ninja_training_memo(n: int, points: list[list[int]]) -> int:
 
     return solve(n - 1, 3) # Start with a dummy last activity
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(N * 4 * 3) ~ O(N). Each state `dp[day][last_activity]` is computed once.
 - **Space Complexity:** O(N * 4) for the DP table + O(N) for recursion stack.
 
@@ -69,6 +70,7 @@ def ninja_training_tab(n: int, points: list[list[int]]) -> int:
 
     return dp[n-1][3]
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(N * 4 * 3) ~ O(N).
 - **Space Complexity:** O(N * 4) for the DP table.
 
@@ -94,6 +96,7 @@ def ninja_training_optimized(n: int, points: list[list[int]]) -> int:
 
     return prev_day[3]
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(N).
 - **Space Complexity:** O(1), as the `dp` array size is constant (4).
 
@@ -138,6 +141,7 @@ def min_falling_path_memo(matrix: list[list[int]]) -> int:
         min_sum = min(min_sum, solve(n - 1, j))
     return min_sum
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(n*n).
 - **Space Complexity:** O(n*n) for DP table + O(n) for recursion stack.
 
@@ -159,6 +163,7 @@ def min_falling_path_optimized(matrix: list[list[int]]) -> int:
 
     return min(prev_row)
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(n*n).
 - **Space Complexity:** O(n).
 
@@ -204,6 +209,7 @@ def cherry_pickup_memo(grid: list[list[int]]) -> int:
 
     return solve(0, 0, cols - 1)
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(rows * cols * cols * 9) ~ O(R * C^2).
 - **Space Complexity:** O(R * C^2) for DP table + O(R) for recursion stack.
 
@@ -239,5 +245,6 @@ def cherry_pickup_optimized(grid: list[list[int]]) -> int:
 
     return front[0][cols-1]
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(R * C^2).
 - **Space Complexity:** O(C^2) for the two DP tables.

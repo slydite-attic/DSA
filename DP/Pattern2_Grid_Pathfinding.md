@@ -36,6 +36,7 @@ def unique_paths_memo(m: int, n: int) -> int:
 
     return solve(m - 1, n - 1)
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(m * n). Each state `(r, c)` is computed once.
 - **Space Complexity:** O(m * n) for the `dp` table + O(m+n) for recursion stack depth.
 
@@ -55,6 +56,7 @@ def unique_paths_tab(m: int, n: int) -> int:
 
     return dp[m-1][n-1]
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(m * n) for the nested loops.
 - **Space Complexity:** O(m * n) for the DP table.
 
@@ -79,6 +81,7 @@ def unique_paths_optimized(m: int, n: int) -> int:
 
     return prev_row[n-1]
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(m * n).
 - **Space Complexity:** O(n) for storing one row.
 *Note: This problem also has a more efficient O(min(m,n)) time combinatorial solution: `(m+n-2) choose (m-1)`.*
@@ -117,7 +120,9 @@ def unique_paths_obstacles_memo(grid: list[list[int]]) -> int:
 
     return solve(m - 1, n - 1)
 ```
-- **Time/Space Complexity:** Same as the non-obstacle version, O(m*n).
+#### Time and Space Complexity
+- **Time Complexity:** O(m * n).
+- **Space Complexity:** O(m * n) for the `dp` table + O(m+n) for recursion stack depth.
 
 ---
 #### b) Space Optimization
@@ -144,6 +149,7 @@ def unique_paths_obstacles_optimized(grid: list[list[int]]) -> int:
 
     return prev_row[n-1]
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(m * n).
 - **Space Complexity:** O(n).
 
@@ -181,7 +187,9 @@ def min_path_sum_memo(grid: list[list[int]]) -> int:
 
     return solve(m - 1, n - 1)
 ```
-- **Time/Space Complexity:** O(m*n).
+#### Time and Space Complexity
+- **Time Complexity:** O(m * n).
+- **Space Complexity:** O(m * n) for the `dp` table + O(m+n) for recursion stack depth.
 
 ---
 #### b) Space Optimization
@@ -203,6 +211,7 @@ def min_path_sum_optimized(grid: list[list[int]]) -> int:
 
     return prev_row[n-1]
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(m * n).
 - **Space Complexity:** O(n).
 
@@ -240,5 +249,6 @@ def minimum_total_triangle(triangle: list[list[int]]) -> int:
 
     return next_row[0]
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(n^2), where n is the number of rows.
 - **Space Complexity:** O(n) for storing one row.

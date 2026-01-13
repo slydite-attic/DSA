@@ -31,6 +31,10 @@ This is often preferred to avoid deep recursion.
 
 To find the **k-th largest** element, you can find the `(N-k+1)`-th smallest element or perform a reverse in-order traversal (Right, Root, Left).
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(H + k)$, where $H$ is the height of the tree. We need to reach the leftmost node ($O(H)$) and then pop $k$ elements.
+- **Space Complexity:** $O(H)$ for the stack.
+
 #### Python Code Snippet (Iterative)
 ```python
 class TreeNode:
@@ -81,6 +85,10 @@ Since an in-order traversal of a valid BST yields a sorted sequence, we can chec
 2. Keep track of the value of the previously visited node.
 3. At each current node, check if its value is strictly greater than the previous node's value. If not, the tree is not a valid BST.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the number of nodes in the tree, as we visit each node once.
+- **Space Complexity:** $O(N)$ for the recursion stack (worst case skewed tree).
+
 #### Python Code Snippet (In-order Traversal)
 ```python
 class Solution:
@@ -120,6 +128,10 @@ The solution depends on whether the given node `p` has a right subtree.
 1.  **If `p` has a right subtree:** The in-order successor is the node with the minimum value in that right subtree. To find this, we simply traverse as far left as possible from `p.right`.
 2.  **If `p` has no right subtree:** The successor is an ancestor. We must find the lowest ancestor of `p` for which `p` is in its left subtree. We can find this by traversing down from the `root` of the entire tree.
     -   While traversing towards `p`: if we move left (`p.val < current.val`), the `current` node is a potential successor. If we move right, it is not.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(H)$, where $H$ is the height of the tree.
+- **Space Complexity:** $O(1)$, as we use constant extra space for traversal.
 
 #### Python Code Snippet (Successor)
 ```python
@@ -163,6 +175,10 @@ Given the root of a BST and a target number `k`, return `true` if there exist tw
 2.  For each node with value `v`, check if `k - v` exists in a hash set.
 3.  If it exists, return `true`.
 4.  If not, add `v` to the hash set.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the number of nodes.
+- **Space Complexity:** $O(N)$ to store the hash set or the inorder traversal list.
 
 #### Python Code Snippet (Hashing)
 ```python
@@ -208,6 +224,10 @@ The core insight is that an in-order traversal of the corrupted BST will reveal 
     -   If this is the **second violation** (`first` is not `None`), it means the `current` node is the second out-of-place node. So, `last = current`.
 4.  After the traversal, if `last` is not `None`, it means the swapped nodes were non-adjacent. Swap `first` and `last`.
 5.  If `last` is `None`, it means the swapped nodes were adjacent. Swap `first` and `middle`.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the number of nodes.
+- **Space Complexity:** $O(N)$ for recursion stack (worst case). Can be optimized to $O(1)$ using Morris Traversal.
 
 #### Python Code Snippet
 ```python

@@ -31,6 +31,10 @@ We traverse the tree to find the correct empty spot for the new node. This can b
 4.  If `val > root.val`, recursively call on the right subtree: `root.right = insert_into_bst(root.right, val)`.
 5.  Return the (possibly modified) `root`.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(H)$, where $H$ is the height of the tree. In the worst case (skewed tree), $H=N$. In the average case (balanced tree), $H = \log N$.
+- **Space Complexity:** $O(H)$ for recursive approach (due to stack space). $O(1)$ for iterative approach.
+
 #### Python Code Snippet (Iterative)
 ```python
 class TreeNode:
@@ -77,6 +81,10 @@ Deletion is the most complex foundational operation. It involves finding the nod
         a. Let's use the in-order successor. Find the minimum value in the node's right subtree.
         b. Copy this successor's value into the node we want to delete.
         c. Now, the tree has a duplicate value. Recursively call the delete function on the right subtree to remove the successor node. This recursive deletion is guaranteed to fall into Case 1 or Case 2.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(H)$, where $H$ is the height of the tree.
+- **Space Complexity:** $O(H)$ due to recursion stack depth.
 
 #### Python Code Snippet
 ```python
@@ -134,6 +142,10 @@ The first element in a preorder traversal is always the root of the tree/subtree
 5.  Recursively build the left subtree. The new bounds for the left child are `(lower_bound, node.val)`.
 6.  Recursively build the right subtree. The new bounds for the right child are `(node.val, upper_bound)`.
 7.  The initial call is `build(float('-inf'), float('inf'))`.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the number of nodes in the BST, as each node is visited once.
+- **Space Complexity:** $O(N)$ for the recursion stack (in the worst case of a skewed tree).
 
 #### Python Code Snippet (Optimal O(N))
 ```python

@@ -23,6 +23,10 @@ While a hashmap can solve this in O(N) time and space, **Boyer-Moore's Voting Al
 5.  If the current `num` is different from our `candidate`, we decrement `count`. This is like a non-candidate canceling out a vote for the candidate.
 6.  The element remaining as the `candidate` at the end of the loop is the majority element. Since the problem guarantees a majority element exists, a second pass to verify its count is not strictly necessary.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the size of the array. We iterate through the array once.
+- **Space Complexity:** $O(1)$, as we use only two variables.
+
 #### Python Code Snippet
 ```python
 def majority_element_n2(nums):
@@ -67,6 +71,10 @@ This is the classic application of **Kadane's Algorithm**. It's a dynamic progra
     -   Add the current `num` to `current_sum`.
     -   Update `max_so_far = max(max_so_far, current_sum)`.
     -   If `current_sum` becomes negative, it means the subarray ending here is a "burden" to any future subarray. We are better off starting a new subarray from the next element. So, if `current_sum < 0`, we reset it to `0`.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the size of the array. We iterate through the array once.
+- **Space Complexity:** $O(1)$, as we use only a few variables.
 
 #### Python Code Snippet
 ```python
@@ -121,6 +129,10 @@ We augment the standard Kadane's algorithm by adding pointers to track the start
         -   A new potential subarray will start from the next element, so update `current_start = i + 1`.
 5.  After the loop, the subarray is `nums[start_index : end_index + 1]`.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the size of the array. We iterate through the array once.
+- **Space Complexity:** $O(1)$ (or $O(N)$ if the output subarray is considered extra space), as we use only a few variables to track indices.
+
 #### Python Code Snippet
 ```python
 def max_subarray_print(nums):
@@ -170,6 +182,10 @@ This problem is solved by a specific, multi-step algorithm.
 3.  **Find the successor:** If a pivot is found at index `i`, traverse from right to left again. Find the first element `nums[j]` that is greater than the pivot `nums[i]`. This is the pivot's successor.
 4.  **Swap:** Swap the pivot `nums[i]` with its successor `nums[j]`.
 5.  **Reverse the suffix:** Reverse the part of the array to the right of the original pivot's position (from `i + 1` to the end). This ensures the suffix is in its smallest possible order.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the size of the array. In the worst case, we scan the array three times (find pivot, find successor, reverse).
+- **Space Complexity:** $O(1)$, as we perform all operations in-place.
 
 #### Python Code Snippet
 ```python
@@ -234,6 +250,10 @@ This is an extension of Boyer-Moore's Voting Algorithm. The key insight is that 
     -   Reset `count1` and `count2` to 0.
     -   Iterate through the array again, counting the actual occurrences of `candidate1` and `candidate2`.
 4.  **Final Check:** Check if `count1 > N/3` and `count2 > N/3`. Add the qualifying candidates to the result list, ensuring not to add duplicates if `candidate1 == candidate2`.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the size of the array. We iterate through the array twice.
+- **Space Complexity:** $O(1)$, as we use a constant number of variables.
 
 #### Python Code Snippet
 ```python
@@ -306,6 +326,10 @@ This is a variation of Kadane's algorithm. The standard approach doesn't work di
     -   `max_ending_here = max(num, num * max_ending_here, num * min_ending_here)`
     -   `min_ending_here = min(num, num * temp_max, num * min_ending_here)`
     -   Update the overall `max_so_far` with the new `max_ending_here`.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the size of the array. We iterate through the array once.
+- **Space Complexity:** $O(1)$, as we use only a few variables.
 
 #### Python Code Snippet
 ```python

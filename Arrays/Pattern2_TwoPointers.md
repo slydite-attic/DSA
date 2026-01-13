@@ -25,6 +25,10 @@ This is a classic application of the "fast and slow pointer" approach.
 5. The fast pointer `j` always moves forward. The slow pointer `i` only moves when a new unique element is found.
 6. The number of unique elements is `i + 1`.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the size of the array. The fast pointer traverses the array once.
+- **Space Complexity:** $O(1)$, as we are modifying the array in-place without using extra space.
+
 #### Python Code Snippet
 ```python
 def remove_duplicates(arr):
@@ -66,6 +70,10 @@ While using a temporary array is straightforward, the "Reversal Algorithm" is an
 3. **Step 2:** Reverse the remaining `n-D` elements. (e.g., `[4, 5, 6, 7]` becomes `[7, 6, 5, 4]`).
 4. **Step 3:** Reverse the entire array. (e.g., `[3, 2, 1, 7, 6, 5, 4]` becomes `[4, 5, 6, 7, 1, 2, 3]`).
 Each reversal is a standard two-pointer operation (swapping elements from start and end, moving inwards).
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the number of elements in the array. Each element is swapped a constant number of times.
+- **Space Complexity:** $O(1)$, as the reversal is done in-place.
 
 #### Python Code Snippet
 ```python
@@ -115,6 +123,10 @@ A highly effective method uses two pointers.
 4. We then increment `j`.
 5. This process ensures that non-zero elements are moved to the front in the same relative order they appeared, because the `i` pointer always moves forward, and we only swap when `arr[i]` is non-zero.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the size of the array. We traverse the array once.
+- **Space Complexity:** $O(1)$, as we perform the swaps in-place.
+
 #### Python Code Snippet
 ```python
 def move_zeros(arr):
@@ -153,6 +165,10 @@ For sorted arrays, a two-pointer approach is very efficient.
     - If `arr1[i] > arr2[j]`, add `arr2[j]` to the union (if it's not a duplicate) and increment `j`.
     - If `arr1[i] == arr2[j]`, add one of them to the union (if it's not a duplicate) and increment both `i` and `j`.
 4. After the main loop, add any remaining elements from `arr1` or `arr2`.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N + M)$, where $N$ and $M$ are the sizes of the two arrays. We iterate through both arrays once.
+- **Space Complexity:** $O(N + M)$ to store the union list. If we don't count the output space, it's $O(1)$.
 
 #### Python Code Snippet
 ```python
@@ -215,6 +231,10 @@ This is a classic sliding window problem. The window is a subarray defined by a 
 4. If `current_sum == K`, we have a candidate subarray. Update `max_len = max(max_len, right - left + 1)`.
 5. Repeat until `right` reaches the end of the array.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the size of the array. Each element is added and removed from the window at most once.
+- **Space Complexity:** $O(1)$, as we use only a few variables.
+
 #### Python Code Snippet
 ```python
 def longest_subarray_with_sum_k(arr, k):
@@ -264,12 +284,15 @@ This is the preferred method when indices are required, as it avoids sorting.
 3. Calculate the required complement: `complement = target - num`.
 4. Check if `complement` exists in the hashmap. If so, you've found the solution. Return `[num_to_index[complement], i]`.
 5. If not, add the current `num` and its index `i` to the hashmap.
-This is O(N) time and O(N) space.
 
 **Method 2: Two Pointers (If returning values or if sorting is allowed)**
 1. This method requires the array to be sorted. If you need to return original indices, you must store them before sorting, e.g., `[(value, index), ...]`.
 2. Initialize `left = 0` and `right = len(arr) - 1`.
 3. Loop while `left < right`. If `arr[left] + arr[right]` equals the target, you've found the pair. If the sum is too small, increment `left`. If too large, decrement `right`.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$ for hashing (one pass), or $O(N \log N)$ for two pointers (due to sorting).
+- **Space Complexity:** $O(N)$ for hashing (hashmap stores up to $N$ elements), or $O(1)$ for two pointers (if sorting is in-place and output is not counted).
 
 #### Python Code Snippet (Hashing)
 ```python
@@ -314,6 +337,10 @@ This is solved efficiently using three pointers that partition the array.
     - If `arr[mid] == 1`: The element is in its correct potential place. Just increment `mid`.
     - If `arr[mid] == 2`: Swap `arr[high]` with `arr[mid]`. Decrement `high`. **Do not** increment `mid`, as the new `arr[mid]` hasn't been processed yet.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the size of the array. We process each element at most once.
+- **Space Complexity:** $O(1)$, as we perform the sorting in-place.
+
 #### Python Code Snippet
 ```python
 def sort_colors(arr):
@@ -355,6 +382,10 @@ Since relative order must be preserved, we can't just partition. A simpler appro
 2. Create a new result array. Iterate from `0` to `n/2 - 1`. In each iteration, append one element from the `pos` list and one from the `neg` list.
 
 *Note: There are O(1) space solutions but they are much more complex, involving rotations.*
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the size of the array. We iterate through the array a couple of times.
+- **Space Complexity:** $O(N)$ to store the positive and negative lists and the result.
 
 #### Python Code Snippet (O(N) space)
 ```python
@@ -401,6 +432,10 @@ This problem builds on the 2-Sum problem.
         - **Handle duplicates for `left` and `right`:** After finding a valid triplet, move `left` and `right` inward while they are pointing to duplicate values to avoid duplicate triplets.
         - If the sum is less than the target, increment `left`.
         - If the sum is greater than the target, decrement `right`.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N^2)$, where $N$ is the size of the array. Sorting takes $O(N \log N)$, and the two-pointer approach within the loop takes $O(N^2)$.
+- **Space Complexity:** $O(1)$ (or $O(N)$ depending on sorting implementation), not counting the space for the output list.
 
 #### Python Code Snippet
 ```python
@@ -459,6 +494,10 @@ This is a direct extension of the 3-Sum problem, solved by adding another layer 
     - The new target is `new_target = target - arr[i] - arr[j]`.
     - Set `left = j + 1` and `right = n - 1`.
     - Use the standard two-pointer approach to find pairs that sum to `new_target`, including duplicate handling for `left` and `right`.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N^3)$, where $N$ is the size of the array. Sorting takes $O(N \log N)$, and the triply nested structure (two loops + one two-pointer scan) dominates.
+- **Space Complexity:** $O(1)$ (or $O(N)$), not counting the output space.
 
 #### Python Code Snippet
 ```python
@@ -526,6 +565,10 @@ This is a complex problem. The "Gap Algorithm" (based on Shell Sort) is one of t
 2. The initial `gap` is `ceil((n + m) / 2)`.
 3. The algorithm proceeds in a loop, reducing the `gap` by half in each iteration (`gap = ceil(gap / 2)`), until `gap` is 0.
 4. Inside the loop, use two pointers to traverse the conceptual array and swap elements if out of order. The pointer logic is complex to handle moving between `arr1` and `arr2`.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N \cdot M)$ for the insertion sort-based approach, or $O((N+M) \log (N+M))$ for the Gap Algorithm.
+- **Space Complexity:** $O(1)$, as we merge in-place without using extra space (other than a few variables).
 
 #### Python Code Snippet (Insertion-based)
 ```python

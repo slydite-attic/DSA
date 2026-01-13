@@ -53,6 +53,9 @@ def oranges_rotting(grid: list[list[int]]) -> int:
 
     return max_time if fresh_oranges == 0 else -1
 ```
+#### Time and Space Complexity
+- **Time Complexity:** $O(M \times N)$, as each cell is processed at most once.
+- **Space Complexity:** $O(M \times N)$ for the queue in the worst case (e.g., all rotten oranges).
 
 ---
 
@@ -95,6 +98,9 @@ def update_matrix(mat: list[list[int]]) -> list[list[int]]:
                 q.append((nr, nc))
     return dist
 ```
+#### Time and Space Complexity
+- **Time Complexity:** $O(M \times N)$, as each cell is enqueued and dequeued at most once.
+- **Space Complexity:** $O(M \times N)$ for the distance matrix and queue.
 
 ---
 
@@ -145,6 +151,9 @@ def num_enclaves(grid: list[list[int]]) -> int:
 
     return enclave_count
 ```
+#### Time and Space Complexity
+- **Time Complexity:** $O(M \times N)$.
+- **Space Complexity:** $O(M \times N)$ for the visited array and queue.
 
 ---
 
@@ -183,6 +192,9 @@ def has_cycle_undirected_bfs(n: int, adj: dict) -> bool:
                         return True # Cycle detected
     return False
 ```
+#### Time and Space Complexity
+- **Time Complexity:** $O(V + E)$.
+- **Space Complexity:** $O(V)$ for the visited array and queue.
 
 ---
 
@@ -223,3 +235,6 @@ def is_bipartite_bfs(n: int, adj: dict) -> bool:
                         return False
     return True
 ```
+#### Time and Space Complexity
+- **Time Complexity:** $O(V + E)$.
+- **Space Complexity:** $O(V)$ for the color map and queue.

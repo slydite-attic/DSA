@@ -42,6 +42,7 @@ def length_of_lis_memo(nums: list[int]) -> int:
 
     return solve(0, -1) # Start the recursion from the first element with no previous element.
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(n^2). Each state `dp[i][j]` is computed once.
 - **Space Complexity:** O(n^2) for DP table + O(n) for recursion stack.
 
@@ -62,6 +63,7 @@ def length_of_lis_tab(nums: list[int]) -> int:
 
     return max(dp) # The result is the maximum value in the DP array.
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(n^2) for the nested loops.
 - **Space Complexity:** O(n) for the DP array.
 
@@ -81,6 +83,7 @@ def length_of_lis_optimized(nums: list[int]) -> int:
             sub[idx] = num # to form a new subsequence of the same length but with a smaller tail.
     return len(sub) # The length of 'sub' is the length of the LIS.
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(n log n). The loop runs n times, and each binary search (`bisect_left`) takes O(log n).
 - **Space Complexity:** O(n) for the `sub` array.
 
@@ -125,6 +128,7 @@ def print_lis(nums: list[int]) -> list[int]:
 
     return lis[::-1] # Reverse the list to get the correct order.
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(n^2).
 - **Space Complexity:** O(n).
 
@@ -170,6 +174,7 @@ def largest_divisible_subset(nums: list[int]) -> list[int]:
 
     return lds[::-1] # Reverse to get the correct order.
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(n^2).
 - **Space Complexity:** O(n).
 
@@ -206,6 +211,7 @@ def longest_str_chain(words: list[str]) -> int:
 
     return max_chain # Return the final result.
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(N * L^2), where N is the number of words and L is the max word length. Sorting is O(N log N).
 - **Space Complexity:** O(N * L) to store the DP map.
 
@@ -252,6 +258,7 @@ def longest_bitonic_subsequence(nums: list[int]) -> int:
 
     return max_val # Return the overall maximum length found.
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(n^2) due to the two nested loops for calculating `dp1` and `dp2`.
 - **Space Complexity:** O(n) for the two DP arrays.
 
@@ -300,5 +307,6 @@ def find_number_of_lis(nums: list[int]) -> int:
 
     return result # Return the total count.
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(n^2).
 - **Space Complexity:** O(n).

@@ -19,9 +19,11 @@ A Binary Search Tree is a node-based binary tree data structure which has the fo
 
 These properties ensure that an in-order traversal of a BST will yield its values in sorted order.
 
-**Time Complexity:**
--   **Balanced BST:** In a balanced BST (like an AVL or Red-Black Tree), the height `H` is proportional to `log(N)`, where `N` is the number of nodes. Operations like search, insert, and delete have an average and worst-case time complexity of **O(log N)**.
--   **Unbalanced BST:** In the worst case (e.g., a skewed tree where each node has only one child), the tree degenerates into a linked list. The height `H` becomes `N`. Operations in this case have a worst-case time complexity of **O(N)**.
+#### Time and Space Complexity
+- **Time Complexity:**
+    -   **Balanced BST:** In a balanced BST (like an AVL or Red-Black Tree), the height `H` is proportional to `log(N)`, where `N` is the number of nodes. Operations like search, insert, and delete have an average and worst-case time complexity of **O(log N)**.
+    -   **Unbalanced BST:** In the worst case (e.g., a skewed tree where each node has only one child), the tree degenerates into a linked list. The height `H` becomes `N`. Operations in this case have a worst-case time complexity of **O(N)**.
+- **Space Complexity:** $O(H)$, where $H$ is the height of the tree, for recursive operations (due to stack space). Iterative operations use $O(1)$ auxiliary space.
 
 #### Related Problems
 - All other problems in this topic.
@@ -46,6 +48,10 @@ The search operation efficiently uses the BST property to discard half of the tr
     - If `target < current.val`, the target must be in the left subtree. Move to the left child: `current = current.left`.
     - If `target > current.val`, the target must be in the right subtree. Move to the right child: `current = current.right`.
 4.  Repeat this process. If `current` becomes `null`, it means the value is not in the tree.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(H)$, where $H$ is the height of the tree. In the worst case (skewed tree), $H=N$. In the average case (balanced tree), $H = \log N$.
+- **Space Complexity:** $O(1)$ for the iterative approach.
 
 #### Python Code Snippet (Iterative)
 ```python
@@ -79,6 +85,10 @@ Given the root of a BST, find the minimum and maximum value nodes in the tree.
 -   **Minimum Value:** The smallest value is always the terminal node of the path that goes left from the root as much as possible. To find it, start at the root and repeatedly move to the left child until you reach a node with no left child.
 -   **Maximum Value:** Symmetrically, the largest value is the rightmost node. To find it, start at the root and repeatedly move to the right child until you reach a node with no right child.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(H)$, where $H$ is the height of the tree.
+- **Space Complexity:** $O(1)$ for the iterative approach.
+
 #### Python Code Snippet
 ```python
 def find_min(root: TreeNode) -> TreeNode:
@@ -111,6 +121,10 @@ This is a modified search. We traverse the tree, keeping track of the best possi
 3.  If `key < current.val`, the current node is a *potential* answer. Record it (`ceil = current.val`) and move left to find an even better (smaller) ceil.
 4.  If `key > current.val`, the current node is too small. The ceil must be in the right subtree.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(H)$, where $H$ is the height of the tree.
+- **Space Complexity:** $O(1)$ for the iterative approach.
+
 #### Python Code Snippet
 ```python
 def find_ceil(root: TreeNode, key: int) -> int:
@@ -142,6 +156,10 @@ The logic is symmetric to finding the ceil.
 3. If `key > current.val`, the current node is a *potential* answer. Record it (`floor = current.val`) and move right to find an even better (larger) floor.
 4. If `key < current.val`, the current node is too large. The floor must be in the left subtree.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(H)$, where $H$ is the height of the tree.
+- **Space Complexity:** $O(1)$ for the iterative approach.
+
 #### Python Code Snippet
 ```python
 def find_floor(root: TreeNode, key: int) -> int:
@@ -172,6 +190,10 @@ We traverse the tree to find the correct empty spot for the new node.
 2. Loop until we find an empty spot:
    - If `val < current.val`, the new node belongs in the left subtree. If `current.left` is null, insert it there. Otherwise, move `current = current.left`.
    - If `val > current.val`, the new node belongs in the right subtree. If `current.right` is null, insert it there. Otherwise, move `current = current.right`.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(H)$, where $H$ is the height of the tree.
+- **Space Complexity:** $O(1)$ for the iterative approach.
 
 #### Python Code Snippet
 ```python
@@ -211,6 +233,10 @@ This is the most complex foundational operation. First, find the node to delete.
     - Find the in-order successor (the minimum value in the right subtree).
     - Copy the successor's value to the node we want to delete.
     - Now, the problem is reduced to deleting the successor node from the right subtree (which will fall into Case 1 or 2).
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(H)$, where $H$ is the height of the tree.
+- **Space Complexity:** $O(H)$ due to recursion stack depth.
 
 #### Python Code Snippet
 ```python
@@ -261,6 +287,10 @@ Unlike in a regular binary tree, we can find the LCA in a BST very efficiently i
     -   If both `p.val` and `q.val` are greater than `current.val`, the LCA must be in the right subtree. Move right.
     -   If both `p.val` and `q.val` are less than `current.val`, the LCA must be in the left subtree. Move left.
     -   If neither of the above is true, it means the `current` node is the "split point" where the paths to `p` and `q` diverge. This node is the LCA.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(H)$, where $H$ is the height of the tree.
+- **Space Complexity:** $O(1)$ for the iterative approach.
 
 #### Python Code Snippet
 ```python

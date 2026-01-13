@@ -24,6 +24,10 @@ The logic is to maintain a variable, `max_element`, that stores the largest elem
 4. If `arr[i]` is greater than `max_element`, update `max_element` to `arr[i]`.
 5. After the loop completes, `max_element` will hold the largest value in the array.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the number of elements in the array. We traverse the array exactly once.
+- **Space Complexity:** $O(1)$, as we only use a single variable `max_element` for storage.
+
 #### Python Code Snippet
 ```python
 def find_largest_element(arr):
@@ -64,6 +68,10 @@ We can find the second largest element in a single pass. The idea is to maintain
     - If `num` is greater than `largest`, it means we have found a new largest element. We update `second_largest` to the old `largest`, and `largest` to `num`.
     - Else, if `num` is smaller than `largest` but greater than `second_largest`, it becomes the new `second_largest`.
 4. After the loop, if `second_largest` is still `float('-inf')`, it means no second largest element was found.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the size of the array. We iterate through the array once.
+- **Space Complexity:** $O(1)$, as we only use two variables `largest` and `second_largest`.
 
 #### Python Code Snippet
 ```python
@@ -115,6 +123,10 @@ This can be checked with a single pass through the array.
 3. If you find any pair where `arr[i] > arr[i+1]`, the array is not sorted, and you can immediately return `False`.
 4. If the loop completes without finding such a pair, the array is sorted, so you return `True`.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the size of the array. In the worst case, we traverse the entire array.
+- **Space Complexity:** $O(1)$, as no extra space is used.
+
 #### Python Code Snippet
 ```python
 def is_sorted(arr):
@@ -152,6 +164,10 @@ This is a simple in-place manipulation.
 2. Iterate from the first element to the second-to-last element (`i = 0` to `n-2`).
 3. In each step, shift the element at `i+1` to position `i`. That is, `arr[i] = arr[i+1]`.
 4. After the loop, assign the value from the temporary variable to the last element of the array (`arr[n-1]`).
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the number of elements in the array. We shift $N-1$ elements.
+- **Space Complexity:** $O(1)$, as we perform the rotation in-place using only one temporary variable.
 
 #### Python Code Snippet
 ```python
@@ -195,6 +211,10 @@ This is the most straightforward search algorithm.
 3. If a match is found, return the current index `i`.
 4. If the loop completes without finding the target, it means the element is not in the array. Return -1.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the size of the array. In the worst case, we iterate through the entire array.
+- **Space Complexity:** $O(1)$, as no extra data structures are used.
+
 #### Python Code Snippet
 ```python
 def linear_search(arr, target):
@@ -236,6 +256,10 @@ There are two common and efficient approaches.
 2. XOR all numbers from 1 to `N`. Let this be `xor_all_N`.
 3. XOR all elements in the given array. Let this be `xor_array`.
 4. The result of `xor_all_N ^ xor_array` will be the missing number, as all other numbers will appear twice in the combined set and cancel each other out.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the given range. Both the summation and XOR methods iterate roughly $N$ times.
+- **Space Complexity:** $O(1)$, as we only use a few variables for storage.
 
 #### Python Code Snippet (Summation)
 ```python
@@ -289,6 +313,10 @@ This can be solved in a single pass.
     - Reset `current_count` to `0`.
 5. After the loop, there's a final check: `max_count = max(max_count, current_count)`. This is crucial for cases where the longest streak of 1s is at the very end of the array.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the number of elements in the array. We iterate through the array once.
+- **Space Complexity:** $O(1)$, as we use only two variables to track counts.
+
 #### Python Code Snippet
 ```python
 def max_consecutive_ones(arr):
@@ -332,6 +360,10 @@ This problem has a beautiful and highly efficient solution using the bitwise XOR
 3. In each iteration, XOR `result` with the current number: `result ^= num`.
 4. Because all duplicate numbers will cancel each other out (`num ^ num = 0`), the final value of `result` will be the one number that did not have a pair.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the size of the array. We iterate through the array once.
+- **Space Complexity:** $O(1)$, as we only use a single variable for the result.
+
 #### Python Code Snippet
 ```python
 def find_single_number(arr):
@@ -373,6 +405,10 @@ This is a classic problem that can be solved in a single pass. The key is to kee
     - Otherwise, calculate the potential profit if we were to sell today: `profit = price - min_price`.
     - If this `profit` is greater than `max_profit`, update `max_profit`.
 5. After the loop, `max_profit` holds the answer.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the number of days (prices). We make a single pass through the prices.
+- **Space Complexity:** $O(1)$, as we only store the minimum price and maximum profit.
 
 #### Python Code Snippet
 ```python
@@ -423,6 +459,10 @@ A naive solution would be O(N^2) (for each element, scan its right side). The op
     - If it's a leader, add `arr[i]` to the `leaders` list.
     - Update `max_from_right = arr[i]` to reflect the new maximum.
 6. Since we traversed from the right, the `leaders` list is in reverse order of their appearance in the original array. Reverse it before returning.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the number of elements in the array. We scan the array once.
+- **Space Complexity:** $O(N)$ to store the result, or $O(1)$ if we exclude the space for the output list.
 
 #### Python Code Snippet
 ```python

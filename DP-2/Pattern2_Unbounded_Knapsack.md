@@ -39,6 +39,7 @@ def unbounded_knapsack_memo(W, values, weights):
 
     return solve(n - 1, W) # Start the recursion from the last item with the full knapsack capacity.
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(n * W).
 - **Space Complexity:** O(n * W) for DP table + O(n) for recursion stack.
 
@@ -63,6 +64,7 @@ def unbounded_knapsack_tab(W, values, weights):
 
     return dp[n-1][W] # The result is in the last row and column of the DP table.
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(n * W).
 - **Space Complexity:** O(n * W).
 
@@ -82,6 +84,7 @@ def unbounded_knapsack_optimized(W, values, weights):
 
     return dp[W] # The result is the value stored for the full capacity W.
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(n * W).
 - **Space Complexity:** O(W).
 
@@ -120,6 +123,7 @@ def coin_change_min_memo(coins: list[int], amount: int) -> int:
     result = solve(amount) # Start the recursion with the initial amount.
     return result if result != float('inf') else -1 # If a solution was found, return it; otherwise, return -1.
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(amount * len(coins)).
 - **Space Complexity:** O(amount) for DP table + O(amount) for recursion stack.
 
@@ -137,6 +141,7 @@ def coin_change_min_tab(coins: list[int], amount: int) -> int:
 
     return dp[amount] if dp[amount] != float('inf') else -1 # Return the result for the target amount, or -1 if not possible.
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(amount * len(coins)).
 - **Space Complexity:** O(amount).
 
@@ -168,6 +173,7 @@ def coin_change_combinations_tab(amount: int, coins: list[int]) -> int:
 
     return dp[amount] # The result is the number of combinations for the target amount.
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(amount * len(coins)).
 - **Space Complexity:** O(amount).
 
@@ -199,5 +205,6 @@ def rod_cutting_tab(prices: list[int], n: int) -> int:
 
     return dp[n] # The result is the maximum profit for a rod of length n.
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(n * len(prices)).
 - **Space Complexity:** O(n).

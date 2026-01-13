@@ -36,6 +36,10 @@ This is a modification of the standard Level Order Traversal. We use a queue for
 7.  **Flip the flag:** `left_to_right = not left_to_right`.
 8.  Return the `result`.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the number of nodes. Each node is processed once.
+- **Space Complexity:** $O(W)$, where $W$ is the max width of the tree, for the queue and `current_level` deque.
+
 #### Python Code Snippet
 ```python
 # Definition for a binary tree node.
@@ -124,6 +128,10 @@ This problem is solved using a level-order traversal (BFS). The key is to assign
     e. Enqueue the children with their calculated indices: `(node.left, 2*index + 1)` and `(node.right, 2*index + 2)`.
     f. After the level is processed, calculate the width: `max_width = max(max_width, level_end_index - level_start_index + 1)`.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the number of nodes.
+- **Space Complexity:** $O(W)$, where $W$ is the maximum width of the tree, for the queue.
+
 #### Python Code Snippet
 ```python
 from collections import deque
@@ -191,6 +199,10 @@ This problem is solved by breaking it down into three distinct parts and combini
 3.  **Add the Right Boundary (in reverse):** Traverse down the right side of the tree. Store the node values in a temporary list. After the traversal is complete, add the values from the temporary list to the result in reverse order. Again, only add nodes that are **not leaves**.
 
 The root is handled as part of the initial call.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, as we visit each node a constant number of times (at most 3 times, once for each phase).
+- **Space Complexity:** $O(H)$ for the recursion stack during leaf traversal and to store the right boundary before reversing. $H$ is the height of the tree.
 
 #### Python Code Snippet
 ```python
@@ -294,6 +306,10 @@ This problem requires us to know the `(column, row)` coordinate of each node. We
 10. For each column, sort the list of `(row, value)` tuples. This ensures top-to-bottom order, and for ties in row, it sorts by value as required.
 11. Extract just the node values and build the final result.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N \log N)$. The traversal is $O(N)$, but sorting the nodes in each column can take $O(N \log N)$ in the worst case (e.g., all nodes in one vertical line).
+- **Space Complexity:** $O(N)$ to store the nodes in the map and the queue.
+
 #### Python Code Snippet
 ```python
 # Definition for a binary tree node.
@@ -376,6 +392,10 @@ This problem is a simplification of the Vertical Order Traversal. We still need 
 5.  After the traversal, the `top_view_map` contains the top-most node for each column.
 6.  Sort the map by its keys (the column indices) and extract the values to get the final left-to-right ordered result.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N \log N)$ due to sorting the columns at the end. The traversal itself is $O(N)$.
+- **Space Complexity:** $O(N)$ to store the map and the queue.
+
 #### Python Code Snippet
 ```python
 # Definition for a binary tree node.
@@ -452,6 +472,10 @@ The logic is nearly identical to the Top View problem. We use a level-order (BFS
     c. Enqueue the children: `(node.left, col - 1)` and `(node.right, col + 1)`.
 5.  After the traversal, the `bottom_view_map` contains the bottom-most node for each column.
 6.  Sort the map by its keys (the column indices) and extract the values to get the final left-to-right ordered result.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N \log N)$ due to sorting the columns at the end. The traversal itself is $O(N)$.
+- **Space Complexity:** $O(N)$ to store the map and the queue.
 
 #### Python Code Snippet
 ```python
@@ -538,6 +562,10 @@ This is a clever approach that uses a reverse preorder traversal (`Root, Right, 
     b. **Check level:** If the current `level` is equal to the current size of the `result` list, it means this is the first time we are visiting this level. Since we are traversing `Root, Right, Left`, the first node we see at any level is the rightmost one. Add `node.val` to `result`.
     c. Recurse on the right child: `dfs(node.right, level + 1)`.
     d. Recurse on the left child: `dfs(node.left, level + 1)`.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the number of nodes.
+- **Space Complexity:** $O(H)$ for recursion stack (DFS) or $O(W)$ for queue (BFS).
 
 #### Python Code Snippet (Recursive DFS):
 ```python

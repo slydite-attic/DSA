@@ -43,6 +43,7 @@ def mcm_memo(arr: list[int]) -> int:
 
     return solve(1, n - 1) # Solve for the entire chain of matrices from 1 to n-1.
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(n^3). There are O(n^2) states, and each state takes O(n) time for the loop over `k`.
 - **Space Complexity:** O(n^2) for DP table + O(n) for recursion stack.
 
@@ -65,6 +66,7 @@ def mcm_tab(arr: list[int]) -> int:
 
     return dp[1][n-1] # The result is the min cost for the entire chain from matrix 1 to n-1.
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(n^3).
 - **Space Complexity:** O(n^2).
 
@@ -109,7 +111,9 @@ def min_cost_cut_stick_memo(n: int, cuts: list[int]) -> int:
 
     return solve(0, m - 1) # Solve for the entire stick from 0 to n.
 ```
-- **Time/Space Complexity:** O(m^3), where m is the number of cuts.
+#### Time and Space Complexity
+- **Time Complexity:** O(m^3), where m is the number of cuts.
+- **Space Complexity:** O(m^2) for DP table.
 
 ---
 #### b) Tabulation (Bottom-Up)
@@ -132,7 +136,9 @@ def min_cost_cut_stick_tab(n: int, cuts: list[int]) -> int:
 
     return dp[0][m-1] # The result is the min cost for the whole stick (from cuts[0] to cuts[m-1]).
 ```
-- **Time/Space Complexity:** O(m^3).
+#### Time and Space Complexity
+- **Time Complexity:** O(m^3).
+- **Space Complexity:** O(m^2).
 
 ---
 
@@ -174,7 +180,9 @@ def max_coins_memo(nums: list[int]) -> int:
 
     return solve(0, n - 1) # Solve for the entire range of balloons.
 ```
-- **Time/Space Complexity:** O(n^3).
+#### Time and Space Complexity
+- **Time Complexity:** O(n^3).
+- **Space Complexity:** O(n^2) for DP table.
 
 ---
 #### b) Tabulation (Bottom-Up)
@@ -196,7 +204,9 @@ def max_coins_tab(nums: list[int]) -> int:
 
     return dp[0][n-1] # The result is the max coins for the entire range.
 ```
-- **Time/Space Complexity:** O(n^3).
+#### Time and Space Complexity
+- **Time Complexity:** O(n^3).
+- **Space Complexity:** O(n^2) for DP table.
 
 ---
 
@@ -238,6 +248,7 @@ def max_sum_after_partitioning_memo(arr: list[int], k: int) -> int:
 
     return solve(0) # Start the process from the beginning of the array.
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(n * k).
 - **Space Complexity:** O(n) for DP table + O(n) for recursion stack.
 
@@ -261,5 +272,6 @@ def max_sum_after_partitioning_tab(arr: list[int], k: int) -> int:
 
     return dp[n] # The result is the max sum for the entire array.
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(n * k).
 - **Space Complexity:** O(n).

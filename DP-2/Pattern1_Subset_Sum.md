@@ -42,6 +42,7 @@ def subset_sum_memo(nums: list[int], k: int) -> bool:
 
     return solve(n - 1, k) # Start the recursion from the last element with the initial target sum.
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(n * k). Each state `dp[i][j]` is computed once.
 - **Space Complexity:** O(n * k) for the DP table + O(n) for recursion stack.
 
@@ -69,6 +70,7 @@ def subset_sum_tab(nums: list[int], k: int) -> bool:
 
     return dp[n-1][k] # Return the result for the last element and the initial target sum.
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(n * k).
 - **Space Complexity:** O(n * k).
 
@@ -93,6 +95,7 @@ def subset_sum_optimized(nums: list[int], k: int) -> bool:
 
     return prev_row[k] # Return the result for the initial target sum.
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(n * k).
 - **Space Complexity:** O(k).
 
@@ -119,6 +122,7 @@ def can_partition(nums: list[int]) -> bool:
 
     return subset_sum_optimized(nums, total_sum // 2) # The problem is now reduced to finding if a subset sums up to half of the total sum.
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(n * total_sum).
 - **Space Complexity:** O(total_sum).
 
@@ -159,6 +163,7 @@ def count_partitions_with_diff(nums: list[int], diff: int) -> int:
 
     return dp[target] # The result is the number of ways to form the target sum.
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(n * target).
 - **Space Complexity:** O(target).
 - **Related Problem:** The **Target Sum** problem is an identical variation.

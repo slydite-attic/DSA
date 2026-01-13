@@ -28,6 +28,10 @@ A straightforward and practical approach involves breaking the problem down into
 
 This approach is easy to reason about but has a space complexity of O(N+M) to store the lists.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(M + N)$, where $M$ and $N$ are the number of nodes in each tree.
+- **Space Complexity:** $O(M + N)$ to store the lists and the recursion stack.
+
 #### Python Code Snippet
 ```python
 class TreeNode:
@@ -114,6 +118,10 @@ This is a classic "DP on Trees" problem. A simple top-down approach of checking 
         -   `current.val` is less than the `min_val` from the right child's info.
     c. **If it is a valid BST:** The new size is `1 + left_info.size + right_info.size`. Update a global `max_size` tracker. Return the new, combined info bundle upwards.
     d. **If it is not a valid BST:** The chain is broken. Return info indicating this (e.g., `is_bst=False`, `size=...`) so that all ancestors also know they cannot form a BST with this subtree.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the number of nodes in the tree. We visit each node once.
+- **Space Complexity:** $O(N)$ for the recursion stack in the worst case (skewed tree).
 
 #### Python Code Snippet
 ```python

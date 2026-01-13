@@ -47,6 +47,9 @@ def bfs_shortest_path(adj: list[list[int]], src: int, n: int) -> list[int]:
 
     return distance
 ```
+#### Time and Space Complexity
+- **Time Complexity:** $O(V + E)$ where $V$ is vertices and $E$ is edges.
+- **Space Complexity:** $O(V)$ for the queue and distance array.
 
 ---
 
@@ -92,6 +95,9 @@ def dijkstra(adj: list[list[tuple[int, int]]], src: int, n: int) -> list[int]:
 
     return dist
 ```
+#### Time and Space Complexity
+- **Time Complexity:** $O(E \log V)$ using a binary heap.
+- **Space Complexity:** $O(V + E)$ to store the graph and priority queue.
 - **Common Applications**: Network Delay Time, Path with Minimum Effort, Number of Ways to Arrive at Destination (with modifications).
 
 ---
@@ -131,6 +137,9 @@ def bellman_ford(edges: list[tuple[int, int, int]], src: int, n: int) -> list[in
 
     return dist
 ```
+#### Time and Space Complexity
+- **Time Complexity:** $O(V \times E)$.
+- **Space Complexity:** $O(V)$ for the distance array.
 - **Common Applications**: Cheapest Flights Within K Stops (run relaxation loop `K+1` times instead of `V-1`).
 
 ---
@@ -167,6 +176,9 @@ def shortest_path_dag(adj: list[list[tuple[int, int]]], src: int, n: int) -> lis
 
     return dist
 ```
+#### Time and Space Complexity
+- **Time Complexity:** $O(V + E)$. Topological sort takes $O(V+E)$, and edge relaxation also takes $O(V+E)$.
+- **Space Complexity:** $O(V)$ for the distance array and topological order.
 
 ---
 
@@ -247,5 +259,8 @@ def minimum_steps(arr: list[int], start: int, end: int) -> int:
 
     return -1
 ```
+#### Time and Space Complexity
+- **Time Complexity:** $O(V^3)$.
+- **Space Complexity:** $O(V^2)$ for the distance matrix.
 ```
 - **Common Applications**: Find the City With the Smallest Number of Neighbors at a Threshold Distance. After running Floyd-Warshall, you can easily check the distance from any city to any other city.

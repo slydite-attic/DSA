@@ -43,6 +43,9 @@ def topo_sort_dfs(V: int, adj: dict) -> list[int]:
 
     return stack[::-1] # Reverse the stack to get the correct order
 ```
+#### Time and Space Complexity
+- **Time Complexity:** $O(V + E)$ for the standard DFS traversal.
+- **Space Complexity:** $O(V)$ for the recursion stack and visited array.
 
 ---
 
@@ -88,6 +91,9 @@ def topo_sort_kahns(V: int, adj: dict) -> list[int]:
     else:
         return [] # Cycle detected
 ```
+#### Time and Space Complexity
+- **Time Complexity:** $O(V + E)$, as we process each vertex and edge once.
+- **Space Complexity:** $O(V)$ for the in-degree array and queue.
 
 ---
 
@@ -126,6 +132,9 @@ def can_finish(numCourses: int, prerequisites: list[list[int]]) -> bool:
 
     return count == numCourses
 ```
+#### Time and Space Complexity
+- **Time Complexity:** $O(V + E)$, where $V$ is `numCourses` and $E$ is the number of `prerequisites`.
+- **Space Complexity:** $O(V + E)$ for the graph and in-degree array.
 
 ---
 
@@ -163,6 +172,9 @@ def find_order(numCourses: int, prerequisites: list[list[int]]) -> list[int]:
 
     return topo_order if len(topo_order) == numCourses else []
 ```
+#### Time and Space Complexity
+- **Time Complexity:** $O(V + E)$.
+- **Space Complexity:** $O(V + E)$ for the graph and in-degree array.
 
 ---
 
@@ -203,6 +215,9 @@ def eventual_safe_nodes(graph: list[list[int]]) -> list[int]:
 
     return sorted(safe_nodes)
 ```
+#### Time and Space Complexity
+- **Time Complexity:** $O(V + E)$ to reverse the graph and run topological sort.
+- **Space Complexity:** $O(V + E)$ for the reversed graph.
 
 ---
 
@@ -252,3 +267,6 @@ def alien_order(words: list[str]) -> str:
 
     return "".join(res) if len(res) == len(in_degree) else ""
 ```
+#### Time and Space Complexity
+- **Time Complexity:** $O(C)$, where $C$ is the total number of characters in all words (for building the graph).
+- **Space Complexity:** $O(U + \min(U^2, N))$, where $U$ is the number of unique characters and $N$ is the number of words.

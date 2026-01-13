@@ -1,0 +1,68 @@
+# Temporary Progress
+
+- [x] ./Arrays/Pattern1_Traversal.md
+- [x] ./Arrays/Pattern2_TwoPointers.md
+- [x] ./Arrays/Pattern3_Hashing.md
+- [x] ./Arrays/Pattern4_FamousAlgos.md
+- [x] ./Arrays/Pattern5_Matrix.md
+- [x] ./Arrays/Pattern6_Sorting.md
+- [ ] ./BinarySearch/Pattern1_Foundational.md
+- [ ] ./BinarySearch/Pattern2_UnconventionallySorted.md
+- [ ] ./BinarySearch/Pattern3_BS_on_Answers.md
+- [ ] ./BinarySearch/Pattern4_BS_on_2D_Matrices.md
+- [ ] ./BinarySearch/Pattern5_Advanced.md
+- [ ] ./BinarySearchTrees/Pattern1_Foundational.md
+- [ ] ./BinarySearchTrees/Pattern2_Modification.md
+- [ ] ./BinarySearchTrees/Pattern3_Inorder.md
+- [ ] ./BinarySearchTrees/Pattern4_Advanced.md
+- [ ] ./BinaryTrees/Pattern1_Foundational_Traversals.md
+- [ ] ./BinaryTrees/Pattern2_Tree_Views.md
+- [ ] ./BinaryTrees/Pattern3_Recursive_Properties_Path_Sums.md
+- [ ] ./BinaryTrees/Pattern4_Pathfinding_Ancestors.md
+- [ ] ./BinaryTrees/Pattern5_Tree_Construction_Manipulation.md
+- [ ] ./BinaryTrees/Pattern6_Advanced_In-Place_Traversals.md
+- [ ] ./DP-2/Pattern1_Subset_Sum.md
+- [ ] ./DP-2/Pattern2_Unbounded_Knapsack.md
+- [ ] ./DP-2/Pattern3_LCS_Variations.md
+- [ ] ./DP-2/Pattern4_Advanced_String_DP.md
+- [ ] ./DP-2/Pattern5_DP_on_Stocks.md
+- [ ] ./DP-2/Pattern6_Greedy_Approach.md
+- [ ] ./DP-3/Pattern1_DP_on_LIS.md
+- [ ] ./DP-3/Pattern2_Partition_DP_MCM.md
+- [ ] ./DP-3/Pattern3_DP_on_Squares.md
+- [ ] ./DP/Pattern1_1D_DP_Fundamentals.md
+- [ ] ./DP/Pattern2_Grid_Pathfinding.md
+- [ ] ./DP/Pattern3_Grid_Complex_State.md
+- [ ] ./Graphs/Pattern1_Graph_Foundations.md
+- [ ] ./Graphs/Pattern2_DFS_Applications.md
+- [ ] ./Graphs/Pattern3_BFS_Applications.md
+- [ ] ./Graphs/Pattern4_Topological_Sort.md
+- [ ] ./Graphs/Pattern5_Shortest_Path_BFS.md
+- [ ] ./Heaps/Pattern1_Heap_Fundamentals.md
+- [ ] ./Heaps/Pattern2_Top_K_Median_Frequency.md
+- [ ] ./Heaps/Pattern3_Greedy_Merging.md
+- [ ] ./LinkedList/Pattern1_Basic_Singly_LL_Operations.md
+- [ ] ./LinkedList/Pattern2_Basic_Doubly_LL_Operations.md
+- [ ] ./LinkedList/Pattern3_Two_Pointers.md
+- [ ] ./LinkedList/Pattern4_Reversal_and_Rearrangement.md
+- [ ] ./LinkedList/Pattern5_Advanced_and_Complex_Problems.md
+- [ ] ./Recursion/Pattern1_Direct_Divide_and_Conquer.md
+- [ ] ./Recursion/Pattern2_Subset_Backtracking.md
+- [ ] ./Recursion/Pattern3_Permutation_Pathfinding_Backtracking.md
+- [ ] ./SlidingWindowTwoPointer/Pattern1_VariableWindow_FindLength.md
+- [ ] ./SlidingWindowTwoPointer/Pattern2_VariableWindow_CountSubarrays.md
+- [ ] ./SlidingWindowTwoPointer/Pattern3_TwoPointers_NonWindow.md
+- [ ] ./StackAndQueue/Pattern1_Basic_Implementation.md
+- [ ] ./StackAndQueue/Pattern2_Implementation_with_Other_DS.md
+- [ ] ./StackAndQueue/Pattern3_Classic_Stack_Applications.md
+- [ ] ./StackAndQueue/Pattern4_Monotonic_Stack.md
+- [ ] ./StackAndQueue/Pattern5_Monotonic_Queue.md
+- [ ] ./StackAndQueue/Pattern6_Advanced_DS_Design.md
+- [ ] ./Strings/Pattern1_Basic_String_Manipulations.md
+- [ ] ./Strings/Pattern2_Substring_and_Palindrome_Problems.md
+- [ ] ./Strings/Pattern3_Character_Frequency_and_Mappings.md
+- [ ] ./Strings/Pattern4_Advanced_Parsing_and_Special_Cases.md
+- [ ] ./graphs2/Pattern1_Shortest_Path.md
+- [ ] ./graphs2/Pattern2_MST.md
+- [ ] ./graphs2/Pattern3_DSU.md
+- [ ] ./graphs2/Pattern4_Advanced_Algos.md

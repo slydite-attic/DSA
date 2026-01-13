@@ -53,6 +53,7 @@ def climb_stairs_memo(n: int) -> int:
 
     return solve(n)
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(n). Each state `dp[i]` is computed only once.
 - **Space Complexity:** O(n) for the `dp` array + O(n) for the recursion stack depth.
 
@@ -73,6 +74,7 @@ def climb_stairs_tab(n: int) -> int:
 
     return dp[n]
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(n) due to the single loop.
 - **Space Complexity:** O(n) for the `dp` array.
 
@@ -95,6 +97,7 @@ def climb_stairs_optimized(n: int) -> int:
 
     return prev1
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(n).
 - **Space Complexity:** O(1).
 
@@ -134,6 +137,7 @@ def frog_jump_memo(heights: list[int]) -> int:
 
     return solve(n - 1)
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(n).
 - **Space Complexity:** O(n) for `dp` array + O(n) for recursion stack.
 
@@ -153,6 +157,7 @@ def frog_jump_tab(heights: list[int]) -> int:
 
     return dp[n-1]
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(n).
 - **Space Complexity:** O(n).
 
@@ -176,6 +181,7 @@ def frog_jump_optimized(heights: list[int]) -> int:
 
     return prev1
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(n).
 - **Space Complexity:** O(1).
 
@@ -214,6 +220,7 @@ def house_robber_memo(nums: list[int]) -> int:
 
     return solve(n - 1)
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(n).
 - **Space Complexity:** O(n) for `dp` array + O(n) for recursion stack.
 
@@ -235,6 +242,7 @@ def house_robber_tab(nums: list[int]) -> int:
 
     return dp[n-1]
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(n).
 - **Space Complexity:** O(n).
 
@@ -250,6 +258,7 @@ def house_robber_optimized(nums: list[int]) -> int:
         prev1 = current
     return prev1
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(n).
 - **Space Complexity:** O(1).
 
@@ -284,5 +293,6 @@ def house_robber_ii(nums: list[int]) -> int:
     # Max of (robbing 0 to n-2) OR (robbing 1 to n-1)
     return max(rob_linear(nums[:-1]), rob_linear(nums[1:]))
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(n), as we run the linear O(n) solution twice.
 - **Space Complexity:** O(1), as the helper functions are space-optimized.

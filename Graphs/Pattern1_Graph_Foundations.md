@@ -59,6 +59,9 @@ class Graph:
     def add_edge_directed(self, u, v):
         self.adj[u].append(v)
 ```
+#### Time and Space Complexity
+- **Space Complexity:** $O(V + E)$ to store the vertices and edges.
+- **Time Complexity:** $O(1)$ to add an edge.
 
 ---
 
@@ -100,6 +103,9 @@ def bfs_traversal(adj: dict, start_node: int, num_nodes: int) -> list[int]:
 
     return traversal_order
 ```
+#### Time and Space Complexity
+- **Time Complexity:** $O(V + E)$, where $V$ is the number of vertices and $E$ is the number of edges. We visit every vertex and edge at most once.
+- **Space Complexity:** $O(V)$ for the queue and visited array.
 
 ---
 
@@ -136,6 +142,9 @@ def dfs_traversal(adj: dict, start_node: int, num_nodes: int) -> list[int]:
     dfs(start_node)
     return traversal_order
 ```
+#### Time and Space Complexity
+- **Time Complexity:** $O(V + E)$, as we visit every vertex and traverse every edge once.
+- **Space Complexity:** $O(V)$ for the recursion stack and visited array.
 
 ---
 
@@ -182,3 +191,6 @@ def count_components(n: int, edges: list[list[int]]) -> int:
 
     return component_count
 ```
+#### Time and Space Complexity
+- **Time Complexity:** $O(V + E)$, as we iterate over all nodes and edges to build the graph and traverse it.
+- **Space Complexity:** $O(V + E)$ for the adjacency list and $O(V)$ for the recursion stack and visited array.

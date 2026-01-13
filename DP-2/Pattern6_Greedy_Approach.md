@@ -41,6 +41,7 @@ def find_content_children(g: list[int], s: list[int]) -> int:
     # The value of child_idx represents the total number of children who were satisfied.
     return child_idx
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(N log N + M log M), dominated by the two sorting operations.
 - **Space Complexity:** O(1) if sorting is done in-place (or O(N+M) depending on sort implementation).
 
@@ -86,5 +87,6 @@ def can_jump(nums: list[int]) -> bool:
 
     return True # If the loop completes, it means every index was reachable, including the last one.
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(n), because we iterate through the array once.
 - **Space Complexity:** O(1).

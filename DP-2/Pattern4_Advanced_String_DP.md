@@ -40,6 +40,7 @@ def num_distinct_memo(s: str, t: str) -> int:
 
     return solve(n - 1, m - 1) # Start recursion from the end of both strings.
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(n * m).
 - **Space Complexity:** O(n * m) for DP table + O(n+m) for recursion stack.
 
@@ -66,6 +67,7 @@ def num_distinct_tab(s: str, t: str) -> int:
 
     return dp[n][m] # The result is in the bottom-right cell.
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(n * m).
 - **Space Complexity:** O(n * m).
 
@@ -85,6 +87,7 @@ def num_distinct_optimized(s: str, t: str) -> int:
 
     return prev_row[m] # The result is the last element of the DP array.
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(n * m).
 - **Space Complexity:** O(m).
 
@@ -127,7 +130,9 @@ def min_distance_memo(word1: str, word2: str) -> int:
 
     return solve(n - 1, m - 1) # Start the recursion from the end of both words.
 ```
-- **Time/Space Complexity:** O(n*m).
+#### Time and Space Complexity
+- **Time Complexity:** O(n*m).
+- **Space Complexity:** O(n*m) for DP table + O(n+m) for recursion stack.
 
 ---
 #### b) Space Optimization
@@ -151,6 +156,7 @@ def min_distance_optimized(word1: str, word2: str) -> int:
 
     return prev_row[m] # The result is the last element of the final DP row.
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(n * m).
 - **Space Complexity:** O(m).
 
@@ -195,7 +201,9 @@ def is_match_wildcard_tab(s: str, p: str) -> bool:
 
     return dp[n][m] # The result is in the bottom-right cell.
 ```
-- **Time/Space Complexity:** O(n*m).
+#### Time and Space Complexity
+- **Time Complexity:** O(n*m).
+- **Space Complexity:** O(n*m).
 
 ---
 #### b) Space Optimization
@@ -222,5 +230,6 @@ def is_match_wildcard_optimized(s: str, p: str) -> bool:
 
     return prev[m] # The result is the last element of the final DP row.
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(n * m).
 - **Space Complexity:** O(m).

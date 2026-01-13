@@ -29,6 +29,10 @@ The sliding window technique fails here because negative numbers disrupt the mon
     -   Check if `required_sum` exists in `prefix_sum_map`. If it does, we've found a subarray. The length is `i - prefix_sum_map[required_sum]`. Update `max_len` with this length if it's greater.
     -   If the `current_sum` is not already in the map, add it: `prefix_sum_map[current_sum] = i`. We only add it if it's new because we want the *earliest* index for a given prefix sum to maximize the subarray length.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the size of the array. We iterate through the array once.
+- **Space Complexity:** $O(N)$, as we use a hashmap to store prefix sums. In the worst case, all prefix sums are distinct.
+
 #### Python Code Snippet
 ```python
 def longest_subarray_with_sum_k_negatives(arr, k):
@@ -85,6 +89,10 @@ A naive solution is to sort the array (O(N log N)) and then iterate. The optimal
 6.  In a `while` loop, check if `current_num + 1` exists in the set. If it does, increment `current_length` and `current_num`.
 7.  After the inner loop, update `max_length = max(max_length, current_length)`.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the number of elements in the array. Although there is a `while` loop inside the `for` loop, each number is visited at most twice.
+- **Space Complexity:** $O(N)$, as we store the elements in a hash set.
+
 #### Python Code Snippet
 ```python
 def longest_consecutive_sequence(nums):
@@ -138,6 +146,10 @@ This is a classic variation of the prefix sum pattern. Instead of finding the ma
     -   Add the frequency of `required_sum` from the map to our `count`: `count += prefix_sum_map.get(required_sum, 0)`.
     -   Update the frequency of the `current_sum` in the map: `prefix_sum_map[current_sum] = prefix_sum_map.get(current_sum, 0) + 1`.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the size of the array. We traverse the array once.
+- **Space Complexity:** $O(N)$, as we use a hashmap to store prefix sum frequencies.
+
 #### Python Code Snippet
 ```python
 def subarray_sum_count(nums, k):
@@ -186,6 +198,10 @@ This is a direct application of the "Longest subarray with sum K" pattern, where
     -   If `current_sum == 0`, the subarray from the start `[0...i]` has a sum of 0. Update `max_len = i + 1`.
     -   If `current_sum` is already in `prefix_sum_map`, it means the subarray between the previous occurrence and the current one has a sum of 0. Calculate its length `i - prefix_sum_map[current_sum]` and update `max_len`.
     -   If `current_sum` is not in the map, store its first occurrence: `prefix_sum_map[current_sum] = i`.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the size of the array. We traverse the array once.
+- **Space Complexity:** $O(N)$, as we use a hashmap to store prefix sums.
 
 #### Python Code Snippet
 ```python
@@ -237,6 +253,10 @@ This problem is analogous to "Count subarrays with given sum," but it uses the p
     -   Look up `required_xor` in the map and add its frequency to `count`.
     -   Update the frequency of `current_xor` in the map.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the size of the array. We traverse the array once.
+- **Space Complexity:** $O(N)$, as we use a hashmap to store prefix XOR frequencies.
+
 #### Python Code Snippet
 ```python
 def subarrays_with_xor_k(arr, k):
@@ -282,7 +302,10 @@ There are several ways to solve this (math equations, XOR), but a hash-based app
 4.  Check the frequency of each number `i` in this range:
     -   If the frequency of `i` is `2`, then `i` is the repeating number.
     -   If `i` is not in the map, then `i` is the missing number.
-5.  This approach takes O(N) time and O(N) space.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(N)$, where $N$ is the size of the array. We iterate through the array once and then through the range $1$ to $N$.
+- **Space Complexity:** $O(N)$, as we use a hashmap (or frequency array) to store counts.
 
 #### Python Code Snippet
 ```python

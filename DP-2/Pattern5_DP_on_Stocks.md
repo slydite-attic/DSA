@@ -34,6 +34,7 @@ def max_profit_one_transaction(prices: list[int]) -> int:
         max_profit = max(max_profit, price - min_price) # Calculate the potential profit if selling today and update max_profit.
     return max_profit # Return the maximum profit found.
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(n).
 - **Space Complexity:** O(1).
 
@@ -74,6 +75,7 @@ def max_profit_infinite_memo(prices: list[int]) -> int:
 
     return solve(0, 1) # Start recursion from day 0 with the ability to buy.
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(n * 2) ~ O(n).
 - **Space Complexity:** O(n * 2) for DP table + O(n) for recursion stack.
 
@@ -95,6 +97,7 @@ def max_profit_infinite_optimized(prices: list[int]) -> int:
 
     return ahead_can_buy # The final result is the max profit if we can buy on day 0.
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(n).
 - **Space Complexity:** O(1).
 
@@ -135,6 +138,7 @@ def max_profit_two_transactions_tab(prices: list[int]) -> int:
 
     return dp[n-1][3] # The result is the max profit after the second sell on the last day.
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(n * 4) ~ O(n).
 - **Space Complexity:** O(n * 4) ~ O(n).
 
@@ -153,6 +157,7 @@ def max_profit_two_transactions_optimized(prices: list[int]) -> int:
 
     return sell2 # The final result is the max profit after the second sell.
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(n).
 - **Space Complexity:** O(1).
 
@@ -192,7 +197,9 @@ def max_profit_cooldown_memo(prices: list[int]) -> int:
 
     return solve(0, 1) # Start from day 0 with the ability to buy.
 ```
-- **Time/Space Complexity:** O(n).
+#### Time and Space Complexity
+- **Time Complexity:** O(n).
+- **Space Complexity:** O(n).
 
 ---
 #### b) Space Optimization
@@ -216,6 +223,7 @@ def max_profit_cooldown_optimized(prices: list[int]) -> int:
 
     return max(sold, rest) # The final max profit is the max of the 'sold' and 'rest' states.
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(n).
 - **Space Complexity:** O(1).
 
@@ -255,7 +263,9 @@ def max_profit_fee_memo(prices: list[int], fee: int) -> int:
 
     return solve(0, 1) # Start from day 0 with the ability to buy.
 ```
-- **Time/Space Complexity:** O(n).
+#### Time and Space Complexity
+- **Time Complexity:** O(n).
+- **Space Complexity:** O(n).
 
 ---
 #### b) Space Optimization
@@ -275,5 +285,6 @@ def max_profit_fee_optimized(prices: list[int], fee: int) -> int:
 
     return ahead_can_buy # The final result is the max profit if we can buy on day 0.
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(n).
 - **Space Complexity:** O(1).

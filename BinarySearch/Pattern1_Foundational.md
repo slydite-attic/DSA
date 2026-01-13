@@ -33,6 +33,10 @@ This is the standard binary search algorithm.
     -   If `arr[mid] > target`, the target must be in the left half, so we discard the right half by setting `high = mid - 1`.
 3.  If the loop finishes, the target was not found, so return -1.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(\log N)$, where $N$ is the size of the array. The search space is halved in each step.
+- **Space Complexity:** $O(1)$, as we use only a few variables.
+
 #### Python Code Snippet
 ```python
 def binary_search(arr, target):
@@ -74,6 +78,10 @@ Given a sorted array and a value `x`, find the index of the first element in the
 5.  If `arr[mid] < x`: The element is too small. We must search in the right half (`low = mid + 1`).
 6.  Return `ans`.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(\log N)$, where $N$ is the size of the array.
+- **Space Complexity:** $O(1)$.
+
 #### Python Code Snippet
 ```python
 def lower_bound(arr, x):
@@ -114,6 +122,10 @@ The implementation is nearly identical to `lower_bound`, with a small change in 
 4.  If `arr[mid] <= x`: The element is too small or equal. We must search in the right half (`low = mid + 1`).
 5.  Return `ans`.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(\log N)$, where $N$ is the size of the array.
+- **Space Complexity:** $O(1)$.
+
 #### Python Code Snippet
 ```python
 def upper_bound(arr, x):
@@ -148,6 +160,10 @@ Given a sorted array of distinct integers and a target value, return the index i
 
 #### Implementation Overview
 This problem is a direct application of **Lower Bound**. The definition of `lower_bound` (the first element greater than or equal to x) is exactly the index where the element should be inserted to maintain the sorted order. The implementation is identical to `lower_bound`.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(\log N)$, where $N$ is the size of the array.
+- **Space Complexity:** $O(1)$.
 
 #### Python Code Snippet
 ```python
@@ -184,6 +200,10 @@ This problem can be solved by using `lower_bound` and `upper_bound`.
 1.  **First Occurrence:** The first occurrence of `x` is simply the `lower_bound(arr, x)`.
 2.  **Last Occurrence:** The last occurrence of `x` is one position to the left of the `upper_bound(arr, x)`. So, `last = upper_bound(arr, x) - 1`.
 3.  We must check if the found indices are valid and if they actually point to the target element.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(\log N)$, where $N$ is the size of the array. We perform two binary searches.
+- **Space Complexity:** $O(1)$.
 
 #### Python Code Snippet
 ```python
@@ -245,6 +265,10 @@ This is a direct application of the previous problem.
 2.  Find the index of the first element strictly greater than `x` using `upper_bound(x)`.
 3.  The count is the difference between these two indices: `count = upper_bound(x) - lower_bound(x)`.
 
+#### Time and Space Complexity
+- **Time Complexity:** $O(\log N)$, where $N$ is the size of the array.
+- **Space Complexity:** $O(1)$.
+
 #### Python Code Snippet
 ```python
 def count_occurrences(arr, target):
@@ -300,6 +324,10 @@ Given a sorted array and a value `x`:
 #### Implementation Overview
 - **Ceil:** The ceiling of `x` is exactly what `lower_bound(x)` finds. We just need to return the element at the found index (if the index is valid).
 - **Floor:** The floor requires a slight modification to the binary search logic to find the largest number `<= x`.
+
+#### Time and Space Complexity
+- **Time Complexity:** $O(\log N)$, where $N$ is the size of the array.
+- **Space Complexity:** $O(1)$.
 
 #### Python Code Snippet (Floor)
 ```python

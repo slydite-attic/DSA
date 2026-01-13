@@ -50,6 +50,7 @@ def count_squares_memo(matrix: list[list[int]]) -> int:
 
     return total_squares # Return the accumulated total.
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(m * n). Each state `dp[i][j]` is computed once.
 - **Space Complexity:** O(m * n) for DP table + O(m+n) for recursion stack.
 
@@ -76,6 +77,7 @@ def count_squares_tab(matrix: list[list[int]]) -> int:
 
     return total_squares # Return the final count.
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(m * n).
 - **Space Complexity:** O(m * n).
 - **Note:** This can be space-optimized to O(n) or even O(1) by modifying the input matrix in-place, as the original values at `(i-1,j)`, etc., are no longer needed after `dp[i][j]` is computed.
@@ -137,5 +139,6 @@ def maximal_rectangle(matrix: list[list[str]]) -> int:
 
     return max_area # Return the final maximum area.
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(m * n). We iterate through each cell once to build the histogram, and the histogram calculation for each row is O(n).
 - **Space Complexity:** O(n) to store the `heights` array and the stack for the subproblem.

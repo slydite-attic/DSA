@@ -39,6 +39,7 @@ def lcs_memo(text1: str, text2: str) -> int:
 
     return solve(n - 1, m - 1) # Start the recursion from the end of both strings.
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(n * m).
 - **Space Complexity:** O(n * m) for DP table + O(n+m) for recursion stack.
 
@@ -58,6 +59,7 @@ def lcs_tab(text1: str, text2: str) -> int:
 
     return dp[n][m] # The result is in the bottom-right cell of the DP table.
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(n * m).
 - **Space Complexity:** O(n * m).
 
@@ -79,6 +81,7 @@ def lcs_optimized(text1: str, text2: str) -> int:
 
     return prev_row[m] # The result is the last element of the final row.
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(n * m).
 - **Space Complexity:** O(m), where m is the length of the shorter string.
 
@@ -101,7 +104,9 @@ def longest_palindromic_subsequence(s: str) -> int:
     # between the string and its reverse.
     return lcs_optimized(s, s[::-1]) # Call the LCS function with the string and its reverse.
 ```
-- **Time/Space Complexity:** Same as the underlying LCS implementation used.
+#### Time and Space Complexity
+- **Time Complexity:** Same as the underlying LCS implementation used ($O(N^2)$).
+- **Space Complexity:** Same as the underlying LCS implementation used ($O(N)$ if optimized).
 
 ---
 
@@ -124,7 +129,9 @@ def min_insertions_to_palindrome(s: str) -> int:
     # The number of insertions needed is the total length of the string minus the length of the LPS.
     return len(s) - len_lps
 ```
-- **Time/Space Complexity:** Dominated by the LPS calculation.
+#### Time and Space Complexity
+- **Time Complexity:** Dominated by the LPS calculation ($O(N^2)$).
+- **Space Complexity:** Dominated by the LPS calculation ($O(N)$).
 
 ---
 
@@ -152,7 +159,9 @@ def min_ops_to_convert(str1: str, str2: str) -> int:
     # Total operations = (len(str1) - len_lcs) + (len(str2) - len_lcs)
     return len(str1) + len(str2) - 2 * len_lcs
 ```
-- **Time/Space Complexity:** Dominated by the LCS calculation.
+#### Time and Space Complexity
+- **Time Complexity:** Dominated by the LCS calculation ($O(NM)$).
+- **Space Complexity:** Dominated by the LCS calculation ($O(min(N, M))$).
 
 ---
 
@@ -205,5 +214,6 @@ def shortest_common_supersequence(str1: str, str2: str) -> str:
 
     return "".join(reversed(res)) # Join the characters and reverse to get the final SCS.
 ```
+#### Time and Space Complexity
 - **Time Complexity:** O(n * m) to build the table.
 - **Space Complexity:** O(n * m) for the DP table.
