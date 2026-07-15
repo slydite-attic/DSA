@@ -279,50 +279,7 @@ def alien_order(words: list[str]) -> str:
 
 ---
 
-### 7. Topo Sort
-`[FUNDAMENTAL]` `[MEDIUM]` `#toposort` `#dag`
-
-#### Problem Statement
-Given a Directed Acyclic Graph (DAG) with V vertices and E edges, find any Topological Sort of that graph.
-
-#### Implementation Overview
-We can implement this using Kahn's Algorithm (BFS). We first compute the in-degrees of all vertices. We push all vertices with an in-degree of 0 into a queue. Then, we process the queue by appending the current vertex to the answer and decrementing the in-degree of its neighbors. If a neighbor's in-degree becomes 0, it's added to the queue.
-
-#### Python Code Snippet
-```python
-from collections import deque
-
-def topoSort(V: int, adj: list[list[int]]) -> list[int]:
-    in_degree = [0] * V
-    for u in range(V):
-        for v in adj[u]:
-            in_degree[v] += 1
-
-    q = deque()
-    for i in range(V):
-        if in_degree[i] == 0:
-            q.append(i)
-
-    topo_order = []
-    while q:
-        node = q.popleft()
-        topo_order.append(node)
-
-        for neighbor in adj[node]:
-            in_degree[neighbor] -= 1
-            if in_degree[neighbor] == 0:
-                q.append(neighbor)
-
-    return topo_order
-```
-
-#### Complexity Analysis
-- **Time Complexity:** $O(V + E)$ where $V$ is vertices and $E$ is edges.
-- **Space Complexity:** $O(V)$ for the queue and the in-degree array.
-
----
-
-### 8. Detect a cycle in a directed graph
+### 7. Detect a cycle in a directed graph
 `[MEDIUM]` `#bfs` `#cycle-detection` `#toposort`
 
 #### Problem Statement
