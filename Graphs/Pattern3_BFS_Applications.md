@@ -54,6 +54,10 @@ def oranges_rotting(grid: list[list[int]]) -> int:
     return max_time if fresh_oranges == 0 else -1
 ```
 
+#### Complexity Analysis
+- **Time Complexity:** $O(N \times M)$ to traverse the grid, where $N$ and $M$ are dimensions of the grid. Each cell is added to the queue at most once.
+- **Space Complexity:** $O(N \times M)$ for the queue in the worst case.
+
 ---
 
 ### 2. 0/1 Matrix (Distance to Nearest 0)
@@ -95,6 +99,10 @@ def update_matrix(mat: list[list[int]]) -> list[list[int]]:
                 q.append((nr, nc))
     return dist
 ```
+
+#### Complexity Analysis
+- **Time Complexity:** $O(N \times M)$ to process every cell in the matrix.
+- **Space Complexity:** $O(N \times M)$ for the queue and the resulting distance matrix.
 
 ---
 
@@ -146,6 +154,10 @@ def num_enclaves(grid: list[list[int]]) -> int:
     return enclave_count
 ```
 
+#### Complexity Analysis
+- **Time Complexity:** $O(N \times M)$ for traversing the grid and performing BFS.
+- **Space Complexity:** $O(N \times M)$ for the visited array and the queue in the worst case.
+
 ---
 
 ### 4. Cycle Detection in Undirected Graph (BFS)
@@ -183,6 +195,10 @@ def has_cycle_undirected_bfs(n: int, adj: dict) -> bool:
                         return True # Cycle detected
     return False
 ```
+
+#### Complexity Analysis
+- **Time Complexity:** $O(V + E)$ where $V$ is vertices and $E$ is edges. BFS explores every node and edge once.
+- **Space Complexity:** $O(V)$ for the visited array and the queue.
 
 ---
 
@@ -224,17 +240,50 @@ def is_bipartite_bfs(n: int, adj: dict) -> bool:
     return True
 ```
 
+#### Complexity Analysis
+- **Time Complexity:** $O(V + E)$ to traverse all nodes and edges via BFS.
+- **Space Complexity:** $O(V)$ for the queue and the color map.
+
 ---
 
-### 5. Distance of nearest cell having one
+### 6. Distance of nearest cell having one
 `[MEDIUM]` `#bfs` `#matrix`
 
 #### Problem Statement
-Given an `m x n` binary matrix grid, return the distance of the nearest 0 for each cell (or nearest 1 depending on version). The distance between two adjacent cells is 1.
+Given an `m x n` binary matrix grid, return the distance of the nearest 0 for each cell. The distance between two adjacent cells is 1.
+
+#### Implementation Overview
+This is a multi-source BFS problem. We can initialize a queue with all the coordinates of cells containing 0 and mark their distance as 0 in a result matrix. We initialize all other cells to a default max value or -1. Then, we perform a level-order traversal, expanding outwards. For every unvisited neighbor, its distance is the current cell's distance + 1.
 
 #### Python Code Snippet
 ```python
-# TODO: Implement 0/1 Matrix Distance of nearest cell having one
-def updateMatrix(mat):
-    pass
+from collections import deque
+
+def updateMatrix(mat: list[list[int]]) -> list[list[int]]:
+    rows, cols = len(mat), len(mat[0])
+    dist = [[-1] * cols for _ in range(rows)]
+    q = deque()
+
+    # Initialize queue with all 0s
+    for r in range(rows):
+        for c in range(cols):
+            if mat[r][c] == 0:
+                dist[r][c] = 0
+                q.append((r, c))
+
+    directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+
+    while q:
+        r, c = q.popleft()
+        for dr, dc in directions:
+            nr, nc = r + dr, c + dc
+            if 0 <= nr < rows and 0 <= nc < cols and dist[nr][nc] == -1:
+                dist[nr][nc] = dist[r][c] + 1
+                q.append((nr, nc))
+
+    return dist
 ```
+
+#### Complexity Analysis
+- **Time Complexity:** $O(N \times M)$ because every cell is added to the queue at most once.
+- **Space Complexity:** $O(N \times M)$ for the output distance matrix and the BFS queue.
