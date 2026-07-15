@@ -181,7 +181,91 @@ def frog_jump_optimized(heights: list[int]) -> int:
 
 ---
 
-### 4. House Robber (Max Sum of Non-Adjacent Elements)
+### 4. Frog Jump with K Distances
+`[MEDIUM]` `#1D-DP` `#k-jumps`
+
+#### Problem Statement
+A frog must jump from stone 0 to `N-1`. The cost of a jump from stone `i` to `j` is `abs(heights[i] - heights[j])`. The frog can jump from `i` to any stone up to `i+k` (i.e. `i+1, i+2, ..., i+k`). Find the minimum energy cost.
+
+#### Recurrence Relation
+Let `dp[i]` be the minimum energy to reach stone `i`.
+- **`dp[i] = min(dp[i-j] + abs(heights[i] - heights[i-j]))`** for all `1 <= j <= k` such that `i-j >= 0`.
+- **Base Case:** `dp[0] = 0`.
+
+---
+#### a) Memoization (Top-Down)
+```python
+def frog_jump_k_memo(heights: list[int], k: int) -> int:
+    n = len(heights)
+    dp = [-1] * n
+
+    def solve(index):
+        if index == 0:
+            return 0
+        if dp[index] != -1:
+            return dp[index]
+
+        min_energy = float('inf')
+        for j in range(1, k + 1):
+            if index - j >= 0:
+                jump = solve(index - j) + abs(heights[index] - heights[index - j])
+                min_energy = min(min_energy, jump)
+        dp[index] = min_energy
+        return dp[index]
+
+    return solve(n - 1)
+```
+- **Time Complexity:** O(n * k).
+- **Space Complexity:** O(n) for the `dp` table + O(n) for recursion stack.
+
+---
+#### b) Tabulation (Bottom-Up)
+```python
+def frog_jump_k_tab(heights: list[int], k: int) -> int:
+    n = len(heights)
+    dp = [0] * n
+
+    for i in range(1, n):
+        min_energy = float('inf')
+        for j in range(1, k + 1):
+            if i - j >= 0:
+                jump = dp[i - j] + abs(heights[i] - heights[i - j])
+                min_energy = min(min_energy, jump)
+        dp[i] = min_energy
+
+    return dp[n - 1]
+```
+- **Time Complexity:** O(n * k).
+- **Space Complexity:** O(n).
+
+---
+#### c) Space Optimization
+We only need to store the DP values of the last `k` stones using a circular buffer.
+```python
+def frog_jump_k_optimized(heights: list[int], k: int) -> int:
+    n = len(heights)
+    dp_window = [0] * min(n, k)
+    
+    for i in range(1, n):
+        min_energy = float('inf')
+        for j in range(1, k + 1):
+            if i - j >= 0:
+                jump = dp_window[(i - j) % k] + abs(heights[i] - heights[i - j])
+                min_energy = min(min_energy, jump)
+        
+        if len(dp_window) < k:
+            dp_window.append(min_energy)
+        else:
+            dp_window[i % k] = min_energy
+
+    return dp_window[(n - 1) % k] if n > 1 else 0
+```
+- **Time Complexity:** O(n * k).
+- **Space Complexity:** O(k) for the circular buffer.
+
+---
+
+### 5. House Robber (Max Sum of Non-Adjacent Elements)
 `[MEDIUM]` `#1D-DP`
 
 #### Problem Statement
@@ -255,7 +339,8 @@ def house_robber_optimized(nums: list[int]) -> int:
 
 ---
 
-### 5. House Robber II (Circular Houses)
+### 6. House Robber II (Circular Houses)
+
 `[MEDIUM]` `#1D-DP` `#circular`
 
 #### Problem Statement
@@ -267,13 +352,69 @@ The circular constraint means we cannot rob both the first and last house. This 
 2.  Solve House Robber for the array excluding the first house (`nums[1...n-1]`).
 The final answer is the maximum of these two results. We can reuse our linear house robber function.
 
-#### Python Code Snippet
+#### a) Memoization (Top-Down)
 ```python
-def house_robber_ii(nums: list[int]) -> int:
+def house_robber_ii_memo(nums: list[int]) -> int:
     if not nums: return 0
     if len(nums) == 1: return nums[0]
 
-    def rob_linear(sub_nums):
+    def rob_linear_memo(sub_nums):
+        n = len(sub_nums)
+        dp = [-1] * n
+        
+        def solve(index):
+            if index < 0:
+                return 0
+            if dp[index] != -1:
+                return dp[index]
+            
+            pick = sub_nums[index] + solve(index - 2)
+            not_pick = solve(index - 1)
+            dp[index] = max(pick, not_pick)
+            return dp[index]
+            
+        return solve(n - 1)
+
+    return max(rob_linear_memo(nums[:-1]), rob_linear_memo(nums[1:]))
+```
+- **Time Complexity:** O(n).
+- **Space Complexity:** O(n) for the DP array + O(n) for the recursion stack.
+
+---
+#### b) Tabulation (Bottom-Up)
+```python
+def house_robber_ii_tab(nums: list[int]) -> int:
+    if not nums: return 0
+    if len(nums) == 1: return nums[0]
+
+    def rob_linear_tab(sub_nums):
+        n = len(sub_nums)
+        if n == 0: return 0
+        dp = [0] * n
+        dp[0] = sub_nums[0]
+        
+        for i in range(1, n):
+            pick = sub_nums[i]
+            if i > 1:
+                pick += dp[i-2]
+            not_pick = dp[i-1]
+            dp[i] = max(pick, not_pick)
+            
+        return dp[n-1]
+
+    return max(rob_linear_tab(nums[:-1]), rob_linear_tab(nums[1:]))
+```
+- **Time Complexity:** O(n).
+- **Space Complexity:** O(n) for the DP array.
+
+---
+#### c) Space Optimization
+```python
+def house_robber_ii_optimized(nums: list[int]) -> int:
+    if not nums: return 0
+    if len(nums) == 1: return nums[0]
+
+    def rob_linear_optimized(sub_nums):
         prev2, prev1 = 0, 0
         for num in sub_nums:
             current = max(prev1, num + prev2)
@@ -281,8 +422,7 @@ def house_robber_ii(nums: list[int]) -> int:
             prev1 = current
         return prev1
 
-    # Max of (robbing 0 to n-2) OR (robbing 1 to n-1)
-    return max(rob_linear(nums[:-1]), rob_linear(nums[1:]))
+    return max(rob_linear_optimized(nums[:-1]), rob_linear_optimized(nums[1:]))
 ```
-- **Time Complexity:** O(n), as we run the linear O(n) solution twice.
-- **Space Complexity:** O(1), as the helper functions are space-optimized.
+- **Time Complexity:** O(n).
+- **Space Complexity:** O(1).

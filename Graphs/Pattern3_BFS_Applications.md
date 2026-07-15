@@ -223,3 +223,18 @@ def is_bipartite_bfs(n: int, adj: dict) -> bool:
                         return False
     return True
 ```
+
+---
+
+### 5. Distance of nearest cell having one
+`[MEDIUM]` `#bfs` `#matrix`
+
+#### Problem Statement
+Given an `m x n` binary matrix grid, return the distance of the nearest 0 for each cell (or nearest 1 depending on version). The distance between two adjacent cells is 1.
+
+#### Python Code Snippet
+```python
+# TODO: Implement 0/1 Matrix Distance of nearest cell having one
+def updateMatrix(mat):
+    pass
+```

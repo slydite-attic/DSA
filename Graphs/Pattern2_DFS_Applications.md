@@ -299,3 +299,33 @@ def dfs_cycle(node, visited, path_visited, adj):
     path_visited[node] = False # Backtrack
     return False
 ```
+
+---
+
+### 4. Connected Components Problem in Matrix
+`[MEDIUM]` `#dfs` `#connectedcomponents`
+
+#### Problem Statement
+Given a 2D grid of '1's (land) and '0's (water), count the number of islands. An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically or diagonally.
+
+#### Python Code Snippet
+```python
+# TODO: Implement Connected Components / Number of Islands
+def numIslands(grid):
+    pass
+```
+
+---
+
+### 5. Surrounded Regions
+`[MEDIUM]` `#dfs` `#matrix`
+
+#### Problem Statement
+Given an `m x n` matrix board containing 'X' and 'O', capture all regions that are 4-directionally surrounded by 'X'. A region is captured by flipping all 'O's into 'X's in that surrounded region.
+
+#### Python Code Snippet
+```python
+# TODO: Implement Surrounded Regions (Replace O's with X's)
+def solve(board):
+    pass
+```

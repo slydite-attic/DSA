@@ -169,3 +169,53 @@ def delete_all_occurrences(self, key):
         else:
             current = current.next
 ```
+
+---
+
+### 6. Insert node before head in Doubly Linked List
+`[EASY]` `#linkedlist` `#doublylinkedlist`
+
+#### Problem Statement
+Given the head of a doubly linked list and an integer `val`, insert a new node with value `val` before the head node (making it the new head) and return the new head.
+
+*Example:*
+- **Input:** `head = [2, 3, 4]`, `val = 1`
+- **Output:** `[1, 2, 3, 4]`
+
+#### Python Code Snippet
+```python
+class Node:
+    def __init__(self, data=0, next=None, prev=None):
+        self.data = data
+        self.next = next
+        self.prev = prev
+        
+def insertBeforeHead(head, val):
+    new_node = Node(val, next=head)
+    if head:
+        head.prev = new_node
+    return new_node
+```
+
+---
+
+### 7. Delete head of Doubly Linked List
+`[EASY]` `#linkedlist` `#doublylinkedlist`
+
+#### Problem Statement
+Given the head of a doubly linked list, delete the first node (head) of the doubly linked list and return the new head.
+
+*Example:*
+- **Input:** `head = [1, 2, 3, 4]`
+- **Output:** `[2, 3, 4]`
+
+#### Python Code Snippet
+```python
+def deleteHead(head):
+    if not head or not head.next:
+        return None
+    new_head = head.next
+    new_head.prev = None
+    head.next = None
+    return new_head
+```

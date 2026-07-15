@@ -126,30 +126,56 @@ def min_distance_memo(word1: str, word2: str) -> int:
         return dp[i][j] # Return the computed minimum distance.
 
     return solve(n - 1, m - 1) # Start the recursion from the end of both words.
-```
-- **Time/Space Complexity:** O(n*m).
+- **Time/Space Complexity:** O(n * m) for the DP table + O(n + m) for recursion stack.
 
 ---
-#### b) Space Optimization
+#### b) Tabulation (Bottom-Up)
+```python
+def min_distance_tab(word1: str, word2: str) -> int:
+    n, m = len(word1), len(word2)
+    dp = [[0] * (m + 1) for _ in range(n + 1)]
+
+    # Base cases
+    for i in range(n + 1):
+        dp[i][0] = i
+    for j in range(m + 1):
+        dp[0][j] = j
+
+    for i in range(1, n + 1):
+        for j in range(1, m + 1):
+            if word1[i-1] == word2[j-1]:
+                dp[i][j] = dp[i-1][j-1]
+            else:
+                insert_op = dp[i][j-1]
+                delete_op = dp[i-1][j]
+                replace_op = dp[i-1][j-1]
+                dp[i][j] = 1 + min(insert_op, delete_op, replace_op)
+
+    return dp[n][m]
+```
+- **Time/Space Complexity:** O(n * m).
+
+---
+#### c) Space Optimization
 ```python
 def min_distance_optimized(word1: str, word2: str) -> int:
-    n, m = len(word1), len(word2) # Get lengths of the words.
-    prev_row = [j for j in range(m + 1)] # Initialize the previous row DP array. Base case for an empty word1.
+    n, m = len(word1), len(word2)
+    prev_row = [j for j in range(m + 1)]
 
-    for i in range(1, n + 1): # Iterate through word1.
-        curr_row = [0] * (m + 1) # Initialize the current row DP array.
-        curr_row[0] = i # Base case for an empty word2.
-        for j in range(1, m + 1): # Iterate through word2.
-            if word1[i-1] == word2[j-1]: # If characters match,
-                curr_row[j] = prev_row[j-1] # No operation needed, cost is the same as the diagonal element.
-            else: # If characters are different,
-                insert_op = curr_row[j-1] # Cost of insertion.
-                delete_op = prev_row[j] # Cost of deletion.
-                replace_op = prev_row[j-1] # Cost of replacement.
-                curr_row[j] = 1 + min(insert_op, delete_op, replace_op) # Take the minimum and add 1 for the operation.
-        prev_row = curr_row # The current row becomes the previous row for the next iteration.
+    for i in range(1, n + 1):
+        curr_row = [0] * (m + 1)
+        curr_row[0] = i
+        for j in range(1, m + 1):
+            if word1[i-1] == word2[j-1]:
+                curr_row[j] = prev_row[j-1]
+            else:
+                insert_op = curr_row[j-1]
+                delete_op = prev_row[j]
+                replace_op = prev_row[j-1]
+                curr_row[j] = 1 + min(insert_op, delete_op, replace_op)
+        prev_row = curr_row
 
-    return prev_row[m] # The result is the last element of the final DP row.
+    return prev_row[m]
 ```
 - **Time Complexity:** O(n * m).
 - **Space Complexity:** O(m).
@@ -171,56 +197,91 @@ Let `solve(i, j)` be true if `s[0...i]` matches `p[0...j]`.
 - Otherwise: `False`.
 
 ---
-#### a) Tabulation (Bottom-Up)
+#### a) Memoization (Top-Down)
+```python
+def is_match_wildcard_memo(s: str, p: str) -> bool:
+    n, m = len(s), len(p)
+    dp = [[-1] * m for _ in range(n)]
+
+    def solve(i, j):
+        # Base Cases
+        if i < 0 and j < 0:
+            return True
+        if j < 0:
+            return False
+        if i < 0:
+            # Pattern must only consist of '*' to match empty string
+            for k in range(j + 1):
+                if p[k] != '*':
+                    return False
+            return True
+
+        if dp[i][j] != -1:
+            return dp[i][j] == 1
+
+        if p[j] == '?' or p[j] == s[i]:
+            ans = solve(i - 1, j - 1)
+        elif p[j] == '*':
+            ans = solve(i, j - 1) or solve(i - 1, j)
+        else:
+            ans = False
+
+        dp[i][j] = 1 if ans else 0
+        return ans
+
+    return solve(n - 1, m - 1)
+```
+- **Time Complexity:** O(n * m).
+- **Space Complexity:** O(n * m) for the DP table + O(n + m) for the recursion stack.
+
+---
+#### b) Tabulation (Bottom-Up)
 ```python
 def is_match_wildcard_tab(s: str, p: str) -> bool:
-    n, m = len(s), len(p) # Get lengths of the string and pattern.
-    dp = [[False] * (m + 1) for _ in range(n + 1)] # Initialize a 2D DP table.
-    dp[0][0] = True # Base case: an empty pattern matches an empty string.
+    n, m = len(s), len(p)
+    dp = [[False] * (m + 1) for _ in range(n + 1)]
+    dp[0][0] = True
 
-    # Handle patterns like "a*", "b*", etc., that can match an empty string.
-    for j in range(1, m + 1): # Iterate through the pattern.
-        if p[j-1] == '*': # If the character is '*',
-            dp[0][j] = dp[0][j-1] # It can match an empty sequence.
+    for j in range(1, m + 1):
+        if p[j-1] == '*':
+            dp[0][j] = dp[0][j-1]
 
-    for i in range(1, n + 1): # Iterate through the string.
-        for j in range(1, m + 1): # Iterate through the pattern.
-            if p[j-1] == '?' or p[j-1] == s[i-1]: # If pattern is '?' or characters match,
-                dp[i][j] = dp[i-1][j-1] # The result depends on the previous state (diagonal).
-            elif p[j-1] == '*': # If pattern is '*',
-                # It can either match an empty sequence (dp[i][j-1]) or match the current character in s (dp[i-1][j]).
+    for i in range(1, n + 1):
+        for j in range(1, m + 1):
+            if p[j-1] == '?' or p[j-1] == s[i-1]:
+                dp[i][j] = dp[i-1][j-1]
+            elif p[j-1] == '*':
                 dp[i][j] = dp[i][j-1] or dp[i-1][j]
-            else: # If characters don't match and pattern is not '?' or '*',
-                dp[i][j] = False # No match is possible.
+            else:
+                dp[i][j] = False
 
-    return dp[n][m] # The result is in the bottom-right cell.
+    return dp[n][m]
 ```
 - **Time/Space Complexity:** O(n*m).
 
 ---
-#### b) Space Optimization
+#### c) Space Optimization
 ```python
 def is_match_wildcard_optimized(s: str, p: str) -> bool:
-    n, m = len(s), len(p) # Get lengths of the string and pattern.
-    prev = [False] * (m + 1) # DP array for the previous row.
-    prev[0] = True # Base case: empty pattern matches empty string.
+    n, m = len(s), len(p)
+    prev = [False] * (m + 1)
+    prev[0] = True
 
-    # Handle patterns with '*' that can match an empty string.
     for j in range(1, m + 1):
         if p[j-1] == '*':
             prev[j] = prev[j-1]
 
-    for i in range(1, n + 1): # Iterate through the string.
-        curr = [False] * (m + 1) # DP array for the current row.
-        for j in range(1, m + 1): # Iterate through the pattern.
-            if p[j-1] == '?' or p[j-1] == s[i-1]: # If '?' or characters match,
-                curr[j] = prev[j-1] # Match depends on the diagonal previous state.
-            elif p[j-1] == '*': # If pattern is '*',
-                # Match depends on the state to the left ( '*' as empty) or above ('*' matching a character).
+    for i in range(1, n + 1):
+        curr = [False] * (m + 1)
+        # Note: curr[0] is False because non-empty string cannot match empty pattern
+        for j in range(1, m + 1):
+            if p[j-1] == '?' or p[j-1] == s[i-1]:
+                curr[j] = prev[j-1]
+            elif p[j-1] == '*':
                 curr[j] = curr[j-1] or prev[j]
-        prev = curr # Current row becomes the previous for the next iteration.
+        prev = curr
 
-    return prev[m] # The result is the last element of the final DP row.
+    return prev[m]
 ```
 - **Time Complexity:** O(n * m).
 - **Space Complexity:** O(m).

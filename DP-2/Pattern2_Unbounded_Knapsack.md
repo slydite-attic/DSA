@@ -1,6 +1,21 @@
 # Pattern 2: Unbounded Knapsack
 
-The Unbounded Knapsack pattern is a variation of 0/1 Knapsack. The key difference is that you can use each item an **unlimited** number of times. This changes the recurrence relation, as the choice for an item does not remove it from the set of future choices.
+The Unbounded Knapsack pattern is a variation of 0/1 Knapsack. The key difference is that you can use each item an **unlimited** number of times.
+
+### Alternative DP Formulations: Item-Centric vs. Capacity-Centric
+Unbounded knapsack problems can be modeled using two fundamentally different DP state representations:
+
+1. **Item-Centric Formulation (Formulation A):**
+   - **State:** `dp[index][capacity]`
+   - **Transition:** For each item, decide whether to skip it or stay at the same index and pick it again.
+   - **Recurrence:** `dp[i][c] = max(dp[i-1][c], value[i] + dp[i][c - weight[i]])`
+   - *This formulation is highly structured and mirrors 0/1 Knapsack, but requires 2D state space (which can then be space-optimized to 1D).*
+
+2. **Capacity-Centric Formulation (Formulation B):**
+   - **State:** `dp[capacity]`
+   - **Transition:** For a given capacity `c`, iterate through all items and find the best item to place "last".
+   - **Recurrence:** `dp[c] = max(value[i] + dp[c - weight[i]])` for all items `i`.
+   - *This formulation natively reduces the DP state to a 1D array from the start, making it highly intuitive for capacity-only dependencies (like Coin Change or Rod Cutting).*
 
 ---
 
@@ -86,6 +101,24 @@ def unbounded_knapsack_optimized(W, values, weights):
 - **Space Complexity:** O(W).
 
 ---
+#### d) Capacity-Centric Formulation (Formulation B - 1D State)
+Instead of keeping track of the item index, we calculate the max value for each capacity `w` by trying to place each of the `n` items at the end.
+```python
+def unbounded_knapsack_capacity_centric(W, values, weights):
+    n = len(values)
+    dp = [0] * (W + 1)
+
+    for w in range(1, W + 1):
+        for i in range(n):
+            if weights[i] <= w:
+                dp[w] = max(dp[w], values[i] + dp[w - weights[i]])
+
+    return dp[W]
+```
+- **Time Complexity:** O(n * W).
+- **Space Complexity:** O(W).
+
+---
 
 ### 2. Coin Change (Minimum Coins)
 `[MEDIUM]` `#unbounded-knapsack` `#coin-change`
@@ -141,6 +174,26 @@ def coin_change_min_tab(coins: list[int], amount: int) -> int:
 - **Space Complexity:** O(amount).
 
 ---
+#### c) Space Optimization (Item-Centric 1D Array)
+We can also solve this in an item-centric manner, iterating through the coins and updating the minimum coins needed for each amount. This uses a single 1D array of size `amount + 1`.
+
+```python
+def coin_change_min_optimized(coins: list[int], amount: int) -> int:
+    n = len(coins)
+    dp = [float('inf')] * (amount + 1)
+    dp[0] = 0
+
+    for i in range(n):
+        for j in range(coins[i], amount + 1):
+            dp[j] = min(dp[j], 1 + dp[j - coins[i]])
+
+    return dp[amount] if dp[amount] != float('inf') else -1
+```
+- **Time Complexity:** O(amount * len(coins)).
+- **Space Complexity:** O(amount).
+
+
+---
 
 ### 3. Coin Change II (Number of Combinations)
 `[MEDIUM]` `#unbounded-knapsack` `#coin-change` `#count-combinations`
@@ -153,22 +206,68 @@ Let `dp[i]` = number of ways to make sum `i`. To avoid counting permutations, we
 - For each `coin`, we update the `dp` array: **`dp[j] = dp[j] + dp[j - coin]`**.
 
 ---
-#### a) Tabulation (Bottom-Up)
-The tabulation approach is the most natural for this problem. The order of loops is crucial for counting combinations instead of permutations.
+#### a) Memoization (Top-Down)
+```python
+def coin_change_combinations_memo(amount: int, coins: list[int]) -> int:
+    n = len(coins)
+    dp = [[-1] * (amount + 1) for _ in range(n)]
 
+    def solve(index, target):
+        if target == 0:
+            return 1
+        if index < 0 or target < 0:
+            return 0
+        if dp[index][target] != -1:
+            return dp[index][target]
+
+        not_pick = solve(index - 1, target)
+        pick = 0
+        if coins[index] <= target:
+            pick = solve(index, target - coins[index])
+
+        dp[index][target] = not_pick + pick
+        return dp[index][target]
+
+    return solve(n - 1, amount)
+```
+- **Time Complexity:** O(n * amount).
+- **Space Complexity:** O(n * amount) + O(n + amount) recursion stack.
+
+---
+#### b) Tabulation (Bottom-Up)
 ```python
 def coin_change_combinations_tab(amount: int, coins: list[int]) -> int:
-    dp = [0] * (amount + 1) # Initialize a DP array to store the number of combinations for each amount.
-    dp[0] = 1 # Base case: there is one way to make an amount of 0 (by choosing no coins).
+    n = len(coins)
+    dp = [[0] * (amount + 1) for _ in range(n)]
+    
+    for i in range(n):
+        dp[i][0] = 1
 
-    # The outer loop iterates through coins to ensure we count combinations, not permutations.
-    for coin in coins: # For each coin,
-        for j in range(coin, amount + 1): # Iterate from the coin's value up to the target amount.
-            dp[j] += dp[j - coin] # The number of ways to make amount 'j' is increased by the number of ways to make 'j - coin'.
+    for i in range(n):
+        for j in range(1, amount + 1):
+            not_pick = dp[i-1][j] if i > 0 else 0
+            pick = dp[i][j - coins[i]] if j >= coins[i] else 0
+            dp[i][j] = not_pick + pick
 
-    return dp[amount] # The result is the number of combinations for the target amount.
+    return dp[n-1][amount]
 ```
-- **Time Complexity:** O(amount * len(coins)).
+- **Time Complexity:** O(n * amount).
+- **Space Complexity:** O(n * amount).
+
+---
+#### c) Space Optimization
+```python
+def coin_change_combinations_optimized(amount: int, coins: list[int]) -> int:
+    dp = [0] * (amount + 1)
+    dp[0] = 1
+
+    for coin in coins:
+        for j in range(coin, amount + 1):
+            dp[j] += dp[j - coin]
+
+    return dp[amount]
+```
+- **Time Complexity:** O(n * amount).
 - **Space Complexity:** O(amount).
 
 ---
@@ -181,23 +280,75 @@ Given a rod of length `n` and prices for pieces of different lengths, find the m
 
 #### Implementation Overview
 This is an unbounded knapsack problem where rod length is capacity, piece lengths are weights, and prices are values.
-- **DP State:** `dp[i]` = max profit from a rod of length `i`.
-- **Recurrence:** `dp[i] = max(prices[j-1] + dp[i-j])` for all cut lengths `j` from 1 to `i`.
+- **DP State:** `dp[i][j]` = max profit considering pieces up to size `i` for a rod of length `j`.
+- **Recurrence:** `dp[i][j] = max(dp[i-1][j], prices[i-1] + dp[i][j - i])` if piece length `i` <= `j`.
 
 ---
-#### a) Tabulation (Bottom-Up)
+#### a) Memoization (Top-Down)
+```python
+def rod_cutting_memo(prices: list[int], n: int) -> int:
+    m = len(prices)
+    dp = [[-1] * (n + 1) for _ in range(m)]
+
+    def solve(index, length):
+        if index == 0:
+            return length * prices[0] # length // 1 * prices[0]
+        if dp[index][length] != -1:
+            return dp[index][length]
+
+        not_pick = solve(index - 1, length)
+        pick = float('-inf')
+        piece_len = index + 1
+        if piece_len <= length:
+            pick = prices[index] + solve(index, length - piece_len)
+
+        dp[index][length] = max(pick, not_pick)
+        return dp[index][length]
+
+    return solve(m - 1, n)
+```
+- **Time Complexity:** O(n * len(prices)).
+- **Space Complexity:** O(n * len(prices)) + O(n) recursion stack.
+
+---
+#### b) Tabulation (Bottom-Up)
 ```python
 def rod_cutting_tab(prices: list[int], n: int) -> int:
-    # Let lengths be 1-based for easier mapping.
-    lengths = [i + 1 for i in range(len(prices))] # Create a list of possible rod lengths.
-    dp = [0] * (n + 1) # Initialize a DP array to store the maximum profit for each rod length.
+    m = len(prices)
+    dp = [[0] * (n + 1) for _ in range(m)]
 
-    for i in range(1, n + 1): # Iterate through all rod lengths from 1 to n.
-        for j in range(len(lengths)): # Iterate through all available piece lengths.
-            if lengths[j] <= i: # If the piece length is not more than the current rod length,
-                dp[i] = max(dp[i], prices[j] + dp[i - lengths[j]]) # Update the maximum profit for length 'i'.
+    # Base case: first piece of length 1
+    for length in range(n + 1):
+        dp[0][length] = length * prices[0]
 
-    return dp[n] # The result is the maximum profit for a rod of length n.
+    for i in range(1, m):
+        piece_len = i + 1
+        for length in range(n + 1):
+            not_pick = dp[i-1][length]
+            pick = float('-inf')
+            if piece_len <= length:
+                pick = prices[i] + dp[i][length - piece_len]
+            dp[i][length] = max(pick, not_pick)
+
+    return dp[m-1][n]
+```
+- **Time/Space Complexity:** O(n * len(prices)).
+
+---
+#### c) Space Optimization
+```python
+def rod_cutting_optimized(prices: list[int], n: int) -> int:
+    dp = [0] * (n + 1)
+    # Base case for length 1 pieces
+    for length in range(n + 1):
+        dp[length] = length * prices[0]
+
+    for i in range(1, len(prices)):
+        piece_len = i + 1
+        for length in range(piece_len, n + 1):
+            dp[length] = max(dp[length], prices[i] + dp[length - piece_len])
+
+    return dp[n]
 ```
 - **Time Complexity:** O(n * len(prices)).
 - **Space Complexity:** O(n).

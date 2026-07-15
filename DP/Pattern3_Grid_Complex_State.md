@@ -141,8 +141,30 @@ def min_falling_path_memo(matrix: list[list[int]]) -> int:
 - **Time Complexity:** O(n*n).
 - **Space Complexity:** O(n*n) for DP table + O(n) for recursion stack.
 
+#### b) Tabulation (Bottom-Up)
+```python
+def min_falling_path_tab(matrix: list[list[int]]) -> int:
+    n = len(matrix)
+    dp = [[0] * n for _ in range(n)]
+    
+    # Base case: first row
+    for j in range(n):
+        dp[0][j] = matrix[0][j]
+        
+    for i in range(1, n):
+        for j in range(n):
+            up = dp[i-1][j]
+            up_left = dp[i-1][j-1] if j > 0 else float('inf')
+            up_right = dp[i-1][j+1] if j < n - 1 else float('inf')
+            dp[i][j] = matrix[i][j] + min(up, up_left, up_right)
+            
+    return min(dp[n-1])
+```
+- **Time Complexity:** O(n*n).
+- **Space Complexity:** O(n*n).
+
 ---
-#### b) Space Optimization
+#### c) Space Optimization
 ```python
 def min_falling_path_optimized(matrix: list[list[int]]) -> int:
     n = len(matrix)
@@ -208,9 +230,38 @@ def cherry_pickup_memo(grid: list[list[int]]) -> int:
 - **Space Complexity:** O(R * C^2) for DP table + O(R) for recursion stack.
 
 ---
-#### b) Space Optimization
-We can optimize the `R * C * C` table to `C * C` by only storing the `front` (next) row's results while computing the `current` row.
+#### b) Tabulation (Bottom-Up)
+```python
+def cherry_pickup_tab(grid: list[list[int]]) -> int:
+    rows, cols = len(grid), len(grid[0])
+    dp = [[[0] * cols for _ in range(cols)] for _ in range(rows)]
+    
+    # Base case: last row
+    for j1 in range(cols):
+        for j2 in range(cols):
+            dp[rows-1][j1][j2] = grid[rows-1][j1] if j1 == j2 else grid[rows-1][j1] + grid[rows-1][j2]
+            
+    # Iterate from second-to-last row up to the top
+    for i in range(rows - 2, -1, -1):
+        for j1 in range(cols):
+            for j2 in range(cols):
+                max_future = 0
+                for dc1 in [-1, 0, 1]:
+                    for dc2 in [-1, 0, 1]:
+                        nj1, nj2 = j1 + dc1, j2 + dc2
+                        if 0 <= nj1 < cols and 0 <= nj2 < cols:
+                            max_future = max(max_future, dp[i+1][nj1][nj2])
+                            
+                cherries = grid[i][j1] + (grid[i][j2] if j1 != j2 else 0)
+                dp[i][j1][j2] = cherries + max_future
+                
+    return dp[0][0][cols-1]
+```
+- **Time Complexity:** O(R * C^2).
+- **Space Complexity:** O(R * C^2).
 
+---
+#### c) Space Optimization
 ```python
 def cherry_pickup_optimized(grid: list[list[int]]) -> int:
     rows, cols = len(grid), len(grid[0])

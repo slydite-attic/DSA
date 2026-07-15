@@ -165,3 +165,28 @@ def search(self, target):
         current = current.next
     return False
 ```
+
+---
+
+### 6. Insertion at the head of Linked List
+[EASY] #linkedlist
+
+#### Problem Statement
+Given the head of a singly linked list and an integer al, insert a new node with value al at the head (beginning) of the linked list and return the new head.
+
+*Example:*
+- **Input:** head = [1, 2, 3], al = 0
+- **Output:** [0, 1, 2, 3]
+
+#### Python Code Snippet
+`python
+class Node:
+    def __init__(self, data=0, next=None):
+        self.data = data
+        self.next = next
+        
+def insertAtHead(head, val):
+    new_node = Node(val)
+    new_node.next = head
+    return new_node
+`

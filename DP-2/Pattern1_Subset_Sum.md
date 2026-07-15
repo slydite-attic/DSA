@@ -110,14 +110,75 @@ This is a direct application of Subset Sum. If the array can be partitioned into
 2.  The problem becomes: find if there is a subset with sum equal to `target = total_sum / 2`.
 3.  Use any of the Subset Sum solutions above.
 
-#### Python Code Snippet (using optimized Subset Sum)
+##### a) Memoization (Top-Down)
 ```python
-def can_partition(nums: list[int]) -> bool:
-    total_sum = sum(nums) # Calculate the total sum of the elements in the list.
-    if total_sum % 2 != 0: # If the total sum is odd, it's impossible to partition it into two equal halves.
-        return False # So, return False.
+def can_partition_memo(nums: list[int]) -> bool:
+    total_sum = sum(nums)
+    if total_sum % 2 != 0:
+        return False
+    target = total_sum // 2
+    n = len(nums)
+    dp = [[-1] * (target + 1) for _ in range(n)]
 
-    return subset_sum_optimized(nums, total_sum // 2) # The problem is now reduced to finding if a subset sums up to half of the total sum.
+    def solve(index, t):
+        if t == 0:
+            return True
+        if index == 0:
+            return nums[0] == t
+        if dp[index][t] != -1:
+            return dp[index][t]
+
+        not_pick = solve(index - 1, t)
+        pick = False
+        if nums[index] <= t:
+            pick = solve(index - 1, t - nums[index])
+
+        dp[index][t] = not_pick or pick
+        return dp[index][t]
+
+    return solve(n - 1, target)
+```
+- **Time Complexity:** O(n * total_sum).
+- **Space Complexity:** O(n * total_sum) + O(n) recursion stack.
+
+---
+#### b) Tabulation (Bottom-Up)
+```python
+def can_partition_tab(nums: list[int]) -> bool:
+    total_sum = sum(nums)
+    if total_sum % 2 != 0:
+        return False
+    target = total_sum // 2
+    n = len(nums)
+    dp = [[False] * (target + 1) for _ in range(n)]
+
+    for i in range(n):
+        dp[i][0] = True
+
+    if nums[0] <= target:
+        dp[0][nums[0]] = True
+
+    for i in range(1, n):
+        for t in range(1, target + 1):
+            not_pick = dp[i-1][t]
+            pick = False
+            if nums[i] <= t:
+                pick = dp[i-1][t - nums[i]]
+            dp[i][t] = not_pick or pick
+
+    return dp[n-1][target]
+```
+- **Time/Space Complexity:** O(n * total_sum).
+
+---
+#### c) Space Optimization
+```python
+def can_partition_optimized(nums: list[int]) -> bool:
+    total_sum = sum(nums)
+    if total_sum % 2 != 0:
+        return False
+    target = total_sum // 2
+    return subset_sum_optimized(nums, target)
 ```
 - **Time Complexity:** O(n * total_sum).
 - **Space Complexity:** O(total_sum).
@@ -130,38 +191,100 @@ def can_partition(nums: list[int]) -> bool:
 #### Problem Statement
 Given an array and a difference `diff`, count the ways to partition it into two subsets `S1` and `S2` such that `sum(S1) - sum(S2) = diff`.
 
-#### Implementation Overview
+#### Recurrence Relation
 This problem reduces to **Count Subsets with Sum K**.
-1.  We have two equations:
-    - `sum(S1) - sum(S2) = diff`
-    - `sum(S1) + sum(S2) = totalSum`
-2.  Adding them gives `2 * sum(S1) = totalSum + diff`, so `sum(S1) = (totalSum + diff) / 2`.
-3.  The problem is now to count the number of subsets that sum to this `target = (totalSum + diff) / 2`.
-4.  This requires a counting version of the subset sum DP. Let `dp[j]` be the number of ways to make sum `j`. The recurrence is `dp[j] = dp[j] + dp[j - num]`.
+- `sum(S1) - sum(S2) = diff` and `sum(S1) + sum(S2) = totalSum`
+- Adding them gives `sum(S1) = (totalSum + diff) / 2`.
+- Let `solve(index, target)` be the number of ways to form `target` using first `index` items.
+- **`solve(index, target) = solve(index-1, target) + solve(index-1, target - nums[index])`**
 
-#### Python Code Snippet
+---
+#### a) Memoization (Top-Down)
 ```python
-def count_partitions_with_diff(nums: list[int], diff: int) -> int:
-    total_sum = sum(nums) # Calculate the total sum of all numbers in the list.
-
-    # Edge cases: if the target sum is not an integer or is negative, no solution exists.
+def count_partitions_memo(nums: list[int], diff: int) -> int:
+    total_sum = sum(nums)
     if (total_sum + diff) % 2 != 0 or (total_sum + diff) < 0:
-        return 0 # Return 0 as no such partitions are possible.
+        return 0
+    target = (total_sum + diff) // 2
+    n = len(nums)
+    dp = [[-1] * (target + 1) for _ in range(n)]
 
-    target = (total_sum + diff) // 2 # Calculate the target sum for one of the subsets.
+    def solve(index, t):
+        if index == 0:
+            if t == 0 and nums[0] == 0:
+                return 2  # Pick or not pick the 0
+            if t == 0 or nums[0] == t:
+                return 1
+            return 0
+        if dp[index][t] != -1:
+            return dp[index][t]
 
-    # Count subsets with sum = target
-    dp = [0] * (target + 1) # Initialize a DP array to store the number of ways to achieve each sum.
-    dp[0] = 1 # Base case: there is one way to make a sum of 0 (by choosing an empty set).
-    for num in nums: # Iterate through each number in the input list.
-        for j in range(target, num - 1, -1): # Iterate backwards from the target down to the current number.
-            dp[j] += dp[j - num] # Update the number of ways to form sum 'j' by adding the ways to form 'j - num'.
+        not_pick = solve(index - 1, t)
+        pick = 0
+        if nums[index] <= t:
+            pick = solve(index - 1, t - nums[index])
 
-    return dp[target] # The result is the number of ways to form the target sum.
+        dp[index][t] = not_pick + pick
+        return dp[index][t]
+
+    return solve(n - 1, target)
+```
+- **Time Complexity:** O(n * target).
+- **Space Complexity:** O(n * target) + O(n) recursion stack.
+
+---
+#### b) Tabulation (Bottom-Up)
+```python
+def count_partitions_tab(nums: list[int], diff: int) -> int:
+    total_sum = sum(nums)
+    if (total_sum + diff) % 2 != 0 or (total_sum + diff) < 0:
+        return 0
+    target = (total_sum + diff) // 2
+    n = len(nums)
+    dp = [[0] * (target + 1) for _ in range(n)]
+
+    # Base case for first element
+    if nums[0] == 0:
+        dp[0][0] = 2
+    else:
+        dp[0][0] = 1
+        if nums[0] <= target:
+            dp[0][nums[0]] = 1
+
+    for i in range(1, n):
+        for t in range(target + 1):
+            not_pick = dp[i-1][t]
+            pick = 0
+            if nums[i] <= t:
+                pick = dp[i-1][t - nums[i]]
+            dp[i][t] = not_pick + pick
+
+    return dp[n-1][target]
+```
+- **Time/Space Complexity:** O(n * target).
+
+---
+#### c) Space Optimization
+```python
+def count_partitions_optimized(nums: list[int], diff: int) -> int:
+    total_sum = sum(nums)
+    if (total_sum + diff) % 2 != 0 or (total_sum + diff) < 0:
+        return 0
+    target = (total_sum + diff) // 2
+    dp = [0] * (target + 1)
+    dp[0] = 1
+    if nums[0] != 0 and nums[0] <= target:
+        dp[nums[0]] = 1
+    elif nums[0] == 0:
+        dp[0] = 2
+
+    for i in range(1, len(nums)):
+        for t in range(target, nums[i] - 1, -1):
+            dp[t] += dp[t - nums[i]]
+    return dp[target]
 ```
 - **Time Complexity:** O(n * target).
 - **Space Complexity:** O(target).
-- **Related Problem:** The **Target Sum** problem is an identical variation.
 
 ---
 
@@ -171,30 +294,91 @@ def count_partitions_with_diff(nums: list[int], diff: int) -> int:
 #### Problem Statement
 Given an array of integers `arr`, partition it into two subsets `S1` and `S2` such that the absolute difference of their sums, i.e., `|sum(S1) - sum(S2)|`, is minimized. Return the minimum absolute sum difference.
 
-*Example:*
-- **Input:** `arr = [1, 6, 11, 5]`
-- **Output:** `1`
-- **Explanation:** Subset 1 = [1, 5, 6], sum = 12; Subset 2 = [11], sum = 11. Difference = |12-11| = 1.
-
-#### Implementation Overview
-We use the subset sum DP logic.
-1. Compute `total_sum = sum(arr)`. Our goal is to find if any subset sum in range `[0, total_sum // 2]` is possible.
-2. Find the largest sum `s1 <= total_sum // 2` which is possible.
-3. The other subset sum will be `s2 = total_sum - s1`.
-4. The minimum difference is `s2 - s1 = total_sum - 2*s1`.
-
-#### Python Code Snippet
+---
+#### a) Memoization (Top-Down)
 ```python
-def minSubsetSumDifference(arr):
+def min_subset_sum_difference_memo(arr: list[int]) -> int:
+    n = len(arr)
+    total_sum = sum(arr)
+    target = total_sum // 2
+    dp = [[-1] * (target + 1) for _ in range(n)]
+
+    def solve(index, t):
+        if t == 0:
+            return True
+        if index == 0:
+            return arr[0] == t
+        if dp[index][t] != -1:
+            return dp[index][t]
+
+        not_pick = solve(index - 1, t)
+        pick = False
+        if arr[index] <= t:
+            pick = solve(index - 1, t - arr[index])
+
+        dp[index][t] = not_pick or pick
+        return dp[index][t]
+
+    # Find the largest subset sum achievable <= total_sum // 2
+    s1 = 0
+    for t in range(target, -1, -1):
+        if solve(n - 1, t):
+            s1 = t
+            break
+
+    return total_sum - 2 * s1
+```
+- **Time Complexity:** O(n * total_sum).
+- **Space Complexity:** O(n * total_sum) + O(n) recursion stack.
+
+---
+#### b) Tabulation (Bottom-Up)
+```python
+def min_subset_sum_difference_tab(arr: list[int]) -> int:
+    n = len(arr)
+    total_sum = sum(arr)
+    target = total_sum // 2
+    dp = [[False] * (target + 1) for _ in range(n)]
+
+    for i in range(n):
+        dp[i][0] = True
+    if arr[0] <= target:
+        dp[0][arr[0]] = True
+
+    for i in range(1, n):
+        for t in range(1, target + 1):
+            not_pick = dp[i-1][t]
+            pick = False
+            if arr[i] <= t:
+                pick = dp[i-1][t - arr[i]]
+            dp[i][t] = not_pick or pick
+
+    s1 = 0
+    for t in range(target, -1, -1):
+        if dp[n-1][t]:
+            s1 = t
+            break
+
+    return total_sum - 2 * s1
+```
+- **Time/Space Complexity:** O(n * total_sum).
+
+---
+#### c) Space Optimization
+```python
+def min_subset_sum_difference_optimized(arr: list[int]) -> int:
     n = len(arr)
     total_sum = sum(arr)
     target = total_sum // 2
     dp = [False] * (target + 1)
     dp[0] = True
-    for num in arr:
-        for j in range(target, num - 1, -1):
-            dp[j] = dp[j] or dp[j - num]
-            
+    if arr[0] <= target:
+        dp[arr[0]] = True
+
+    for i in range(1, n):
+        for j in range(target, arr[i] - 1, -1):
+            dp[j] = dp[j] or dp[j - arr[i]]
+
     s1 = 0
     for j in range(target, -1, -1):
         if dp[j]:
@@ -202,6 +386,8 @@ def minSubsetSumDifference(arr):
             break
     return total_sum - 2 * s1
 ```
+- **Time Complexity:** O(n * total_sum).
+- **Space Complexity:** O(total_sum).
 
 ---
 
@@ -211,18 +397,374 @@ def minSubsetSumDifference(arr):
 #### Problem Statement
 Given an array `arr` of size `n` and a target sum `k`, count the number of subsets whose sum is equal to `k`.
 
-*Example:*
-- **Input:** `arr = [1, 2, 2, 3]`, `k = 3`
-- **Output:** `3`
-- **Explanation:** The subsets are [1, 2], [1, 2], and [3].
-
-#### Python Code Snippet
+---
+#### a) Memoization (Top-Down)
 ```python
-def findWays(arr, k):
+def find_ways_memo(arr: list[int], k: int) -> int:
+    n = len(arr)
+    dp = [[-1] * (k + 1) for _ in range(n)]
+
+    def solve(index, t):
+        if index == 0:
+            if t == 0 and arr[0] == 0:
+                return 2
+            if t == 0 or arr[0] == t:
+                return 1
+            return 0
+        if dp[index][t] != -1:
+            return dp[index][t]
+
+        not_pick = solve(index - 1, t)
+        pick = 0
+        if arr[index] <= t:
+            pick = solve(index - 1, t - arr[index])
+
+        dp[index][t] = not_pick + pick
+        return dp[index][t]
+
+    return solve(n - 1, k)
+```
+- **Time Complexity:** O(n * k).
+- **Space Complexity:** O(n * k) + O(n) recursion stack.
+
+---
+#### b) Tabulation (Bottom-Up)
+```python
+def find_ways_tab(arr: list[int], k: int) -> int:
+    n = len(arr)
+    dp = [[0] * (k + 1) for _ in range(n)]
+
+    if arr[0] == 0:
+        dp[0][0] = 2
+    else:
+        dp[0][0] = 1
+        if arr[0] <= k:
+            dp[0][arr[0]] = 1
+
+    for i in range(1, n):
+        for t in range(k + 1):
+            not_pick = dp[i-1][t]
+            pick = 0
+            if arr[i] <= t:
+                pick = dp[i-1][t - arr[i]]
+            dp[i][t] = not_pick + pick
+
+    return dp[n-1][k]
+```
+- **Time/Space Complexity:** O(n * k).
+
+---
+#### c) Space Optimization
+```python
+def find_ways_optimized(arr: list[int], k: int) -> int:
     dp = [0] * (k + 1)
     dp[0] = 1
-    for num in arr:
-        for j in range(k, num - 1, -1):
-            dp[j] = (dp[j] + dp[j - num])
+    if arr[0] != 0 and arr[0] <= k:
+        dp[arr[0]] = 1
+def count_partitions_optimized(nums: list[int], diff: int) -> int:
+    total_sum = sum(nums)
+    if (total_sum + diff) % 2 != 0 or (total_sum + diff) < 0:
+        return 0
+    target = (total_sum + diff) // 2
+    dp = [0] * (target + 1)
+    dp[0] = 1
+    if nums[0] != 0 and nums[0] <= target:
+        dp[nums[0]] = 1
+    elif nums[0] == 0:
+        dp[0] = 2
+
+    for i in range(1, len(nums)):
+        for t in range(target, nums[i] - 1, -1):
+            dp[t] += dp[t - nums[i]]
+    return dp[target]
+```
+- **Time Complexity:** O(n * target).
+- **Space Complexity:** O(target).
+
+---
+
+### 4. Partition a set into two subsets with minimum absolute sum difference
+`[HARD]` `#dynamicprogramming` `#subsetsum`
+
+#### Problem Statement
+Given an array of integers `arr`, partition it into two subsets `S1` and `S2` such that the absolute difference of their sums, i.e., `|sum(S1) - sum(S2)|`, is minimized. Return the minimum absolute sum difference.
+
+---
+#### a) Memoization (Top-Down)
+```python
+def min_subset_sum_difference_memo(arr: list[int]) -> int:
+    n = len(arr)
+    total_sum = sum(arr)
+    target = total_sum // 2
+    dp = [[-1] * (target + 1) for _ in range(n)]
+
+    def solve(index, t):
+        if t == 0:
+            return True
+        if index == 0:
+            return arr[0] == t
+        if dp[index][t] != -1:
+            return dp[index][t]
+
+        not_pick = solve(index - 1, t)
+        pick = False
+        if arr[index] <= t:
+            pick = solve(index - 1, t - arr[index])
+
+        dp[index][t] = not_pick or pick
+        return dp[index][t]
+
+    # Find the largest subset sum achievable <= total_sum // 2
+    s1 = 0
+    for t in range(target, -1, -1):
+        if solve(n - 1, t):
+            s1 = t
+            break
+
+    return total_sum - 2 * s1
+```
+- **Time Complexity:** O(n * total_sum).
+- **Space Complexity:** O(n * total_sum) + O(n) recursion stack.
+
+---
+#### b) Tabulation (Bottom-Up)
+```python
+def min_subset_sum_difference_tab(arr: list[int]) -> int:
+    n = len(arr)
+    total_sum = sum(arr)
+    target = total_sum // 2
+    dp = [[False] * (target + 1) for _ in range(n)]
+
+    for i in range(n):
+        dp[i][0] = True
+    if arr[0] <= target:
+        dp[0][arr[0]] = True
+
+    for i in range(1, n):
+        for t in range(1, target + 1):
+            not_pick = dp[i-1][t]
+            pick = False
+            if arr[i] <= t:
+                pick = dp[i-1][t - arr[i]]
+            dp[i][t] = not_pick or pick
+
+    s1 = 0
+    for t in range(target, -1, -1):
+        if dp[n-1][t]:
+            s1 = t
+            break
+
+    return total_sum - 2 * s1
+```
+- **Time/Space Complexity:** O(n * total_sum).
+
+---
+#### c) Space Optimization
+```python
+def min_subset_sum_difference_optimized(arr: list[int]) -> int:
+    n = len(arr)
+    total_sum = sum(arr)
+    target = total_sum // 2
+    dp = [False] * (target + 1)
+    dp[0] = True
+    if arr[0] <= target:
+        dp[arr[0]] = True
+
+    for i in range(1, n):
+        for j in range(target, arr[i] - 1, -1):
+            dp[j] = dp[j] or dp[j - arr[i]]
+
+    s1 = 0
+    for j in range(target, -1, -1):
+        if dp[j]:
+            s1 = j
+            break
+    return total_sum - 2 * s1
+```
+- **Time Complexity:** O(n * total_sum).
+- **Space Complexity:** O(total_sum).
+
+---
+
+### 5. Count Subsets with Sum K
+`[MEDIUM]` `#dynamicprogramming` `#subsetsum`
+
+#### Problem Statement
+Given an array `arr` of size `n` and a target sum `k`, count the number of subsets whose sum is equal to `k`.
+
+---
+#### a) Memoization (Top-Down)
+```python
+def find_ways_memo(arr: list[int], k: int) -> int:
+    n = len(arr)
+    dp = [[-1] * (k + 1) for _ in range(n)]
+
+    def solve(index, t):
+        if index == 0:
+            if t == 0 and arr[0] == 0:
+                return 2
+            if t == 0 or arr[0] == t:
+                return 1
+            return 0
+        if dp[index][t] != -1:
+            return dp[index][t]
+
+        not_pick = solve(index - 1, t)
+        pick = 0
+        if arr[index] <= t:
+            pick = solve(index - 1, t - arr[index])
+
+        dp[index][t] = not_pick + pick
+        return dp[index][t]
+
+    return solve(n - 1, k)
+```
+- **Time Complexity:** O(n * k).
+- **Space Complexity:** O(n * k) + O(n) recursion stack.
+
+---
+#### b) Tabulation (Bottom-Up)
+```python
+def find_ways_tab(arr: list[int], k: int) -> int:
+    n = len(arr)
+    dp = [[0] * (k + 1) for _ in range(n)]
+
+    if arr[0] == 0:
+        dp[0][0] = 2
+    else:
+        dp[0][0] = 1
+        if arr[0] <= k:
+            dp[0][arr[0]] = 1
+
+    for i in range(1, n):
+        for t in range(k + 1):
+            not_pick = dp[i-1][t]
+            pick = 0
+            if arr[i] <= t:
+                pick = dp[i-1][t - arr[i]]
+            dp[i][t] = not_pick + pick
+
+    return dp[n-1][k]
+```
+- **Time/Space Complexity:** O(n * k).
+
+---
+#### c) Space Optimization
+```python
+def find_ways_optimized(arr: list[int], k: int) -> int:
+    dp = [0] * (k + 1)
+    dp[0] = 1
+    if arr[0] != 0 and arr[0] <= k:
+        dp[arr[0]] = 1
+    elif arr[0] == 0:
+        dp[0] = 2
+
+    for i in range(1, len(arr)):
+        for j in range(k, arr[i] - 1, -1):
+            dp[j] = dp[j] + dp[j - arr[i]]
     return dp[k]
 ```
+- **Time Complexity:** O(n * k).
+- **Space Complexity:** O(k).
+
+---
+
+### 6. Target Sum
+`[MEDIUM]` `#dynamicprogramming` `#subsetsum` `#partition` `#target-sum`
+
+#### Problem Statement
+Given an array of integers `arr` and a target integer `target`, count the number of ways to assign `+` and `-` signs to each integer to make the expression evaluate to `target`.
+
+#### Recurrence Relation
+This is equivalent to dividing the array into two subsets `S1` (positive elements) and `S2` (negative elements) such that `sum(S1) - sum(S2) = target`.
+- `sum(S1) - sum(S2) = target` and `sum(S1) + sum(S2) = total_sum`
+- Subtracting them gives `2 * sum(S2) = total_sum - target`, or `sum(S2) = (total_sum - target) / 2`.
+- Let `k = (total_sum - target) / 2`. If `total_sum - target < 0` or is odd, return 0.
+- The problem reduces to finding the number of subsets with sum `k`.
+
+---
+#### a) Memoization (Top-Down)
+```python
+def target_sum_memo(arr: list[int], target: int) -> int:
+    total_sum = sum(arr)
+    if (total_sum - target) % 2 != 0 or (total_sum - target) < 0:
+        return 0
+    k = (total_sum - target) // 2
+    n = len(arr)
+    dp = [[-1] * (k + 1) for _ in range(n)]
+
+    def solve(index, t):
+        if index == 0:
+            if t == 0 and arr[0] == 0:
+                return 2
+            if t == 0 or arr[0] == t:
+                return 1
+            return 0
+        if dp[index][t] != -1:
+            return dp[index][t]
+
+        not_pick = solve(index - 1, t)
+        pick = 0
+        if arr[index] <= t:
+            pick = solve(index - 1, t - arr[index])
+
+        dp[index][t] = not_pick + pick
+        return dp[index][t]
+
+    return solve(n - 1, k)
+```
+- **Time Complexity:** O(n * k).
+- **Space Complexity:** O(n * k) + O(n) recursion stack.
+
+---
+#### b) Tabulation (Bottom-Up)
+```python
+def target_sum_tab(arr: list[int], target: int) -> int:
+    total_sum = sum(arr)
+    if (total_sum - target) % 2 != 0 or (total_sum - target) < 0:
+        return 0
+    k = (total_sum - target) // 2
+    n = len(arr)
+    dp = [[0] * (k + 1) for _ in range(n)]
+
+    if arr[0] == 0:
+        dp[0][0] = 2
+    else:
+        dp[0][0] = 1
+        if arr[0] <= k:
+            dp[0][arr[0]] = 1
+
+    for i in range(1, n):
+        for t in range(k + 1):
+            not_pick = dp[i-1][t]
+            pick = 0
+            if arr[i] <= t:
+                pick = dp[i-1][t - arr[i]]
+            dp[i][t] = not_pick + pick
+
+    return dp[n-1][k]
+```
+- **Time/Space Complexity:** O(n * k).
+
+---
+#### c) Space Optimization
+```python
+def target_sum_optimized(arr: list[int], target: int) -> int:
+    total_sum = sum(arr)
+    if (total_sum - target) % 2 != 0 or (total_sum - target) < 0:
+        return 0
+    k = (total_sum - target) // 2
+    dp = [0] * (k + 1)
+    dp[0] = 1
+    if arr[0] != 0 and arr[0] <= k:
+        dp[arr[0]] = 1
+    elif arr[0] == 0:
+        dp[0] = 2
+
+    for i in range(1, len(arr)):
+        for j in range(k, arr[i] - 1, -1):
+            dp[j] = dp[j] + dp[j - arr[i]]
+    return dp[k]
+```
+- **Time Complexity:** O(n * k).
+- **Space Complexity:** O(k).

@@ -120,7 +120,31 @@ def unique_paths_obstacles_memo(grid: list[list[int]]) -> int:
 - **Time/Space Complexity:** Same as the non-obstacle version, O(m*n).
 
 ---
-#### b) Space Optimization
+#### b) Tabulation (Bottom-Up)
+```python
+def unique_paths_obstacles_tab(grid: list[list[int]]) -> int:
+    m, n = len(grid), len(grid[0])
+    if grid[0][0] == 1: return 0
+    dp = [[0] * n for _ in range(m)]
+    dp[0][0] = 1
+
+    for r in range(m):
+        for c in range(n):
+            if grid[r][c] == 1:
+                dp[r][c] = 0
+                continue
+            if r == 0 and c == 0: continue
+            up = dp[r-1][c] if r > 0 else 0
+            left = dp[r][c-1] if c > 0 else 0
+            dp[r][c] = up + left
+
+    return dp[m-1][n-1]
+```
+- **Time Complexity:** O(m * n).
+- **Space Complexity:** O(m * n).
+
+---
+#### c) Space Optimization
 ```python
 def unique_paths_obstacles_optimized(grid: list[list[int]]) -> int:
     m, n = len(grid), len(grid[0])
@@ -184,7 +208,28 @@ def min_path_sum_memo(grid: list[list[int]]) -> int:
 - **Time/Space Complexity:** O(m*n).
 
 ---
-#### b) Space Optimization
+#### b) Tabulation (Bottom-Up)
+```python
+def min_path_sum_tab(grid: list[list[int]]) -> int:
+    m, n = len(grid), len(grid[0])
+    dp = [[0] * n for _ in range(m)]
+    
+    for r in range(m):
+        for c in range(n):
+            if r == 0 and c == 0:
+                dp[r][c] = grid[r][c]
+            else:
+                up = dp[r-1][c] if r > 0 else float('inf')
+                left = dp[r][c-1] if c > 0 else float('inf')
+                dp[r][c] = grid[r][c] + min(up, left)
+                
+    return dp[m-1][n-1]
+```
+- **Time Complexity:** O(m * n).
+- **Space Complexity:** O(m * n).
+
+---
+#### c) Space Optimization
 ```python
 def min_path_sum_optimized(grid: list[list[int]]) -> int:
     m, n = len(grid), len(grid[0])
@@ -220,16 +265,57 @@ Let `dp[i][j]` be the min path sum starting from cell `(i, j)` to the bottom. Wo
 - **Base Cases:** The last row of `dp` is the last row of the triangle.
 
 ---
-#### a) Tabulation (Bottom-Up, Space Optimized)
-We only need the "next" row to compute the "current" row. We can use a 1D `dp` array and iterate upwards from the bottom.
-
+#### a) Memoization (Top-Down)
 ```python
-def minimum_total_triangle(triangle: list[list[int]]) -> int:
+def minimum_total_triangle_memo(triangle: list[list[int]]) -> int:
     n = len(triangle)
-    # dp array initialized with the last row
+    dp = [[-1] * len(row) for row in triangle]
+
+    def solve(r, c):
+        if r == n - 1:
+            return triangle[r][c]
+        if dp[r][c] != -1:
+            return dp[r][c]
+
+        down = solve(r + 1, c)
+        diagonal = solve(r + 1, c + 1)
+        dp[r][c] = triangle[r][c] + min(down, diagonal)
+        return dp[r][c]
+
+    return solve(0, 0)
+```
+- **Time Complexity:** O(n^2), where n is the number of rows (total elements in triangle is ~n^2/2).
+- **Space Complexity:** O(n^2) for the DP table + O(n) for the recursion stack.
+
+---
+#### b) Tabulation (Bottom-Up)
+```python
+def minimum_total_triangle_tab(triangle: list[list[int]]) -> int:
+    n = len(triangle)
+    dp = [[0] * len(row) for row in triangle]
+    
+    # Base case: last row
+    for c in range(n):
+        dp[n-1][c] = triangle[n-1][c]
+        
+    for r in range(n - 2, -1, -1):
+        for c in range(r + 1):
+            down = dp[r+1][c]
+            diagonal = dp[r+1][c+1]
+            dp[r][c] = triangle[r][c] + min(down, diagonal)
+            
+    return dp[0][0]
+```
+- **Time Complexity:** O(n^2).
+- **Space Complexity:** O(n^2).
+
+---
+#### c) Space Optimization
+```python
+def minimum_total_triangle_optimized(triangle: list[list[int]]) -> int:
+    n = len(triangle)
     next_row = list(triangle[n-1])
 
-    # Iterate from the second-to-last row up to the top
     for r in range(n - 2, -1, -1):
         current_row = [0] * (r + 1)
         for c in range(r + 1):
@@ -240,5 +326,5 @@ def minimum_total_triangle(triangle: list[list[int]]) -> int:
 
     return next_row[0]
 ```
-- **Time Complexity:** O(n^2), where n is the number of rows.
-- **Space Complexity:** O(n) for storing one row.
+- **Time Complexity:** O(n^2).
+- **Space Complexity:** O(n).

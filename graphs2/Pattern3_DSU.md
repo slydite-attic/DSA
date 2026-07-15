@@ -293,3 +293,18 @@ def remove_stones(stones: list[list[int]]) -> int:
     return len(stones) - len(components)
 ```
 ```
+
+---
+
+### 6. Swim in Rising Water
+`[HARD]` `#dsu` `#binarysearch` `#shortestpath`
+
+#### Problem Statement
+You are given an `n x n` integer matrix `grid` where each value `grid[i][j]` represents the elevation at that point `(i, j)`. Rain starts to fall. At time `t`, the depth of the water everywhere is `t`. You can swim from a square to another 4-directionally adjacent square if and only if both elevations are at most `t`. Return the least time until you can reach the bottom-right square from the top-left square.
+
+#### Python Code Snippet
+```python
+# TODO: Implement Swim in Rising Water
+def swimInWater(grid):
+    pass
+```

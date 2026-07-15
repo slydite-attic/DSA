@@ -252,3 +252,18 @@ def alien_order(words: list[str]) -> str:
 
     return "".join(res) if len(res) == len(in_degree) else ""
 ```
+
+---
+
+### 4. Topo Sort
+`[FUNDAMENTAL]` `[MEDIUM]` `#toposort` `#dag`
+
+#### Problem Statement
+Given a Directed Acyclic Graph (DAG) with V vertices and E edges, find any Topological Sort of that graph.
+
+#### Python Code Snippet
+```python
+# TODO: Implement Topological Sort (Kahn's Algorithm or DFS)
+def topoSort(V, adj):
+    pass
+```

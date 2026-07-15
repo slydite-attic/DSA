@@ -83,25 +83,125 @@ def lcs_optimized(text1: str, text2: str) -> int:
 - **Space Complexity:** O(m), where m is the length of the shorter string.
 
 ---
+#### d) Alternative Formulation: LCS to LIS Reduction (O(n log n))
+If one of the strings has **all unique characters** (e.g. a permutation of numbers or distinct characters), we can map the LCS problem to a **Longest Increasing Subsequence (LIS)** problem.
+1. Create a hash map `pos` that maps each character of `text1` to its index.
+2. Iterate through `text2`. If a character is in `pos`, replace it with its mapped index. If it isn't, discard it.
+3. Find the LIS of the resulting index list. Since LIS can be solved in $O(n \log n)$ using binary search (patience sorting), this solves LCS in $O(n \log n)$ time.
 
-### 2. Longest Palindromic Subsequence
+```python
+import bisect
+
+def lcs_via_lis(text1: str, text2: str) -> int:
+    # Build map from character to index in text1
+    # Assumes text1 has unique characters (or we track positions list for duplicates)
+    pos = {char: idx for idx, char in enumerate(text1)}
+    
+    # Map text2 characters to their indices in text1
+    mapped_indices = []
+    for char in text2:
+        if char in pos:
+            mapped_indices.append(pos[char])
+            
+    # Find LIS of mapped_indices in O(N log N)
+    sub = []
+    for num in mapped_indices:
+        idx = bisect.bisect_left(sub, num)
+        if idx == len(sub):
+            sub.append(num)
+        else:
+            sub[idx] = num
+            
+    return len(sub)
+```
+- **Time Complexity:** O(n + m log m).
+- **Space Complexity:** O(n + m) to store map and mapped list.
+
+---
+
+#### 2. Longest Palindromic Subsequence
 `[MEDIUM]` `#lps` `#lcs` `#string-dp`
 
 #### Problem Statement
 Given a string `s`, find the length of the longest palindromic subsequence.
 
-#### Implementation Overview
-- **Insight:** A palindrome reads the same forwards and backwards. Therefore, the longest palindromic subsequence of `s` is simply the **Longest Common Subsequence of `s` and `reverse(s)`**.
-- **Algorithm:** Create a reversed copy of `s` and use any of the LCS implementations above to find the length.
+#### Recurrence Relation
+Let `dp[i][j]` be the length of the longest palindromic subsequence in `s[i...j]`.
+- If `s[i] == s[j]`: `dp[i][j] = 2 + dp[i+1][j-1]` (with base cases handled).
+- If `s[i] != s[j]`: `dp[i][j] = max(dp[i+1][j], dp[i][j-1])`.
+- **Alternative Insight:** The LPS of `s` is equivalent to the LCS of `s` and `reverse(s)`.
 
-#### Python Code Snippet
+---
+#### a) Memoization (Top-Down Interval DP)
 ```python
-def longest_palindromic_subsequence(s: str) -> int:
-    # The longest palindromic subsequence is equivalent to the longest common subsequence
-    # between the string and its reverse.
-    return lcs_optimized(s, s[::-1]) # Call the LCS function with the string and its reverse.
+def lps_memo(s: str) -> int:
+    n = len(s)
+    dp = [[-1] * n for _ in range(n)]
+
+    def solve(i, j):
+        if i > j:
+            return 0
+        if i == j:
+            return 1
+        if dp[i][j] != -1:
+            return dp[i][j]
+
+        if s[i] == s[j]:
+            dp[i][j] = 2 + solve(i + 1, j - 1)
+        else:
+            dp[i][j] = max(solve(i + 1, j), solve(i, j - 1))
+        return dp[i][j]
+
+    return solve(0, n - 1)
 ```
-- **Time/Space Complexity:** Same as the underlying LCS implementation used.
+- **Time Complexity:** O(n^2).
+- **Space Complexity:** O(n^2) for the DP table + O(n) recursion stack.
+
+---
+#### b) Tabulation (Bottom-Up)
+```python
+def lps_tab(s: str) -> int:
+    n = len(s)
+    dp = [[0] * n for _ in range(n)]
+    
+    # Base cases: Single character substrings are palindromes of length 1
+    for i in range(n):
+        dp[i][i] = 1
+
+    for length in range(2, n + 1):
+        for i in range(n - length + 1):
+            j = i + length - 1
+            if s[i] == s[j]:
+                dp[i][j] = 2 + (dp[i+1][j-1] if i+1 <= j-1 else 0)
+            else:
+                dp[i][j] = max(dp[i+1][j], dp[i][j-1])
+
+    return dp[0][n-1]
+```
+- **Time Complexity:** O(n^2).
+- **Space Complexity:** O(n^2).
+
+---
+#### c) Space Optimization
+```python
+def lps_optimized(s: str) -> int:
+    n = len(s)
+    dp = [0] * n # Represents the row below the current row
+
+    for i in range(n - 1, -1, -1):
+        new_dp = [0] * n
+        new_dp[i] = 1 # Base case: single character
+        for j in range(i + 1, n):
+            if s[i] == s[j]:
+                new_dp[j] = 2 + (dp[j-1] if i+1 <= j-1 else 0)
+            else:
+                new_dp[j] = max(dp[j], new_dp[j-1])
+        dp = new_dp
+
+    return dp[n-1]
+```
+- **Time Complexity:** O(n^2).
+- **Space Complexity:** O(n).
 
 ---
 
@@ -111,20 +211,33 @@ def longest_palindromic_subsequence(s: str) -> int:
 #### Problem Statement
 Given a string `s`, find the minimum number of insertions required to make it a palindrome.
 
-#### Implementation Overview
-- **Insight:** The characters that are already part of the Longest Palindromic Subsequence (LPS) form a "stable" core that doesn't need to be touched. The characters *not* in the LPS are the ones that are "unmatched" and each requires a corresponding character to be inserted to make the whole string a palindrome.
-- **Algorithm:**
-    1.  Find the length of the LPS (`len_lps`).
-    2.  The number of insertions needed is `len(s) - len_lps`.
+#### Recurrence Relation
+- The minimum insertions to make a string a palindrome is `len(s) - LPS(s)`. The longest palindromic subsequence remains untouched, and we insert matching characters for the remainder.
 
-#### Python Code Snippet
+---
+#### a) Memoization (Top-Down)
 ```python
-def min_insertions_to_palindrome(s: str) -> int:
-    len_lps = longest_palindromic_subsequence(s) # First, find the length of the longest palindromic subsequence.
-    # The number of insertions needed is the total length of the string minus the length of the LPS.
-    return len(s) - len_lps
+def min_insertions_to_palindrome_memo(s: str) -> int:
+    return len(s) - lps_memo(s)
 ```
-- **Time/Space Complexity:** Dominated by the LPS calculation.
+- **Time/Space Complexity:** Same as `lps_memo`, O(n^2).
+
+---
+#### b) Tabulation (Bottom-Up)
+```python
+def min_insertions_to_palindrome_tab(s: str) -> int:
+    return len(s) - lps_tab(s)
+```
+- **Time/Space Complexity:** Same as `lps_tab`, O(n^2).
+
+---
+#### c) Space Optimization
+```python
+def min_insertions_to_palindrome_optimized(s: str) -> int:
+    return len(s) - lps_optimized(s)
+```
+- **Time Complexity:** O(n^2).
+- **Space Complexity:** O(n).
 
 ---
 
@@ -134,25 +247,36 @@ def min_insertions_to_palindrome(s: str) -> int:
 #### Problem Statement
 Given `str1` and `str2`, find the minimum number of deletions and insertions to convert `str1` to `str2`.
 
-#### Implementation Overview
-- **Insight:** The Longest Common Subsequence is the part of `str1` that can be kept and reused to form `str2`.
-    -   Characters in `str1` that are *not* in the LCS must be **deleted**.
-    -   Characters in `str2` that are *not* in the LCS must be **inserted**.
-- **Algorithm:**
-    1.  Calculate `len_lcs = LCS(str1, str2)`.
-    2.  Number of deletions = `len(str1) - len_lcs`.
-    3.  Number of insertions = `len(str2) - len_lcs`.
-    4.  Total operations = `deletions + insertions`.
+#### Recurrence Relation
+- Keep the LCS intact. Delete the remaining characters of `str1`, and insert the remaining characters of `str2`.
+- `deletions = len(str1) - LCS`
+- `insertions = len(str2) - LCS`
+- `total_operations = len(str1) + len(str2) - 2 * LCS`
 
-#### Python Code Snippet
+---
+#### a) Memoization (Top-Down)
 ```python
-def min_ops_to_convert(str1: str, str2: str) -> int:
-    len_lcs = lcs_optimized(str1, str2) # Calculate the length of the Longest Common Subsequence.
-    # Deletions = len(str1) - len_lcs. Insertions = len(str2) - len_lcs.
-    # Total operations = (len(str1) - len_lcs) + (len(str2) - len_lcs)
-    return len(str1) + len(str2) - 2 * len_lcs
+def min_ops_to_convert_memo(str1: str, str2: str) -> int:
+    return len(str1) + len(str2) - 2 * lcs_memo(str1, str2)
 ```
-- **Time/Space Complexity:** Dominated by the LCS calculation.
+- **Time/Space Complexity:** Same as `lcs_memo`, O(n * m).
+
+---
+#### b) Tabulation (Bottom-Up)
+```python
+def min_ops_to_convert_tab(str1: str, str2: str) -> int:
+    return len(str1) + len(str2) - 2 * lcs_tab(str1, str2)
+```
+- **Time/Space Complexity:** Same as `lcs_tab`, O(n * m).
+
+---
+#### c) Space Optimization
+```python
+def min_ops_to_convert_optimized(str1: str, str2: str) -> int:
+    return len(str1) + len(str2) - 2 * lcs_optimized(str1, str2)
+```
+- **Time Complexity:** O(n * m).
+- **Space Complexity:** O(min(n, m)).
 
 ---
 
@@ -162,48 +286,213 @@ def min_ops_to_convert(str1: str, str2: str) -> int:
 #### Problem Statement
 Given `str1` and `str2`, return the shortest string that has both as subsequences.
 
-#### Implementation Overview
-- **Length Insight:** A naive supersequence is `str1 + str2`. To make it shortest, we should only include the common parts (the LCS) once. Thus, `len(SCS) = len(str1) + len(str2) - len(LCS)`.
-- **Printing Algorithm:**
-    1.  Compute the full LCS `dp` table.
-    2.  Backtrack from `dp[n][m]` to build the SCS string.
-        - If `str1[i-1] == str2[j-1]`, this character is common. Add it to the SCS once and move diagonally (`i--`, `j--`).
-        - If they differ, find which subproblem gave the better LCS. If `dp[i-1][j]` was larger, it means `str1[i-1]` is unique to this path. Add it and move up (`i--`).
-        - Otherwise, `str2[j-1]` is unique. Add it and move left (`j--`).
-    3.  After the loop, append any remaining characters from the non-empty string.
+#### Recurrence/Printing Algorithm
+- `len(SCS) = len(str1) + len(str2) - len(LCS)`.
+- To print the string, we backtrack on the LCS `dp` table.
 
-#### Python Code Snippet
+---
+#### a) Memoization (Top-Down Length)
 ```python
-def shortest_common_supersequence(str1: str, str2: str) -> str:
-    n, m = len(str1), len(str2) # Get lengths of the strings.
-    dp = [[0] * (m + 1) for _ in range(n + 1)] # Initialize DP table for LCS calculation.
-    # Standard LCS table calculation to find the lengths of common subsequences.
-    for i in range(1, n + 1): # Iterate through str1.
-        for j in range(1, m + 1): # Iterate through str2.
-            if str1[i-1] == str2[j-1]: # If characters match,
-                dp[i][j] = 1 + dp[i-1][j-1] # Increment LCS length.
-            else: # If they don't match,
-                dp[i][j] = max(dp[i-1][j], dp[i][j-1]) # Take the max from top or left.
-
-    # Backtrack from the end of the DP table to build the SCS string.
-    res = [] # Result list to build the supersequence.
-    i, j = n, m # Start from the bottom-right corner of the DP table.
-    while i > 0 and j > 0: # Continue until one of the strings is fully processed.
-        if str1[i-1] == str2[j-1]: # If characters are the same, they are part of the LCS.
-            res.append(str1[i-1]) # Add the common character to the result.
-            i -= 1; j -= 1 # Move diagonally up-left.
-        elif dp[i-1][j] > dp[i][j-1]: # If the value from the top is greater,
-            res.append(str1[i-1]) # Add the character from str1.
-            i -= 1 # Move up.
-        else: # Otherwise, the value from the left is greater or equal.
-            res.append(str2[j-1]) # Add the character from str2.
-            j -= 1 # Move left.
-
-    # Append any remaining characters from str1 or str2.
-    while i > 0: res.append(str1[i-1]); i -= 1 # If str1 has remaining characters.
-    while j > 0: res.append(str2[j-1]); j -= 1 # If str2 has remaining characters.
-
-    return "".join(reversed(res)) # Join the characters and reverse to get the final SCS.
+def shortest_common_supersequence_len_memo(str1: str, str2: str) -> int:
+    return len(str1) + len(str2) - lcs_memo(str1, str2)
 ```
-- **Time Complexity:** O(n * m) to build the table.
-- **Space Complexity:** O(n * m) for the DP table.
+- **Time/Space Complexity:** O(n * m).
+
+---
+#### b) Tabulation & Printing (Bottom-Up)
+```python
+def shortest_common_supersequence_print(str1: str, str2: str) -> str:
+    n, m = len(str1), len(str2)
+    dp = [[0] * (m + 1) for _ in range(n + 1)]
+    for i in range(1, n + 1):
+        for j in range(1, m + 1):
+            if str1[i-1] == str2[j-1]:
+                dp[i][j] = 1 + dp[i-1][j-1]
+            else:
+                dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+
+    # Backtrack to build the SCS
+    res = []
+    i, j = n, m
+    while i > 0 and j > 0:
+        if str1[i-1] == str2[j-1]:
+            res.append(str1[i-1])
+            i -= 1
+            j -= 1
+        elif dp[i-1][j] > dp[i][j-1]:
+            res.append(str1[i-1])
+            i -= 1
+        else:
+            res.append(str2[j-1])
+            j -= 1
+
+    while i > 0:
+        res.append(str1[i-1])
+        i -= 1
+    while j > 0:
+        res.append(str2[j-1])
+        j -= 1
+
+    return "".join(reversed(res))
+```
+- **Time/Space Complexity:** O(n * m).
+
+---
+#### c) Space Optimization (Length Only)
+```python
+def shortest_common_supersequence_len_optimized(str1: str, str2: str) -> int:
+    return len(str1) + len(str2) - lcs_optimized(str1, str2)
+```
+- **Time Complexity:** O(n * m).
+- **Space Complexity:** O(min(n, m)).
+
+---
+
+### 6. Print Longest Common Subsequence
+`[MEDIUM]` `#lcs` `#string-dp`
+
+#### Problem Statement
+Given two strings `text1` and `text2`, find and return their longest common subsequence as a string.
+
+---
+#### a) Memoization (Top-Down String DP)
+```python
+def print_lcs_memo(text1: str, text2: str) -> str:
+    memo = {}
+
+    def solve(i, j):
+        if i < 0 or j < 0:
+            return ""
+        if (i, j) in memo:
+            return memo[(i, j)]
+
+        if text1[i] == text2[j]:
+            memo[(i, j)] = solve(i - 1, j - 1) + text1[i]
+        else:
+            s1 = solve(i - 1, j)
+            s2 = solve(i, j - 1)
+            memo[(i, j)] = s1 if len(s1) > len(s2) else s2
+        return memo[(i, j)]
+
+    return solve(len(text1) - 1, len(text2) - 1)
+```
+- **Time Complexity:** O(n * m * min(n, m)) due to string concatenations.
+- **Space Complexity:** O(n * m * min(n, m)) for storing strings in memo cache.
+
+---
+#### b) Tabulation & Backtracking (Bottom-Up)
+```python
+def print_lcs_tab(text1: str, text2: str) -> str:
+    n, m = len(text1), len(text2)
+    dp = [[0] * (m + 1) for _ in range(n + 1)]
+    for i in range(1, n + 1):
+        for j in range(1, m + 1):
+            if text1[i-1] == text2[j-1]:
+                dp[i][j] = 1 + dp[i-1][j-1]
+            else:
+                dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+
+    # Backtrack
+    i, j = n, m
+    res = []
+    while i > 0 and j > 0:
+        if text1[i-1] == text2[j-1]:
+            res.append(text1[i-1])
+            i -= 1
+            j -= 1
+        elif dp[i-1][j] > dp[i][j-1]:
+            i -= 1
+        else:
+            j -= 1
+    return "".join(reversed(res))
+```
+- **Time Complexity:** O(n * m) to build the table, O(n+m) to backtrack.
+- **Space Complexity:** O(n * m) to store the table.
+
+---
+
+### 7. Longest Common Substring
+`[MEDIUM]` `#lcs` `#substring`
+
+#### Problem Statement
+Given two strings `text1` and `text2`, find the length of their longest common substring.
+
+#### Recurrence Relation
+Let `dp[i][j]` be the length of the common substring ending at `text1[i-1]` and `text2[j-1]`.
+- If `text1[i-1] == text2[j-1]`: `dp[i][j] = 1 + dp[i-1][j-1]`
+- If `text1[i-1] != text2[j-1]`: `dp[i][j] = 0`
+- **Result:** Max value in the entire `dp` table.
+
+---
+#### a) Memoization (Top-Down)
+```python
+def longest_common_substring_memo(text1: str, text2: str) -> int:
+    n, m = len(text1), len(text2)
+    dp = [[-1] * m for _ in range(n)]
+    max_len = 0
+
+    def solve(i, j):
+        nonlocal max_len
+        if i < 0 or j < 0:
+            return 0
+        if dp[i][j] != -1:
+            return dp[i][j]
+
+        # Recurse for all subproblems to ensure all states are computed
+        solve(i - 1, j)
+        solve(i, j - 1)
+
+        if text1[i] == text2[j]:
+            dp[i][j] = 1 + solve(i - 1, j - 1)
+            max_len = max(max_len, dp[i][j])
+        else:
+            dp[i][j] = 0
+        return dp[i][j]
+
+    solve(n - 1, m - 1)
+    return max_len
+```
+- **Time Complexity:** O(n * m).
+- **Space Complexity:** O(n * m) + O(n + m) recursion stack.
+
+---
+#### b) Tabulation (Bottom-Up)
+```python
+def longest_common_substring_tab(text1: str, text2: str) -> int:
+    n, m = len(text1), len(text2)
+    dp = [[0] * (m + 1) for _ in range(n + 1)]
+    max_len = 0
+
+    for i in range(1, n + 1):
+        for j in range(1, m + 1):
+            if text1[i-1] == text2[j-1]:
+                dp[i][j] = 1 + dp[i-1][j-1]
+                max_len = max(max_len, dp[i][j])
+            else:
+                dp[i][j] = 0
+
+    return max_len
+```
+- **Time Complexity:** O(n * m).
+- **Space Complexity:** O(n * m).
+
+---
+#### c) Space Optimization
+```python
+def longest_common_substring_optimized(text1: str, text2: str) -> int:
+    n, m = len(text1), len(text2)
+    prev_row = [0] * (m + 1)
+    max_len = 0
+
+    for i in range(1, n + 1):
+        curr_row = [0] * (m + 1)
+        for j in range(1, m + 1):
+            if text1[i-1] == text2[j-1]:
+                curr_row[j] = 1 + prev_row[j-1]
+                max_len = max(max_len, curr_row[j])
+        prev_row = curr_row
+
+    return max_len
+```
+- **Time Complexity:** O(n * m).
+- **Space Complexity:** O(m).

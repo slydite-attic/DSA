@@ -182,3 +182,35 @@ def count_components(n: int, edges: list[list[int]]) -> int:
 
     return component_count
 ```
+
+---
+
+### 3. Traversal Techniques (BFS)
+`[FUNDAMENTAL]` `[EASY]` `#traversal` `#bfs`
+
+#### Problem Statement
+Given an undirected graph. Perform a Breadth-First Search (BFS) traversal of the graph starting from vertex 0 and return a list containing the BFS traversal.
+
+#### Python Code Snippet
+```python
+# TODO: Implement Breadth-First Search (BFS) traversal
+def bfsOfGraph(V, adj):
+    # adj is adjacency list
+    pass
+```
+
+---
+
+### 4. DFS (Depth-First Search)
+`[FUNDAMENTAL]` `[EASY]` `#traversal` `#dfs`
+
+#### Problem Statement
+Given a connected undirected graph. Perform a Depth-First Search (DFS) traversal of the graph starting from vertex 0 and return a list containing the DFS traversal.
+
+#### Python Code Snippet
+```python
+# TODO: Implement Depth-First Search (DFS) traversal
+def dfsOfGraph(V, adj):
+    # adj is adjacency list
+    pass
+```

@@ -396,3 +396,66 @@ def sort_list(head: ListNode) -> ListNode:
     return dummy.next
 ```
 ```
+
+---
+
+### 6. Flattening of LL
+`[HARD]` `#linkedlist` `#merging`
+
+#### Problem Statement
+Given a Linked List where every node represents a sub-linked-list and contains two pointers:
+1. `next`: Points to the next node in the main list.
+2. `bottom`: Points to a sub-linked-list where all nodes are sorted.
+
+Your task is to flatten the entire list into a single linked list sorted by bottom/child pointers, where all nodes are linked only via bottom/child pointers.
+
+*Example:*
+- **Input:**
+  ```
+  5 -> 10 -> 19 -> 28
+  |    |     |     |
+  7    20    22    35
+  |          |     |
+  8          50    40
+  |                |
+  30               45
+  ```
+- **Output:** `5 -> 7 -> 8 -> 10 -> 19 -> 20 -> 22 -> 28 -> 30 -> 35 -> 40 -> 45 -> 50`
+
+#### Implementation Overview
+We use a divide-and-conquer approach:
+1. Recursively traverse to the end of the `next` pointer list.
+2. Once at the end, merge the current list with the recursively flattened list on the right.
+3. The merge operation is identical to merging two sorted linked lists using child/bottom pointers.
+
+#### Python Code Snippet
+```python
+class Node:
+    def __init__(self, data=0, next=None, bottom=None):
+        self.data = data
+        self.next = next
+        self.bottom = bottom
+        
+def merge(a, b):
+    if not a:
+        return b
+    if not b:
+        return a
+    if a.data < b.data:
+        result = a
+        result.bottom = merge(a.bottom, b)
+    else:
+        result = b
+        result.bottom = merge(a, b.bottom)
+    result.next = None
+    return result
+    
+def flatten(root):
+    if not root or not root.next:
+        return root
+    # Flatten the next list
+    root.next = flatten(root.next)
+    # Merge current list with flattened next list
+    root = merge(root, root.next)
+    return root
+```

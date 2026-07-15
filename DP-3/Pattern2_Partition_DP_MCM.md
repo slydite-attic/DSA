@@ -287,8 +287,9 @@ For each operator at `k`:
   - `^`: true if `l_t*r_f + l_f*r_t`
 
 #### Python Code Snippet
+#### a) Memoization (Top-Down)
 ```python
-def countWays(s):
+def count_ways_memo(s: str) -> int:
     memo = {}
     def solve(i, j, is_true):
         if i > j:
@@ -298,18 +299,18 @@ def countWays(s):
                 return 1 if s[i] == 'T' else 0
             else:
                 return 1 if s[i] == 'F' else 0
-                
+
         state = (i, j, is_true)
         if state in memo:
             return memo[state]
-            
+
         ways = 0
         for k in range(i + 1, j, 2):
             l_t = solve(i, k - 1, True)
             l_f = solve(i, k - 1, False)
             r_t = solve(k + 1, j, True)
             r_f = solve(k + 1, j, False)
-            
+
             operator = s[k]
             if operator == '&':
                 if is_true:
@@ -328,9 +329,50 @@ def countWays(s):
                     ways += (l_t * r_t) + (l_f * r_f)
         memo[state] = ways
         return ways
-        
+
     return solve(0, len(s) - 1, True)
 ```
+- **Time Complexity:** O(n^3) - there are O(n^2) state ranges, each evaluated for True/False, and a loop of size O(n) inside.
+- **Space Complexity:** O(n^2) to store the memo states + O(n) recursion stack.
+
+---
+#### b) Tabulation (Bottom-Up)
+```python
+def count_ways_tab(s: str) -> int:
+    n = len(s)
+    # dp[i][j][0] for False, dp[i][j][1] for True
+    dp = [[[0] * 2 for _ in range(n)] for _ in range(n)]
+
+    for i in range(0, n, 2):
+        if s[i] == 'T':
+            dp[i][i][1] = 1
+        else:
+            dp[i][i][0] = 1
+
+    for length in range(3, n + 1, 2):
+        for i in range(n - length + 1):
+            j = i + length - 1
+            for k in range(i + 1, j, 2):
+                l_t = dp[i][k-1][1]
+                l_f = dp[i][k-1][0]
+                r_t = dp[k+1][j][1]
+                r_f = dp[k+1][j][0]
+
+                operator = s[k]
+                if operator == '&':
+                    dp[i][j][1] += l_t * r_t
+                    dp[i][j][0] += (l_t * r_f) + (l_f * r_t) + (l_f * r_f)
+                elif operator == '|':
+                    dp[i][j][1] += (l_t * r_t) + (l_t * r_f) + (l_f * r_t)
+                    dp[i][j][0] += l_f * r_f
+                elif operator == '^':
+                    dp[i][j][1] += (l_t * r_f) + (l_f * r_t)
+                    dp[i][j][0] += (l_t * r_t) + (l_f * r_f)
+
+    return dp[0][n-1][1]
+```
+- **Time Complexity:** O(n^3).
+- **Space Complexity:** O(n^2).
 
 ---
 
@@ -340,20 +382,64 @@ def countWays(s):
 #### Problem Statement
 Given a string `s`, partition `s` such that every substring of the partition is a palindrome. Return the minimum cuts needed for a palindrome partitioning of `s`.
 
-*Example:*
-- **Input:** `s = "aab"`
-- **Output:** `1`
-- **Explanation:** The palindrome partitioning ["aa","b"] could be produced using 1 cut.
+#### Recurrence Relation & Alternative DP Formulations
+This problem can be approached with two different DP formulations:
 
-#### Recurrence Relation
-1. We precompute boolean table `is_palindrome[i][j]` using DP.
-2. Let `dp[i]` be the minimum cuts for substring `s[0...i]`.
-3. If `is_palindrome[0][i]` is true, `dp[i] = 0`.
-4. Otherwise, `dp[i] = min(dp[j] + 1)` for all `j < i` where `is_palindrome[j+1][i]` is true.
+##### Formulation A: Range-Based MCM DP ($O(n^3)$ Time, $O(n^2)$ Space)
+- **State:** `dp[i][j]` = minimum cuts needed to partition the substring `s[i...j]` into palindromes.
+- **Recurrence:** If `s[i...j]` is a palindrome, `dp[i][j] = 0`. Otherwise:
+  $$\text{dp}[i][j] = \min_{i \le k < j} (\text{dp}[i][k] + \text{dp}[k+1][j] + 1)$$
 
-#### Python Code Snippet
+##### Formulation B: Prefix-Based DP ($O(n^2)$ Time, $O(n^2)$ Space)
+- **State:** `dp[i]` = minimum cuts needed for prefix `s[0...i]`.
+- **Recurrence:** If `s[0...i]` is a palindrome, `dp[i] = 0`. Otherwise:
+  $$\text{dp}[i] = \min_{0 \le j < i} (\text{dp}[j] + 1) \quad \text{where } s[j+1 \dots i] \text{ is a palindrome}$$
+*(This is significantly more efficient than Formulation A as we reduce the transition search space from a range partition to a prefix split).*
+
+---
+#### a) Memoization (Top-Down)
 ```python
-def minCut(s):
+def min_cut_memo(s: str) -> int:
+    n = len(s)
+    dp = [-1] * n
+    
+    # Precompute palindromes
+    is_palindrome = [[False] * n for _ in range(n)]
+    for i in range(n):
+        is_palindrome[i][i] = True
+    for length in range(2, n + 1):
+        for i in range(n - length + 1):
+            j = i + length - 1
+            if length == 2:
+                is_palindrome[i][j] = (s[i] == s[j])
+            else:
+                is_palindrome[i][j] = (s[i] == s[j] and is_palindrome[i+1][j-1])
+
+    def solve(i):
+        if i == n:
+            return 0
+        if dp[i] != -1:
+            return dp[i]
+
+        min_cuts = float('inf')
+        for j in range(i, n):
+            if is_palindrome[i][j]:
+                cuts = 1 + solve(j + 1)
+                min_cuts = min(min_cuts, cuts)
+
+        dp[i] = min_cuts
+        return dp[i]
+
+    # Subtract 1 because the recursion counts the final part as a cut
+    return solve(0) - 1
+```
+- **Time Complexity:** O(n^2).
+- **Space Complexity:** O(n^2) for the palindrome table + O(n) for the recursion stack.
+
+---
+#### b) Tabulation (Bottom-Up)
+```python
+def min_cut_tab(s: str) -> int:
     n = len(s)
     is_palindrome = [[False] * n for _ in range(n)]
     for i in range(n):
@@ -378,3 +464,44 @@ def minCut(s):
             dp[i] = min_cuts
     return dp[n - 1]
 ```
+- **Time/Space Complexity:** O(n^2).
+
+---
+#### c) Range-Based MCM Tabulation (Alternative Formulation A - O(n^3))
+This is the bottom-up range-based MCM formulation. It computes the minimum cuts for all ranges.
+```python
+def min_cut_range_mcm(s: str) -> int:
+    n = len(s)
+    if n <= 1:
+        return 0
+        
+    # is_palindrome[i][j] precomputation
+    is_palindrome = [[False] * n for _ in range(n)]
+    for i in range(n):
+        is_palindrome[i][i] = True
+    for length in range(2, n + 1):
+        for i in range(n - length + 1):
+            j = i + length - 1
+            if length == 2:
+                is_palindrome[i][j] = (s[i] == s[j])
+            else:
+                is_palindrome[i][j] = (s[i] == s[j] and is_palindrome[i+1][j-1])
+
+    # dp[i][j] stores the min cuts for substring s[i..j]
+    dp = [[0] * n for _ in range(n)]
+    
+    # Iterate over substring lengths
+    for length in range(2, n + 1):
+        for i in range(n - length + 1):
+            j = i + length - 1
+            if is_palindrome[i][j]:
+                dp[i][j] = 0
+            else:
+                dp[i][j] = float('inf')
+                for k in range(i, j):
+                    dp[i][j] = min(dp[i][j], dp[i][k] + dp[k+1][j] + 1)
+                    
+    return dp[0][n-1]
+```
+- **Time Complexity:** O(n^3).
+- **Space Complexity:** O(n^2).

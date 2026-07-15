@@ -249,3 +249,93 @@ def minimum_steps(arr: list[int], start: int, end: int) -> int:
 ```
 ```
 - **Common Applications**: Find the City With the Smallest Number of Neighbors at a Threshold Distance. After running Floyd-Warshall, you can easily check the distance from any city to any other city.
+
+---
+
+### 7. Shortest Distance in a Binary Maze
+`[MEDIUM]` `#shortestpath` `#bfs`
+
+#### Problem Statement
+Given an `n x n` binary matrix grid where each cell is either 0 or 1, find the length of the shortest clear path from top-left (0,0) to bottom-right (n-1,n-1). If no path exists, return -1.
+
+#### Python Code Snippet
+```python
+# TODO: Implement Shortest Distance in a Binary Maze
+def shortestPathBinaryMatrix(grid):
+    pass
+```
+
+---
+
+### 8. Path with minimum effort
+`[MEDIUM]` `#shortestpath` `#dijkstra`
+
+#### Problem Statement
+You are a hiker preparing for an upcoming hike. You are given `heights`, a 2D array of size `rows x columns`, where `heights[row][col]` represents the height of cell `(row, col)`. Find the minimum effort required to travel from top-left to bottom-right. The effort of a path is the maximum absolute difference in heights between two consecutive cells.
+
+#### Python Code Snippet
+```python
+# TODO: Implement Path with Minimum Effort
+def minimumEffortPath(heights):
+    pass
+```
+
+---
+
+### 9. Cheapest flight within K stops
+`[MEDIUM]` `#shortestpath` `#dijkstra` `#bfs`
+
+#### Problem Statement
+There are `n` cities connected by some number of flights. You are given an array `flights` where `flights[i] = [from_i, to_i, price_i]`. Also given three integers `src`, `dst`, and `k`, return the cheapest price from `src` to `dst` with at most `k` stops. If no such route exists, return -1.
+
+#### Python Code Snippet
+```python
+# TODO: Implement Cheapest Flights Within K Stops
+def findCheapestPrice(n, flights, src, dst, k):
+    pass
+```
+
+---
+
+### 10. Network Delay Time
+`[MEDIUM]` `#shortestpath` `#dijkstra`
+
+#### Problem Statement
+You are given a network of `n` nodes, labeled from 1 to `n`. You are also given `times`, a list of travel times as directed edges `times[i] = [u_i, v_i, w_i]`. We will send a signal from a given node `k`. Return the minimum time it takes for all the `n` nodes to receive the signal. If it is impossible for all nodes to receive the signal, return -1.
+
+#### Python Code Snippet
+```python
+# TODO: Implement Network Delay Time
+def networkDelayTime(times, n, k):
+    pass
+```
+
+---
+
+### 11. Number of ways to arrive at destination
+`[MEDIUM]` `#shortestpath` `#dijkstra` `#dynamicprogramming`
+
+#### Problem Statement
+You are in a city that consists of `n` intersections numbered from 0 to `n - 1`. You are given a 2D integer array `roads` where `roads[i] = [u_i, v_i, time_i]`. Find the number of ways you can go from intersection 0 to intersection `n - 1` in the minimum amount of time.
+
+#### Python Code Snippet
+```python
+# TODO: Implement Number of Ways to Arrive at Destination
+def countPaths(n, roads):
+    pass
+```
+
+---
+
+### 12. Find the city with the smallest number of neighbors
+`[MEDIUM]` `#shortestpath` `#floydwarshall`
+
+#### Problem Statement
+There are `n` cities numbered from 0 to `n-1`. Given the array `edges` where `edges[i] = [from_i, to_i, weight_i]`. Return the city with the smallest number of cities that are reachable through some path and whose distance is at most `distanceThreshold`.
+
+#### Python Code Snippet
+```python
+# TODO: Implement Find the City with the Smallest Number of Neighbors
+def findTheCity(n, edges, distanceThreshold):
+    pass
+```
