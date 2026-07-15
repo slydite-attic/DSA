@@ -58,6 +58,10 @@ def ladder_length(beginWord: str, endWord: str, wordList: list[str]) -> int:
     return 0
 ```
 
+#### Complexity Analysis
+- **Time Complexity:** $O(N \times M^2)$ where $N$ is the number of words in the `wordList` and $M$ is the maximum length of a word. Generating all possible words takes $M$ iterations, string slicing takes $M$ time, so each string generation takes $O(M^2)$. There are at most $N$ words to process.
+- **Space Complexity:** $O(N \times M)$ to store the words in the set and queue.
+
 ---
 
 ### 2. Word Ladder II
@@ -128,3 +132,7 @@ def find_ladders(beginWord: str, endWord: str, wordList: list[str]) -> list[list
 
     return results
 ```
+
+#### Complexity Analysis
+- **Time Complexity:** $O(N \times M^2 + P)$ where $N$ is the number of words, $M$ is the word length, and $P$ is the number of shortest paths. Phase 1 (BFS) takes $O(N \times M^2)$ to build the distance map. Phase 2 (DFS) takes $O(P \times L)$ where $L$ is the path length.
+- **Space Complexity:** $O(N \times M + P \times L)$ to store distances, paths, and recursion stack.

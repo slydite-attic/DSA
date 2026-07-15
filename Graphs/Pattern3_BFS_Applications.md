@@ -54,6 +54,10 @@ def oranges_rotting(grid: list[list[int]]) -> int:
     return max_time if fresh_oranges == 0 else -1
 ```
 
+#### Complexity Analysis
+- **Time Complexity:** $O(N \times M)$ to traverse the grid, where $N$ and $M$ are dimensions of the grid. Each cell is added to the queue at most once.
+- **Space Complexity:** $O(N \times M)$ for the queue in the worst case.
+
 ---
 
 ### 2. 0/1 Matrix (Distance to Nearest 0)
@@ -95,6 +99,10 @@ def update_matrix(mat: list[list[int]]) -> list[list[int]]:
                 q.append((nr, nc))
     return dist
 ```
+
+#### Complexity Analysis
+- **Time Complexity:** $O(N \times M)$ to process every cell in the matrix.
+- **Space Complexity:** $O(N \times M)$ for the queue and the resulting distance matrix.
 
 ---
 
@@ -146,6 +154,10 @@ def num_enclaves(grid: list[list[int]]) -> int:
     return enclave_count
 ```
 
+#### Complexity Analysis
+- **Time Complexity:** $O(N \times M)$ for traversing the grid and performing BFS.
+- **Space Complexity:** $O(N \times M)$ for the visited array and the queue in the worst case.
+
 ---
 
 ### 4. Cycle Detection in Undirected Graph (BFS)
@@ -183,6 +195,10 @@ def has_cycle_undirected_bfs(n: int, adj: dict) -> bool:
                         return True # Cycle detected
     return False
 ```
+
+#### Complexity Analysis
+- **Time Complexity:** $O(V + E)$ where $V$ is vertices and $E$ is edges. BFS explores every node and edge once.
+- **Space Complexity:** $O(V)$ for the visited array and the queue.
 
 ---
 
@@ -224,17 +240,8 @@ def is_bipartite_bfs(n: int, adj: dict) -> bool:
     return True
 ```
 
+#### Complexity Analysis
+- **Time Complexity:** $O(V + E)$ to traverse all nodes and edges via BFS.
+- **Space Complexity:** $O(V)$ for the queue and the color map.
+
 ---
-
-### 5. Distance of nearest cell having one
-`[MEDIUM]` `#bfs` `#matrix`
-
-#### Problem Statement
-Given an `m x n` binary matrix grid, return the distance of the nearest 0 for each cell (or nearest 1 depending on version). The distance between two adjacent cells is 1.
-
-#### Python Code Snippet
-```python
-# TODO: Implement 0/1 Matrix Distance of nearest cell having one
-def updateMatrix(mat):
-    pass
-```

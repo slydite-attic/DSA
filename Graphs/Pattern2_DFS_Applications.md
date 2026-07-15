@@ -43,6 +43,10 @@ def find_circle_num(isConnected: list[list[int]]) -> int:
     return provinces
 ```
 
+#### Complexity Analysis
+- **Time Complexity:** $O(V^2)$ where $V$ is the number of cities, because we traverse the $V \times V$ adjacency matrix.
+- **Space Complexity:** $O(V)$ for the visited array and recursion stack.
+
 ---
 
 ### 2. Flood Fill
@@ -82,6 +86,10 @@ def flood_fill(image: list[list[int]], sr: int, sc: int, newColor: int) -> list[
     dfs(sr, sc)
     return image
 ```
+
+#### Complexity Analysis
+- **Time Complexity:** $O(N \times M)$ where $N$ and $M$ are the dimensions of the grid, as we might visit every cell.
+- **Space Complexity:** $O(N \times M)$ in the worst case for the recursion stack.
 
 ---
 
@@ -132,6 +140,10 @@ def solve_surrounded_regions(board: list[list[str]]) -> None:
                 board[r][c] = 'O'
 ```
 
+#### Complexity Analysis
+- **Time Complexity:** $O(N \times M)$ because we traverse the grid cells and perform DFS which visits each cell at most once.
+- **Space Complexity:** $O(N \times M)$ for the recursion stack in the worst case.
+
 ---
 
 ### 4. Number of Distinct Islands
@@ -181,6 +193,10 @@ def number_of_distinct_islands(grid: list[list[int]]) -> int:
     return len(unique_islands)
 ```
 
+#### Complexity Analysis
+- **Time Complexity:** $O(N \times M)$ where $N$ and $M$ are the dimensions of the grid. We visit each cell at most once.
+- **Space Complexity:** $O(N \times M)$ for the recursion stack, `visited` set, and storing the paths of distinct islands.
+
 ---
 
 ### 5. Cycle Detection in Undirected Graph (DFS)
@@ -217,6 +233,10 @@ def dfs(node, parent, visited, adj):
             return True # Cycle detected
     return False
 ```
+
+#### Complexity Analysis
+- **Time Complexity:** $O(V + E)$ where $V$ is vertices and $E$ is edges, as we do a standard DFS.
+- **Space Complexity:** $O(V)$ for the visited array and recursion stack.
 
 ---
 
@@ -255,6 +275,10 @@ def dfs_color(node, c, color, adj):
             return False
     return True
 ```
+
+#### Complexity Analysis
+- **Time Complexity:** $O(V + E)$ to traverse all nodes and edges.
+- **Space Complexity:** $O(V)$ for the recursion stack and the color tracking.
 
 ---
 
@@ -300,32 +324,57 @@ def dfs_cycle(node, visited, path_visited, adj):
     return False
 ```
 
+#### Complexity Analysis
+- **Time Complexity:** $O(V + E)$ to visit each node and its edges.
+- **Space Complexity:** $O(V)$ for the recursion stack, `visited`, and `path_visited` arrays.
+
 ---
 
-### 4. Connected Components Problem in Matrix
+### 8. Connected Components Problem in Matrix (Number of Islands)
 `[MEDIUM]` `#dfs` `#connectedcomponents`
 
 #### Problem Statement
 Given a 2D grid of '1's (land) and '0's (water), count the number of islands. An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically or diagonally.
 
+#### Implementation Overview
+This is a standard connected components problem on a grid. We iterate through every cell in the grid. When we find an unvisited '1', we increment our island count and launch a DFS to visit all adjacent '1's (in all 8 directions, as specified by horizontal, vertical, or diagonal). We mark visited cells by changing them to '0' (or using a visited set) to avoid revisiting.
+
 #### Python Code Snippet
 ```python
-# TODO: Implement Connected Components / Number of Islands
-def numIslands(grid):
-    pass
+def numIslands(grid: list[list[str]]) -> int:
+    if not grid:
+        return 0
+
+    rows, cols = len(grid), len(grid[0])
+    islands = 0
+
+    def dfs(r, c):
+        if not (0 <= r < rows and 0 <= c < cols and grid[r][c] == '1'):
+            return
+
+        # Mark as visited by mutating the grid
+        grid[r][c] = '0'
+
+        # 8 directions
+        directions = [
+            (0, 1), (0, -1), (1, 0), (-1, 0),
+            (1, 1), (1, -1), (-1, 1), (-1, -1)
+        ]
+
+        for dr, dc in directions:
+            dfs(r + dr, c + dc)
+
+    for r in range(rows):
+        for c in range(cols):
+            if grid[r][c] == '1':
+                islands += 1
+                dfs(r, c)
+
+    return islands
 ```
+
+#### Complexity Analysis
+- **Time Complexity:** $O(N \times M)$ where $N$ is the number of rows and $M$ is the number of columns. Each cell is visited a constant number of times.
+- **Space Complexity:** $O(N \times M)$ in the worst case for the recursion stack (if the entire grid is one island).
 
 ---
-
-### 5. Surrounded Regions
-`[MEDIUM]` `#dfs` `#matrix`
-
-#### Problem Statement
-Given an `m x n` matrix board containing 'X' and 'O', capture all regions that are 4-directionally surrounded by 'X'. A region is captured by flipping all 'O's into 'X's in that surrounded region.
-
-#### Python Code Snippet
-```python
-# TODO: Implement Surrounded Regions (Replace O's with X's)
-def solve(board):
-    pass
-```

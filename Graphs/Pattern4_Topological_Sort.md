@@ -44,6 +44,10 @@ def topo_sort_dfs(V: int, adj: dict) -> list[int]:
     return stack[::-1] # Reverse the stack to get the correct order
 ```
 
+#### Complexity Analysis
+- **Time Complexity:** $O(V + E)$ where $V$ is vertices and $E$ is edges, because it is essentially a DFS traversal.
+- **Space Complexity:** $O(V)$ for the stack and visited array.
+
 ---
 
 ### 2. Kahn's Algorithm (BFS-based Topological Sort)
@@ -89,6 +93,10 @@ def topo_sort_kahns(V: int, adj: dict) -> list[int]:
         return [] # Cycle detected
 ```
 
+#### Complexity Analysis
+- **Time Complexity:** $O(V + E)$ to compute in-degrees and traverse the graph.
+- **Space Complexity:** $O(V)$ for the queue, in-degree array, and result array.
+
 ---
 
 ### 3. Course Schedule - I
@@ -127,6 +135,10 @@ def can_finish(numCourses: int, prerequisites: list[list[int]]) -> bool:
     return count == numCourses
 ```
 
+#### Complexity Analysis
+- **Time Complexity:** $O(V + E)$ where $V$ is `numCourses` and $E$ is the number of prerequisites.
+- **Space Complexity:** $O(V + E)$ to store the adjacency list and $O(V)$ for the queue and in-degree array.
+
 ---
 
 ### 4. Course Schedule - II
@@ -163,6 +175,10 @@ def find_order(numCourses: int, prerequisites: list[list[int]]) -> list[int]:
 
     return topo_order if len(topo_order) == numCourses else []
 ```
+
+#### Complexity Analysis
+- **Time Complexity:** $O(V + E)$ since we construct the graph and apply Kahn's algorithm.
+- **Space Complexity:** $O(V + E)$ for the adjacency list and $O(V)$ for queue and in-degree structures.
 
 ---
 
@@ -203,6 +219,10 @@ def eventual_safe_nodes(graph: list[list[int]]) -> list[int]:
 
     return sorted(safe_nodes)
 ```
+
+#### Complexity Analysis
+- **Time Complexity:** $O(V + E)$ to build the reversed graph and process it, plus $O(V \log V)$ for the final sort, making it $O(V \log V + E)$ overall.
+- **Space Complexity:** $O(V + E)$ for the reversed graph and queue.
 
 ---
 
@@ -253,17 +273,49 @@ def alien_order(words: list[str]) -> str:
     return "".join(res) if len(res) == len(in_degree) else ""
 ```
 
+#### Complexity Analysis
+- **Time Complexity:** $O(C)$ where $C$ is the total length of all words in the input array. We compare adjacent words. The BFS takes $O(U + \min(U^2, E))$ where $U$ is the number of unique characters.
+- **Space Complexity:** $O(U + \min(U^2, E))$ for the adjacency list and queue.
+
 ---
 
-### 4. Topo Sort
-`[FUNDAMENTAL]` `[MEDIUM]` `#toposort` `#dag`
+### 7. Detect a cycle in a directed graph
+`[MEDIUM]` `#bfs` `#cycle-detection` `#toposort`
 
 #### Problem Statement
-Given a Directed Acyclic Graph (DAG) with V vertices and E edges, find any Topological Sort of that graph.
+Given a Directed Graph with V vertices and E edges, check whether it contains any cycle or not.
+
+#### Implementation Overview
+We can use Kahn's Algorithm (BFS based Topological Sort). A topological sort is only possible for a Directed Acyclic Graph (DAG). If we attempt Kahn's algorithm and the resulting topological sort does not contain all $V$ vertices, it means there is a cycle in the graph. We just keep a count of processed nodes, and if `count != V`, a cycle exists.
 
 #### Python Code Snippet
 ```python
-# TODO: Implement Topological Sort (Kahn's Algorithm or DFS)
-def topoSort(V, adj):
-    pass
+from collections import deque
+
+def isCyclic(V: int, adj: list[list[int]]) -> bool:
+    in_degree = [0] * V
+    for u in range(V):
+        for v in adj[u]:
+            in_degree[v] += 1
+
+    q = deque()
+    for i in range(V):
+        if in_degree[i] == 0:
+            q.append(i)
+
+    count = 0
+    while q:
+        node = q.popleft()
+        count += 1
+
+        for neighbor in adj[node]:
+            in_degree[neighbor] -= 1
+            if in_degree[neighbor] == 0:
+                q.append(neighbor)
+
+    return count != V
 ```
+
+#### Complexity Analysis
+- **Time Complexity:** $O(V + E)$ where $V$ is vertices and $E$ is edges.
+- **Space Complexity:** $O(V)$ for the queue and the in-degree array.
