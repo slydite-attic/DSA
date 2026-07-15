@@ -409,6 +409,8 @@ def print_lcs_tab(text1: str, text2: str) -> str:
 - **Time Complexity:** O(n * m) to build the table, O(n+m) to backtrack.
 - **Space Complexity:** O(n * m) to store the table.
 
+> **Note on Space Optimization:** Printing the LCS requires backtracking through the `dp` table from `dp[n][m]` to `dp[0][0]`. At each backtracking step, the algorithm compares `dp[i-1][j]` vs `dp[i][j-1]`, requiring simultaneous access to multiple rows. Reducing to a 1D rolling array overwrites previously needed row values, making path reconstruction impossible. The full O(n * m) table is therefore **required** for printing. If only the **length** is needed, use `lcs_optimized` from Problem 1 for O(m) space.
+
 ---
 
 ### 7. Longest Common Substring

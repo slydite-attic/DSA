@@ -21,18 +21,71 @@ Let `solve(index, can_buy)` be the max profit from `index` onwards.
 #### Problem Statement
 Maximize profit with a **single transaction** (one buy, one sell).
 
-#### Implementation Overview
-While a simple greedy approach is most efficient (O(n) time, O(1) space), this problem can be framed with DP to show the foundational thinking. However, the greedy solution is standard and preferred.
+#### Recurrence Relation
+`solve(index, can_buy)` with an extra constraint: once we sell (`cap` decrements to 0), we stop.
+This is the same as Stock III/IV with `k=1`. The state is `(index, can_buy)` with at most 1 buy and 1 sell allowed.
 
+---
+#### a) Memoization (Top-Down)
 ```python
-# Greedy Solution
-def max_profit_one_transaction(prices: list[int]) -> int:
-    min_price = float('inf') # Initialize the minimum price seen so far to infinity.
-    max_profit = 0 # Initialize the maximum profit to 0.
-    for price in prices: # Iterate through each price in the list.
-        min_price = min(min_price, price) # Update the minimum price if the current price is lower.
-        max_profit = max(max_profit, price - min_price) # Calculate the potential profit if selling today and update max_profit.
-    return max_profit # Return the maximum profit found.
+def max_profit_one_transaction_memo(prices: list[int]) -> int:
+    n = len(prices)
+    dp = [[-1] * 2 for _ in range(n)]
+
+    def solve(index, can_buy, cap):
+        if index == n or cap == 0:
+            return 0
+        if dp[index][can_buy] != -1:
+            return dp[index][can_buy]
+
+        if can_buy:
+            buy = -prices[index] + solve(index + 1, 0, cap)
+            skip = solve(index + 1, 1, cap)
+            dp[index][can_buy] = max(buy, skip)
+        else:
+            sell = prices[index] + solve(index + 1, 1, cap - 1)
+            skip = solve(index + 1, 0, cap)
+            dp[index][can_buy] = max(sell, skip)
+
+        return dp[index][can_buy]
+
+    return solve(0, 1, 1)
+```
+- **Time Complexity:** O(n).
+- **Space Complexity:** O(n) for the DP table + O(n) for the recursion stack.
+
+---
+#### b) Tabulation (Bottom-Up)
+```python
+def max_profit_one_transaction_tab(prices: list[int]) -> int:
+    n = len(prices)
+    # dp[index][can_buy]: 0 = cannot buy (holding), 1 = can buy (not holding)
+    dp = [[0] * 2 for _ in range(n + 1)]
+
+    # Iterate backwards; cap = 1 implicitly (once sold, no more buys needed)
+    for index in range(n - 1, -1, -1):
+        # can_buy = 1: we haven't bought yet
+        dp[index][1] = max(-prices[index] + dp[index + 1][0], dp[index + 1][1])
+        # can_buy = 0: we are holding a stock
+        dp[index][0] = max(prices[index] + 0, dp[index + 1][0])
+        # After selling (cap-1 = 0), future profit is 0, so sell = prices[index]
+
+    return dp[0][1]
+```
+- **Time Complexity:** O(n).
+- **Space Complexity:** O(n).
+
+---
+#### c) Space Optimization (Standard Greedy / Two-Variable)
+The classic greedy approach is the natural space-optimized form of the DP above: track `min_price` (best buy so far) and `max_profit` (best sell so far).
+```python
+def max_profit_one_transaction_optimized(prices: list[int]) -> int:
+    min_price = float('inf')  # Best buy price seen so far.
+    max_profit = 0             # Best profit achievable so far.
+    for price in prices:
+        min_price = min(min_price, price)          # Greedily update the best buy.
+        max_profit = max(max_profit, price - min_price)  # Update best profit if we sell today.
+    return max_profit
 ```
 - **Time Complexity:** O(n).
 - **Space Complexity:** O(1).
@@ -190,7 +243,7 @@ def max_profit_two_transactions_tab(prices: list[int]) -> int:
 - **Space Complexity:** O(n * 4) ~ O(n).
 
 ---
-#### b) Space Optimization
+#### c) Space Optimization
 ```python
 def max_profit_two_transactions_optimized(prices: list[int]) -> int:
     buy1, sell1 = float('-inf'), 0 # Initialize profits for the first transaction.
@@ -339,7 +392,7 @@ def max_profit_k_transactions_optimized(k: int, prices: list[int]) -> int:
 
 ---
 
-### 4. Best Time to Buy and Sell Stock with Cooldown
+### 5. Best Time to Buy and Sell Stock with Cooldown
 `[MEDIUM]` `#dp-on-stocks` `#cooldown`
 
 #### Problem Statement
@@ -420,7 +473,7 @@ def max_profit_cooldown_optimized(prices: list[int]) -> int:
 
 ---
 
-### 5. Best Time to Buy and Sell Stock with Transaction Fee
+### 6. Best Time to Buy and Sell Stock with Transaction Fee
 `[MEDIUM]` `#dp-on-stocks` `#fee`
 
 #### Problem Statement

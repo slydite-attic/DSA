@@ -68,6 +68,8 @@ def mcm_tab(arr: list[int]) -> int:
 - **Time Complexity:** O(n^3).
 - **Space Complexity:** O(n^2).
 
+> **Note on Space Optimization:** MCM is an **interval DP** problem. Every subproblem `dp[i][j]` can be needed by any larger interval `dp[i'][j']` where `i' <= i` and `j' >= j`. There is no fixed sequential access pattern, so the full O(n²) DP table **cannot** be reduced further. Space optimization does not apply here.
+
 ---
 
 ### 2. Minimum Cost to Cut the Stick
@@ -134,6 +136,8 @@ def min_cost_cut_stick_tab(n: int, cuts: list[int]) -> int:
 ```
 - **Time/Space Complexity:** O(m^3).
 
+> **Note on Space Optimization:** Like MCM, this is an interval DP problem where `dp[i][k]` and `dp[k][j]` for arbitrary `i`, `j`, `k` are all needed simultaneously. The full O(m²) table is inherently required and cannot be reduced.
+
 ---
 
 ### 3. Burst Balloons
@@ -197,6 +201,8 @@ def max_coins_tab(nums: list[int]) -> int:
     return dp[0][n-1] # The result is the max coins for the entire range.
 ```
 - **Time/Space Complexity:** O(n^3).
+
+> **Note on Space Optimization:** Burst Balloons is also an interval DP problem — `dp[i][j]` depends on `dp[i][k]` and `dp[k][j]` for all `i < k < j`. Since any state may depend on any other, the full O(n²) table is required and space cannot be reduced below O(n²).
 
 ---
 
@@ -263,6 +269,32 @@ def max_sum_after_partitioning_tab(arr: list[int], k: int) -> int:
 ```
 - **Time Complexity:** O(n * k).
 - **Space Complexity:** O(n).
+
+---
+#### c) Space Optimization (O(k) Space using Circular Array)
+Since computing `dp[i]` only requires looking back at the last `k` states, we can optimize the space complexity from O(n) to O(k) using a circular buffer of size `k + 1`.
+
+```python
+def max_sum_after_partitioning_optimized(arr: list[int], k: int) -> int:
+    n = len(arr)
+    # Circular DP array to keep track of the last k+1 states
+    dp = [0] * (k + 1)
+
+    for i in range(1, n + 1):
+        max_val_in_partition = 0
+        current_max = 0
+        for j in range(1, k + 1):
+            if i - j >= 0:
+                max_val_in_partition = max(max_val_in_partition, arr[i-j])
+                val = dp[(i - j) % (k + 1)] + max_val_in_partition * j
+                current_max = max(current_max, val)
+        dp[i % (k + 1)] = current_max
+
+    return dp[n % (k + 1)]
+```
+- **Time Complexity:** O(n * k).
+- **Space Complexity:** O(k) for the circular array.
+
 
 ---
 
@@ -373,6 +405,8 @@ def count_ways_tab(s: str) -> int:
 ```
 - **Time Complexity:** O(n^3).
 - **Space Complexity:** O(n^2).
+
+> **Note on Space Optimization:** Boolean Expression Evaluation is an **interval DP** problem. Each state `dp[i][j]` depends on `dp[i][k-1]` and `dp[k+1][j]` for all `i < k < j`. Since any sub-interval can depend on any other non-overlapping sub-interval, the full O(n²) DP table (with a factor of 2 for True/False) **cannot** be reduced further. Space optimization does not apply here.
 
 ---
 

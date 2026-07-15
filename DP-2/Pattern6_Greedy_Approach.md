@@ -88,3 +88,91 @@ def can_jump(nums: list[int]) -> bool:
 ```
 - **Time Complexity:** O(n), because we iterate through the array once.
 - **Space Complexity:** O(1).
+
+---
+
+### 3. Jump Game II (Minimum Jumps)
+`[MEDIUM]` `#greedy` `#dp` `#bfs` `#array`
+
+#### Problem Statement
+You are given a 0-indexed array of integers `nums`. You are initially positioned at the first index. Each element `nums[i]` represents the maximum jump length from index `i`. Return the **minimum number of jumps** to reach the last index. It is guaranteed that you can always reach the last index.
+
+*Example:* `nums = [2,3,1,1,4]`. **Output:** `2`. (Jump from 0→1→4)
+
+#### Implementation Overview
+This problem has three common approaches. Knowing all three helps understand the progression from brute-force DP to the optimal greedy:
+
+---
+#### a) DP (Bottom-Up O(n²))
+The brute-force DP approach: `dp[i]` = minimum jumps to reach index `i`. For each index, try all valid previous positions.
+```python
+def jump_dp(nums: list[int]) -> int:
+    n = len(nums)
+    dp = [float('inf')] * n
+    dp[0] = 0  # 0 jumps needed to start
+
+    for i in range(1, n):
+        for j in range(i):
+            if j + nums[j] >= i:  # can we jump from j to i?
+                dp[i] = min(dp[i], dp[j] + 1)
+
+    return dp[n - 1]
+```
+- **Time Complexity:** O(n²).
+- **Space Complexity:** O(n).
+
+---
+#### b) BFS (Level-Order / O(n))
+Think of each index as a node, and each jump as an edge. Each "level" in BFS corresponds to a single jump. We track the farthest index reachable at each level.
+```python
+def jump_bfs(nums: list[int]) -> int:
+    n = len(nums)
+    if n == 1:
+        return 0
+
+    jumps = 0
+    current_end = 0  # farthest index reachable with 'jumps' jumps
+    farthest = 0     # farthest index reachable with 'jumps+1' jumps
+
+    for i in range(n - 1):
+        farthest = max(farthest, i + nums[i])
+        if i == current_end:  # we must take a jump to go beyond current_end
+            jumps += 1
+            current_end = farthest
+            if current_end >= n - 1:
+                break
+
+    return jumps
+```
+- **Time Complexity:** O(n).
+- **Space Complexity:** O(1).
+
+---
+#### c) Greedy (Optimal O(n))
+The same as BFS but with cleaner variable names — the standard interview solution. At each step, greedily extend the boundary as far as possible. The variable `current_end` is the end of the current "jump range"; when we reach it, we must commit to one more jump.
+```python
+def jump_greedy(nums: list[int]) -> int:
+    n = len(nums)
+    jumps = 0
+    current_end = 0
+    farthest = 0
+
+    for i in range(n - 1):  # No need to jump from the last index
+        farthest = max(farthest, i + nums[i])
+        if i == current_end:
+            jumps += 1
+            current_end = farthest
+
+    return jumps
+```
+- **Time Complexity:** O(n).
+- **Space Complexity:** O(1).
+
+#### Tricks/Gotchas
+- The greedy and BFS approaches are functionally identical in O(n) time and O(1) space — the key insight is that you don't need to track which specific jump you take, only the *farthest boundary* reachable.
+- The DP solution is useful to understand the problem's structure but is too slow (O(n²)) for large inputs.
+- The loop runs to `n-2` (not `n-1`) because there's no need to jump *from* the last index.
+
+#### Related Problems
+- Jump Game I (Problem 2 in this file) — same structure, asks for reachability instead of minimum jumps.
+

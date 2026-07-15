@@ -126,7 +126,9 @@ def min_distance_memo(word1: str, word2: str) -> int:
         return dp[i][j] # Return the computed minimum distance.
 
     return solve(n - 1, m - 1) # Start the recursion from the end of both words.
-- **Time/Space Complexity:** O(n * m) for the DP table + O(n + m) for recursion stack.
+```
+- **Time Complexity:** O(n * m).
+- **Space Complexity:** O(n * m) for the DP table + O(n + m) for recursion stack.
 
 ---
 #### b) Tabulation (Bottom-Up)
