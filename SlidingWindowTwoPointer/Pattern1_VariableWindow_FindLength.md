@@ -285,3 +285,40 @@ def max_score(cardPoints: list[int], k: int) -> int:
 
     return total_sum - min_window_sum
 ```
+
+---
+
+### 6. Fruit Into Baskets
+`[EASY]` `#slidingwindow` `#hashmap`
+
+#### Problem Statement
+You are visiting a farm that has a single row of fruit trees ordered from left to right. The trees are represented by an integer array `fruits` where `fruits[i]` is the type of fruit the `i-th` tree produces. You want to collect as much fruit as possible. However, you are starting with two baskets, and each basket can only hold a single type of fruit. Find the maximum number of consecutive trees you can harvest.
+
+*Example:*
+- **Input:** `fruits = [1,2,1,2,3]`
+- **Output:** `4`
+- **Explanation:** We can harvest from the first 4 trees: [1,2,1,2].
+
+#### Implementation Overview
+This is exactly the **Longest Substring with At Most K Distinct Characters** problem with `K = 2`.
+1. Maintain a sliding window using two pointers `left` and `right`.
+2. Use a hash map to keep count of fruit types in the window.
+3. If the size of the map exceeds 2, shrink the window from the `left` until the map size is `<= 2`.
+4. Maximize the window size `right - left + 1`.
+
+#### Python Code Snippet
+```python
+def totalFruit(fruits):
+    count = {}
+    left = 0
+    max_fruits = 0
+    for right in range(len(fruits)):
+        count[fruits[right]] = count.get(fruits[right], 0) + 1
+        while len(count) > 2:
+            count[fruits[left]] -= 1
+            if count[fruits[left]] == 0:
+                del count[fruits[left]]
+            left += 1
+        max_fruits = max(max_fruits, right - left + 1)
+    return max_fruits
+```

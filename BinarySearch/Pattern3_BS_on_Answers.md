@@ -375,3 +375,101 @@ def allocate_books(pages, m):
 - `Split Array - Largest Sum`
 - `Painter's Partition`
 - `Capacity to Ship Packages`
+
+---
+
+### 9. Split Array - Largest Sum
+`[MEDIUM]` `#binarysearch` `#searchspace`
+
+#### Problem Statement
+Given an integer array `nums` and an integer `k`, split the array into `k` non-empty contiguous subarrays such that the individual largest sum of these subarrays is minimized. Return the minimized largest sum of the split.
+
+*Example:*
+- **Input:** `nums = [7,2,5,10,8]`, `k = 2`
+- **Output:** `18`
+- **Explanation:** There are four ways to split nums into two subarrays. The best way is to split it into [7,2,5] and [10,8], where the largest sum is 18.
+
+#### Implementation Overview
+This is a direct application of the Binary Search on Answers pattern, mathematically identical to the Book Allocation Problem.
+1. The search space is `[low, high]`, where `low = max(nums)` (the smallest possible maximum sum for a single element subarray) and `high = sum(nums)` (the sum if we only have 1 subarray).
+2. For a candidate sum `mid`, we greedily group elements into subarrays.
+3. If the number of subarrays needed is `<= k`, it means `mid` is feasible. We try to find a smaller maximum sum by searching in `[low, mid - 1]`.
+4. Otherwise, we search in `[mid + 1, high]`.
+
+#### Python Code Snippet
+```python
+def splitArray(nums, k):
+    def canSplit(max_sum):
+        current_sum = 0
+        subarrays = 1
+        for num in nums:
+            if current_sum + num > max_sum:
+                subarrays += 1
+                current_sum = num
+                if subarrays > k:
+                    return False
+            else:
+                current_sum += num
+        return True
+        
+    low = max(nums)
+    high = sum(nums)
+    ans = high
+    while low <= high:
+        mid = (low + high) // 2
+        if canSplit(mid):
+            ans = mid
+            high = mid - 1
+        else:
+            low = mid + 1
+    return ans
+```
+
+#### Tricks/Gotchas
+- **Identical to Book Allocation:** The code logic is 100% equivalent; only the variable names and context differ.
+
+---
+
+### 10. Painter's Partition
+`[MEDIUM]` `#binarysearch` `#searchspace`
+
+#### Problem Statement
+Given an array `boards` where each element represents the length of a board and an integer `k` representing the number of painters available. Each painter takes 1 unit of time to paint 1 unit of board. A board can only be painted by one painter and in a contiguous fashion. Find the minimum time to get the entire board painted.
+
+*Example:*
+- **Input:** `boards = [10, 20, 30, 40]`, `k = 2`
+- **Output:** `60`
+
+#### Implementation Overview
+This is also mathematically identical to the Book Allocation and Split Array problems.
+1. `low = max(boards)`, `high = sum(boards)`.
+2. Binary search for the minimum maximum board length a single painter needs to paint.
+
+#### Python Code Snippet
+```python
+def paintBoards(boards, k):
+    def canPaint(max_time):
+        current_time = 0
+        painters = 1
+        for board in boards:
+            if current_time + board > max_time:
+                painters += 1
+                current_time = board
+                if painters > k:
+                    return False
+            else:
+                current_time += board
+        return True
+        
+    low = max(boards)
+    high = sum(boards)
+    ans = high
+    while low <= high:
+        mid = (low + high) // 2
+        if canPaint(mid):
+            ans = mid
+            high = mid - 1
+        else:
+            low = mid + 1
+    return ans
+```

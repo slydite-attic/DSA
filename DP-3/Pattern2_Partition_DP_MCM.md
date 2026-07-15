@@ -263,3 +263,118 @@ def max_sum_after_partitioning_tab(arr: list[int], k: int) -> int:
 ```
 - **Time Complexity:** O(n * k).
 - **Space Complexity:** O(n).
+
+---
+
+### 5. Different Ways to Evaluate a Boolean Expression
+`[HARD]` `#dynamicprogramming` `#partition`
+
+#### Problem Statement
+Given a boolean expression `s` containing characters 'T', 'F', '&', '|', and '^', find the number of ways to parenthesize the expression such that the value of the expression evaluates to true.
+
+*Example:*
+- **Input:** `s = "T^F|F"`
+- **Output:** `2`
+- **Explanation:** The two ways are: ((T^F)|F) and (T^(F|F)). Both evaluate to True.
+
+#### Recurrence Relation
+For a partition from index `i` to `j`, we iterate through all operators at index `k`.
+For each operator at `k`:
+- Recursively calculate left-true (`l_t`), left-false (`l_f`), right-true (`r_t`), and right-false (`r_f`).
+- Combine them depending on the operator:
+  - `&`: true if `l_t * r_t`
+  - `|`: true if `l_t*r_t + l_t*r_f + l_f*r_t`
+  - `^`: true if `l_t*r_f + l_f*r_t`
+
+#### Python Code Snippet
+```python
+def countWays(s):
+    memo = {}
+    def solve(i, j, is_true):
+        if i > j:
+            return 0
+        if i == j:
+            if is_true:
+                return 1 if s[i] == 'T' else 0
+            else:
+                return 1 if s[i] == 'F' else 0
+                
+        state = (i, j, is_true)
+        if state in memo:
+            return memo[state]
+            
+        ways = 0
+        for k in range(i + 1, j, 2):
+            l_t = solve(i, k - 1, True)
+            l_f = solve(i, k - 1, False)
+            r_t = solve(k + 1, j, True)
+            r_f = solve(k + 1, j, False)
+            
+            operator = s[k]
+            if operator == '&':
+                if is_true:
+                    ways += l_t * r_t
+                else:
+                    ways += (l_t * r_f) + (l_f * r_t) + (l_f * r_f)
+            elif operator == '|':
+                if is_true:
+                    ways += (l_t * r_t) + (l_t * r_f) + (l_f * r_t)
+                else:
+                    ways += l_f * r_f
+            elif operator == '^':
+                if is_true:
+                    ways += (l_t * r_f) + (l_f * r_t)
+                else:
+                    ways += (l_t * r_t) + (l_f * r_f)
+        memo[state] = ways
+        return ways
+        
+    return solve(0, len(s) - 1, True)
+```
+
+---
+
+### 6. Palindrome Partitioning - II
+`[HARD]` `#dynamicprogramming` `#partition`
+
+#### Problem Statement
+Given a string `s`, partition `s` such that every substring of the partition is a palindrome. Return the minimum cuts needed for a palindrome partitioning of `s`.
+
+*Example:*
+- **Input:** `s = "aab"`
+- **Output:** `1`
+- **Explanation:** The palindrome partitioning ["aa","b"] could be produced using 1 cut.
+
+#### Recurrence Relation
+1. We precompute boolean table `is_palindrome[i][j]` using DP.
+2. Let `dp[i]` be the minimum cuts for substring `s[0...i]`.
+3. If `is_palindrome[0][i]` is true, `dp[i] = 0`.
+4. Otherwise, `dp[i] = min(dp[j] + 1)` for all `j < i` where `is_palindrome[j+1][i]` is true.
+
+#### Python Code Snippet
+```python
+def minCut(s):
+    n = len(s)
+    is_palindrome = [[False] * n for _ in range(n)]
+    for i in range(n):
+        is_palindrome[i][i] = True
+    for length in range(2, n + 1):
+        for i in range(n - length + 1):
+            j = i + length - 1
+            if length == 2:
+                is_palindrome[i][j] = (s[i] == s[j])
+            else:
+                is_palindrome[i][j] = (s[i] == s[j] and is_palindrome[i + 1][j - 1])
+                
+    dp = [0] * n
+    for i in range(n):
+        if is_palindrome[0][i]:
+            dp[i] = 0
+        else:
+            min_cuts = i
+            for j in range(i):
+                if is_palindrome[j + 1][i]:
+                    min_cuts = min(min_cuts, dp[j] + 1)
+            dp[i] = min_cuts
+    return dp[n - 1]
+```

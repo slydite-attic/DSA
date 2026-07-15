@@ -225,3 +225,49 @@ def postorder_traversal_1_stack(root: TreeNode) -> list[int]:
             result.append(last_visited.val)
     return result
 ```
+
+---
+
+### 7. Preorder Inorder Postorder Traversals in One Traversal
+`[MEDIUM]` `#binarytree` `#traversal` `#stack`
+
+#### Problem Statement
+Given the root of a Binary Tree, return the Preorder, Inorder, and Postorder traversals of the tree computed in a single traversal (pass) of the tree.
+
+*Example:*
+- **Input:** `root = [1, null, 2, 3]`
+- **Output:**
+  - Preorder: `[1, 2, 3]`
+  - Inorder: `[1, 3, 2]`
+  - Postorder: `[3, 2, 1]`
+
+#### Implementation Overview
+We use a stack to simulate recursion. The stack stores pairs of `[node, state]`, where the state indicates which visit to the node we are on:
+1. **State = 1 (Preorder)**: We push node value to Preorder list, change state to 2, and if a left child exists, push it onto stack with state 1.
+2. **State = 2 (Inorder)**: We push node value to Inorder list, change state to 3, and if a right child exists, push it onto stack with state 1.
+3. **State = 3 (Postorder)**: We push node value to Postorder list and pop the node from the stack.
+
+#### Python Code Snippet
+```python
+def preInPostTraversal(root):
+    if not root:
+        return [], [], []
+    pre, inorder, post = [], [], []
+    stack = [[root, 1]]
+    while stack:
+        node, state = stack[-1]
+        if state == 1:
+            pre.append(node.val)
+            stack[-1][1] = 2
+            if node.left:
+                stack.append([node.left, 1])
+        elif state == 2:
+            inorder.append(node.val)
+            stack[-1][1] = 3
+            if node.right:
+                stack.append([node.right, 1])
+        else:
+            post.append(node.val)
+            stack.pop()
+    return pre, inorder, post
+```

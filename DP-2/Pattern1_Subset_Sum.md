@@ -162,3 +162,67 @@ def count_partitions_with_diff(nums: list[int], diff: int) -> int:
 - **Time Complexity:** O(n * target).
 - **Space Complexity:** O(target).
 - **Related Problem:** The **Target Sum** problem is an identical variation.
+
+---
+
+### 4. Partition a set into two subsets with minimum absolute sum difference
+`[HARD]` `#dynamicprogramming` `#subsetsum`
+
+#### Problem Statement
+Given an array of integers `arr`, partition it into two subsets `S1` and `S2` such that the absolute difference of their sums, i.e., `|sum(S1) - sum(S2)|`, is minimized. Return the minimum absolute sum difference.
+
+*Example:*
+- **Input:** `arr = [1, 6, 11, 5]`
+- **Output:** `1`
+- **Explanation:** Subset 1 = [1, 5, 6], sum = 12; Subset 2 = [11], sum = 11. Difference = |12-11| = 1.
+
+#### Implementation Overview
+We use the subset sum DP logic.
+1. Compute `total_sum = sum(arr)`. Our goal is to find if any subset sum in range `[0, total_sum // 2]` is possible.
+2. Find the largest sum `s1 <= total_sum // 2` which is possible.
+3. The other subset sum will be `s2 = total_sum - s1`.
+4. The minimum difference is `s2 - s1 = total_sum - 2*s1`.
+
+#### Python Code Snippet
+```python
+def minSubsetSumDifference(arr):
+    n = len(arr)
+    total_sum = sum(arr)
+    target = total_sum // 2
+    dp = [False] * (target + 1)
+    dp[0] = True
+    for num in arr:
+        for j in range(target, num - 1, -1):
+            dp[j] = dp[j] or dp[j - num]
+            
+    s1 = 0
+    for j in range(target, -1, -1):
+        if dp[j]:
+            s1 = j
+            break
+    return total_sum - 2 * s1
+```
+
+---
+
+### 5. Count Subsets with Sum K
+`[MEDIUM]` `#dynamicprogramming` `#subsetsum`
+
+#### Problem Statement
+Given an array `arr` of size `n` and a target sum `k`, count the number of subsets whose sum is equal to `k`.
+
+*Example:*
+- **Input:** `arr = [1, 2, 2, 3]`, `k = 3`
+- **Output:** `3`
+- **Explanation:** The subsets are [1, 2], [1, 2], and [3].
+
+#### Python Code Snippet
+```python
+def findWays(arr, k):
+    dp = [0] * (k + 1)
+    dp[0] = 1
+    for num in arr:
+        for j in range(k, num - 1, -1):
+            dp[j] = (dp[j] + dp[j - num])
+    return dp[k]
+```

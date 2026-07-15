@@ -239,3 +239,31 @@ class Solution:
         root.left = None
         self.prev = root
 ```
+
+---
+
+### 6. Requirements needed to construct a unique BT
+`[EASY]` `#binarytree` `#concept`
+
+#### Problem Statement
+Given two integers representing traversals (1: Preorder, 2: Inorder, 3: Postorder), check if a unique binary tree can be constructed.
+
+*Example:*
+- **Input:** `traversal1 = 2`, `traversal2 = 1` (Inorder and Preorder)
+- **Output:** `True`
+- **Input:** `traversal1 = 1`, `traversal2 = 3` (Preorder and Postorder)
+- **Output:** `False`
+
+#### Implementation Overview
+A unique binary tree can be constructed if and only if one of the traversals is **Inorder** (2) and the other is either **Preorder** (1) or **Postorder** (3).
+If we only have Preorder and Postorder, we can construct multiple structures that are structurally different but share the same preorder and postorder.
+
+#### Python Code Snippet
+```python
+def isUniqueBTPossible(traversal1, traversal2):
+    # 1: Preorder, 2: Inorder, 3: Postorder
+    if traversal1 == 2 or traversal2 == 2:
+        if (traversal1 == 1 or traversal2 == 1) or (traversal1 == 3 or traversal2 == 3):
+            return True
+    return False
+```
